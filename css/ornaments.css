@@ -1,0 +1,312 @@
+/* ==========================================================================
+   Kyrgyz Ethnic Ornaments — Modern Official Style
+   Principle: one refined accent per element, not competing patterns.
+   Motifs: Kochkor Muiuz (Ram's Horn), Tündük (yurt crown), Shyrdak geometry.
+   ========================================================================== */
+
+/*
+  SVG hex refs (CSS vars not available in data: URLs):
+  #8B2500 primary red   #5B1700 dark red   #C8963E gold   #D4A84B lt gold
+  #1B4332 green         #FFFDF7 cream      #E0D5C1 border
+*/
+
+/* ── TOP ACCENT BAND ────────────────────────────────────────────────────── */
+/*
+  A single 5 px strip in national colors (dark red → primary → gold).
+  Clean and institutional — no repeating patterns.
+*/
+.ethno-border-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    z-index: 1002;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary-dark)  0%,
+        var(--color-primary)       35%,
+        var(--color-secondary)     65%,
+        var(--color-primary)       85%,
+        var(--color-primary-dark)  100%
+    );
+}
+
+/* ── BOTTOM ACCENT BAND ─────────────────────────────────────────────────── */
+.ethno-border-bottom {
+    height: 5px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary-dark)  0%,
+        var(--color-secondary)     30%,
+        var(--color-primary)       60%,
+        var(--color-primary-dark)  100%
+    );
+}
+
+/* ── HEADER BOTTOM LINE ─────────────────────────────────────────────────── */
+/*
+  Replaces the thin grey border with a 2 px primary-red line.
+  Carries the national color up into the UI chrome.
+*/
+.header {
+    border-bottom: 2px solid var(--color-primary) !important;
+    box-shadow: none !important;
+}
+
+.header--scrolled {
+    box-shadow: 0 4px 20px rgba(139, 37, 0, 0.1) !important;
+}
+
+/* ── ETHNO DIVIDER — line + single diamond ──────────────────────────────── */
+/*
+  A thin horizontal rule with one red diamond centered over it.
+  Used inside the hero section between content blocks.
+*/
+.ethno-divider {
+    position: relative;
+    height: 20px;
+    margin: var(--space-xl) auto;
+    max-width: 440px;
+}
+
+.ethno-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--color-secondary) 25%,
+        var(--color-primary)   50%,
+        var(--color-secondary) 75%,
+        transparent 100%
+    );
+}
+
+.ethno-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.55rem;
+    color: var(--color-primary);
+    background: var(--color-cream);
+    padding: 0 var(--space-md);
+    z-index: 1;
+    line-height: 1;
+}
+
+.hero .ethno-divider::after {
+    background: #FDF5E2;
+}
+
+/* ── HERO SIDE ORNAMENTS — Kochkor Muiuz (Кочкор Мүйүз) ────────────────── */
+/*
+  The paired ram's-horn motif is the most iconic Kyrgyz ornament.
+  Rendered as a repeating vertical SVG at low opacity — present but not loud.
+*/
+.hero__ornament-left,
+.hero__ornament-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 500px;
+    pointer-events: none;
+    opacity: 0.06;
+    animation: ornamentPulse 6s ease-in-out infinite;
+}
+
+/* Kochkor unit: outer diamond + inner diamond + two paired horn-curves + centre diamond */
+.hero__ornament-left {
+    left: 28px;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='130'%3E%3Cpolygon points='50,5 95,50 50,95 5,50' fill='none' stroke='%238B2500' stroke-width='1.5'/%3E%3Cpolygon points='50,18 82,50 50,82 18,50' fill='none' stroke='%23C8963E' stroke-width='1'/%3E%3Cpath d='M36,50 C24,40 22,26 30,19 C38,12 50,18 48,32 C46,42 38,45 37,41' fill='none' stroke='%238B2500' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpath d='M64,50 C76,40 78,26 70,19 C62,12 50,18 52,32 C54,42 62,45 63,41' fill='none' stroke='%23C8963E' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpolygon points='50,44 57,50 50,56 43,50' fill='%23C8963E'/%3E%3Ccircle cx='50' cy='5' r='2.5' fill='%238B2500'/%3E%3Ccircle cx='95' cy='50' r='2.5' fill='%23C8963E'/%3E%3Ccircle cx='50' cy='95' r='2.5' fill='%238B2500'/%3E%3Ccircle cx='5' cy='50' r='2.5' fill='%23C8963E'/%3E%3Cline x1='32' y1='115' x2='68' y2='115' stroke='%23C8963E' stroke-width='1'/%3E%3Cpolygon points='50,107 57,115 50,123 43,115' fill='none' stroke='%238B2500' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-size: 100px 130px;
+    background-repeat: repeat-y;
+}
+
+.hero__ornament-right {
+    right: 28px;
+    animation-delay: 3s;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='130'%3E%3Cpolygon points='50,5 95,50 50,95 5,50' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Cpolygon points='50,18 82,50 50,82 18,50' fill='none' stroke='%238B2500' stroke-width='1'/%3E%3Cpath d='M36,50 C24,40 22,26 30,19 C38,12 50,18 48,32 C46,42 38,45 37,41' fill='none' stroke='%23C8963E' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpath d='M64,50 C76,40 78,26 70,19 C62,12 50,18 52,32 C54,42 62,45 63,41' fill='none' stroke='%238B2500' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpolygon points='50,44 57,50 50,56 43,50' fill='%238B2500'/%3E%3Ccircle cx='50' cy='5' r='2.5' fill='%23C8963E'/%3E%3Ccircle cx='95' cy='50' r='2.5' fill='%238B2500'/%3E%3Ccircle cx='50' cy='95' r='2.5' fill='%23C8963E'/%3E%3Ccircle cx='5' cy='50' r='2.5' fill='%238B2500'/%3E%3Cline x1='32' y1='115' x2='68' y2='115' stroke='%238B2500' stroke-width='1'/%3E%3Cpolygon points='50,107 57,115 50,123 43,115' fill='none' stroke='%23C8963E' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-size: 100px 130px;
+    background-repeat: repeat-y;
+}
+
+/* ── HERO BACKGROUND WATERMARK ──────────────────────────────────────────── */
+/*
+  A very faint diamond grid — adds depth without distracting from content.
+*/
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpolygon points='24,2 46,24 24,46 2,24' fill='none' stroke='%238B2500' stroke-width='1'/%3E%3Cpolygon points='24,10 38,24 24,38 10,24' fill='none' stroke='%238B2500' stroke-width='0.6'/%3E%3Ccircle cx='24' cy='2' r='1.2' fill='%238B2500'/%3E%3Ccircle cx='46' cy='24' r='1.2' fill='%238B2500'/%3E%3Ccircle cx='24' cy='46' r='1.2' fill='%238B2500'/%3E%3Ccircle cx='2' cy='24' r='1.2' fill='%238B2500'/%3E%3C/svg%3E");
+    background-size: 48px 48px;
+}
+
+/* ── SECTION TITLE DECORATION ───────────────────────────────────────────── */
+/*
+  Single red diamond centred on a thin gold line.
+  Replaces the plain gradient bar — minimal, precise, ethnic.
+*/
+.section__title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 10px;
+    margin: 14px auto 0;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='10'%3E%3Cline x1='0' y1='5' x2='80' y2='5' stroke='%23C8963E' stroke-width='1.2'/%3E%3Cpolygon points='40,0 47,5 40,10 33,5' fill='%238B2500'/%3E%3Cpolygon points='13,2 17,5 13,8 9,5' fill='%23C8963E'/%3E%3Cpolygon points='67,2 71,5 67,8 63,5' fill='%23C8963E'/%3E%3C/svg%3E");
+    background-size: 80px 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* ── STATS SECTION BACKGROUND ───────────────────────────────────────────── */
+/*
+  Shyrdak (felt-carpet) geometric tile: concentric diamonds + corner squares.
+  Very low opacity — texture without noise.
+*/
+.ethno-pattern-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpolygon points='30,3 57,30 30,57 3,30' fill='none' stroke='%23FFFDF7' stroke-width='1.5'/%3E%3Cpolygon points='30,14 46,30 30,46 14,30' fill='none' stroke='%23FFFDF7' stroke-width='1'/%3E%3Crect x='2' y='2' width='9' height='9' fill='none' stroke='%23FFFDF7' stroke-width='0.8'/%3E%3Crect x='49' y='2' width='9' height='9' fill='none' stroke='%23FFFDF7' stroke-width='0.8'/%3E%3Crect x='2' y='49' width='9' height='9' fill='none' stroke='%23FFFDF7' stroke-width='0.8'/%3E%3Crect x='49' y='49' width='9' height='9' fill='none' stroke='%23FFFDF7' stroke-width='0.8'/%3E%3Ccircle cx='30' cy='30' r='3' fill='%23FFFDF7'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+}
+
+/* ── PAGE HEADER BOTTOM STRIP ───────────────────────────────────────────── */
+.page-header {
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary-dark) 0%,
+        var(--color-primary)      35%,
+        var(--color-secondary)    65%,
+        var(--color-primary-dark) 100%
+    );
+}
+
+/* Tündük (yurt crown) watermark — right side of page-header */
+.page-header::after {
+    content: '';
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    height: 160px;
+    opacity: 0.05;
+    pointer-events: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='none' stroke='%238B2500' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%238B2500' stroke-width='1.5'/%3E%3Cline x1='50' y1='3' x2='50' y2='97' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='3' y1='50' x2='97' y2='50' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='16' y1='16' x2='84' y2='84' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='84' y1='16' x2='16' y2='84' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='50' y1='3' x2='97' y2='50' stroke='%238B2500' stroke-width='0.7'/%3E%3Cline x1='97' y1='50' x2='50' y2='97' stroke='%238B2500' stroke-width='0.7'/%3E%3Cline x1='50' y1='97' x2='3' y2='50' stroke='%238B2500' stroke-width='0.7'/%3E%3Cline x1='3' y1='50' x2='50' y2='3' stroke='%238B2500' stroke-width='0.7'/%3E%3Ccircle cx='50' cy='50' r='8' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Cpolygon points='50,44 56,50 50,56 44,50' fill='%23C8963E'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* ── CTA BLOCK TOP ORNAMENT ─────────────────────────────────────────────── */
+.cta-block__ornament {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--color-primary) 15%,
+        var(--color-secondary) 50%,
+        var(--color-primary) 85%,
+        transparent
+    );
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+/* ── CORNER ORNAMENTS ───────────────────────────────────────────────────── */
+.ethno-corner {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.ethno-corner--left { top: var(--space-lg); left: var(--space-lg); }
+.ethno-corner--right { top: var(--space-lg); right: var(--space-lg); }
+
+.ethno-corner::before,
+.ethno-corner::after {
+    content: '';
+    position: absolute;
+}
+
+.ethno-corner--left::before {
+    top: 0; left: 0;
+    width: 34px; height: 2px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+.ethno-corner--left::after {
+    top: 0; left: 0;
+    width: 2px; height: 34px;
+    background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+}
+.ethno-corner--right::before {
+    top: 0; right: 0;
+    width: 34px; height: 2px;
+    background: linear-gradient(270deg, var(--color-primary), var(--color-secondary));
+}
+.ethno-corner--right::after {
+    top: 0; right: 0;
+    width: 2px; height: 34px;
+    background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+}
+
+/* ── EVENTS SECTION — quiet diamond watermark ───────────────────────────── */
+.section--events::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 220px; height: 220px;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='55' height='55'%3E%3Cpolygon points='27,3 52,27 27,52 2,27' fill='none' stroke='%238B2500' stroke-width='2'/%3E%3Cpolygon points='27,13 42,27 27,42 12,27' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Ccircle cx='27' cy='27' r='4' fill='%238B2500'/%3E%3C/svg%3E");
+    background-size: 55px 55px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .page-header::after {
+        width: 120px;
+        height: 120px;
+        opacity: 0.04;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero__ornament-left,
+    .hero__ornament-right {
+        display: none;
+    }
+
+    .ethno-corner { width: 34px; height: 34px; }
+    .ethno-corner--left::before,
+    .ethno-corner--right::before { width: 24px; }
+    .ethno-corner--left::after,
+    .ethno-corner--right::after { height: 24px; }
+
+    .page-header::after { display: none; }
+}

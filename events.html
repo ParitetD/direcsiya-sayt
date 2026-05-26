@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мероприятия — Дирекция национальных видов спорта</title>
+    <meta name="description" content="Календарь соревнований, фестивалей и культурных событий по национальным видам спорта. Чемпионаты, турниры, фестивали 2026 года.">
+    <meta property="og:title" content="Мероприятия — Дирекция национальных видов спорта">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ornaments.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/theme-blue.css">
+</head>
+<body>
+    <div class="ethno-border-top" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <div class="nav-brand">
+                        <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
+                        <div class="nav-brand-text">
+                            <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
+                            <span class="nav-brand-bottom">Дирекция спорта</span>
+                        </div>
+                    </div>
+                </a>
+                <button class="burger" id="burger" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav" id="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" class="nav__link"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li class="nav__item">
+                            <a href="sports.html" class="nav__link"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                                <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                                <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                                <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="events.html" class="nav__link nav__link--active"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="events.html"><span class="t-ru">Все мероприятия</span><span class="t-ky">Бардык иш-чаралар</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Предстоящие</span><span class="t-ky">Алдыдагы</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Прошедшие</span><span class="t-ky">Өткөн</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="gallery.html" class="nav__link"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="gallery.html"><span class="t-ru">Все фото</span><span class="t-ky">Бардык сүрөттөр</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Праздники</span><span class="t-ky">Майрамдар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="news.html" class="nav__link"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="news.html"><span class="t-ru">Все новости</span><span class="t-ky">Бардык жаңылыктар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Чемпионаты</span><span class="t-ky">Чемпионаттар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="about.html"><span class="t-ru">О дирекции</span><span class="t-ky">Дирекция жөнүндө</span></a></li>
+                                <li><a href="about.html#history"><span class="t-ru">История</span><span class="t-ky">Тарых</span></a></li>
+                                <li><a href="about.html#team"><span class="t-ru">Команда</span><span class="t-ky">Команда</span></a></li>
+                                <li><a href="about.html#mission"><span class="t-ru">Миссия и цели</span><span class="t-ky">Миссия жана максаттар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </nav>
+                <a href="/admin" class="btn-admin">Админ</a>
+                <div class="lang-switcher">
+                    <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-btn" data-lang="ky">KY</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></h1>
+            <p class="page-header__subtitle"><span class="t-ru">Календарь соревнований, фестивалей и культурных событий</span><span class="t-ky">Мелдештер, фестивалдар жана маданий иш-чаралардын күнтизмеси</span></p>
+        </div>
+    </section>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="events-filter">
+                    <button class="filter-btn filter-btn--active" data-filter="all"><span class="t-ru">Все</span><span class="t-ky">Баары</span></button>
+                    <button class="filter-btn" data-filter="championship"><span class="t-ru">Чемпионаты</span><span class="t-ky">Чемпионаттар</span></button>
+                    <button class="filter-btn" data-filter="festival"><span class="t-ru">Фестивали</span><span class="t-ky">Фестивалдар</span></button>
+                    <button class="filter-btn" data-filter="tournament"><span class="t-ru">Турниры</span><span class="t-ky">Турнирлер</span></button>
+                    <button class="filter-btn" data-filter="seminar"><span class="t-ru">Семинары</span><span class="t-ky">Семинарлар</span></button>
+                </div>
+
+                <div class="events-list" id="events-list">
+                    <article class="event-card" data-category="championship">
+                        <div class="event-card__date">
+                            <span class="event-card__day">14</span>
+                            <span class="event-card__month"><span class="t-ru">Июня</span><span class="t-ky">Июнда</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Чемпионат КР по борьбе курэш</span><span class="t-ky">КР чемпионаты — күрөш</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Бишкек, Дворец спорта им. Кожомкула</span><span class="t-ky">Бишкек ш., Кожомкул атындагы Спорт сарайы</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Республиканский чемпионат по традиционной поясной борьбе среди мужчин и женщин по весовым категориям.</span><span class="t-ky">Салттуу курак күрөш боюнча эркектер жана аялдар арасында салмак категориялары боюнча республикалык чемпионат.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></span>
+                                <span class="tag"><span class="t-ru">Чемпионат КР</span><span class="t-ky">КР чемпионаты</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="festival">
+                        <div class="event-card__date">
+                            <span class="event-card__day">20</span>
+                            <span class="event-card__month"><span class="t-ru">Июня</span><span class="t-ky">Июнда</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Ат-Чабыш — конные игры на Ысык-Кёле</span><span class="t-ky">Ат-Чабыш — Ысык-Кёлдөгү ат оюндары</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">оз. Ысык-Кёл, Чолпон-Ата</span><span class="t-ky">Ысык-Көл, Чолпон-Ата</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Традиционные конные состязания кыргызского народа: байга, кок-бору, кыз куумай, аударыспак. Участвуют все регионы КР.</span><span class="t-ky">Кыргыз элинин салттуу ат оюндары: байга, кок-бору, кыз куумай, аударыспак. КРнын бардык аймактары катышат.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Конный спорт</span><span class="t-ky">Ат спорту</span></span>
+                                <span class="tag"><span class="t-ru">Фестиваль</span><span class="t-ky">Фестиваль</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="tournament">
+                        <div class="event-card__date">
+                            <span class="event-card__day">05</span>
+                            <span class="event-card__month"><span class="t-ru">Июля</span><span class="t-ky">Июлда</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Открытый турнир по стрельбе из лука</span><span class="t-ky">Жаа атуу боюнча ачык турнир</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Ош, Спортивный комплекс «Ош-Арена»</span><span class="t-ky">Ош ш., «Ош-Арена» спорт комплекси</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Открытый турнир по традиционной стрельбе из национального лука среди мужчин и женщин. Участвуют спортсмены из стран ЦА.</span><span class="t-ky">Улуттук жаадан салттуу атуу боюнча эркектер жана аялдар арасында ачык турнир. БА мамлекеттеринин спортчулары катышат.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span>
+                                <span class="tag"><span class="t-ru">Турнир</span><span class="t-ky">Турнир</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="festival">
+                        <div class="event-card__date">
+                            <span class="event-card__day">12</span>
+                            <span class="event-card__month"><span class="t-ru">Июля</span><span class="t-ky">Июлда</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Нооруз — праздник весны и национальных игр</span><span class="t-ky">Нооруз — жаз жана улуттук оюндар майрамы</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Бишкек, площадь Ала-Тоо</span><span class="t-ky">Бишкек ш., Ала-Тоо аянты</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Государственный праздник с соревнованиями по курэш, тогуз коргоол, национальными конкурсами и мастер-классами.</span><span class="t-ky">Күрөш, тогуз коргоол боюнча мелдештер, улуттук конкурстар жана мастер-класстар менен мамлекеттик майрам.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Фестиваль</span><span class="t-ky">Фестиваль</span></span>
+                                <span class="tag"><span class="t-ru">Курэш</span><span class="t-ky">Күрөш</span></span>
+                                <span class="tag"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="championship">
+                        <div class="event-card__date">
+                            <span class="event-card__day">20</span>
+                            <span class="event-card__month"><span class="t-ru">Июля</span><span class="t-ky">Июлда</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">IV Всемирные игры кочевников</span><span class="t-ky">IV Дүйнөлүк Көчмөндөр оюндары</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">оз. Ысык-Кёл, Кыргызская Республика</span><span class="t-ky">Ысык-Көл, Кыргыз Республикасы</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Крупнейшее международное соревнование по традиционным видам спорта кочевых народов. Участвуют более 80 стран мира.</span><span class="t-ky">Көчмөн элдердин салттуу спорт түрлөрү боюнча эң ири эл аралык мелдеш. Дүйнөнүн 80дөн ашык өлкөсү катышат.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></span>
+                                <span class="tag"><span class="t-ru">Международный</span><span class="t-ky">Эл аралык</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="seminar">
+                        <div class="event-card__date">
+                            <span class="event-card__day">01</span>
+                            <span class="event-card__month"><span class="t-ru">Авг</span><span class="t-ky">Авг</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Семинар тренеров по национальным видам спорта КР</span><span class="t-ky">КРдын улуттук спорт тренерлери үчүн семинар</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Бишкек, Национальный олимпийский комитет</span><span class="t-ky">Бишкек ш., Улуттук олимпиялык комитет</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Обучающий семинар для тренеров и судей по национальным видам спорта. Методики преподавания, правила соревнований.</span><span class="t-ky">Улуттук спорт тренерлери жана судьялары үчүн окутуу семинары. Окутуу методикасы, мелдеш эрежелери.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Семинар</span><span class="t-ky">Семинар</span></span>
+                                <span class="tag"><span class="t-ru">Образование</span><span class="t-ky">Билим берүү</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="tournament">
+                        <div class="event-card__date">
+                            <span class="event-card__day">15</span>
+                            <span class="event-card__month"><span class="t-ru">Авг</span><span class="t-ky">Авг</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Чемпионат ЦА по тогуз коргоол</span><span class="t-ky">Тогуз коргоол боюнча БА чемпионаты</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Бишкек, Дворец спорта им. Кожомкула</span><span class="t-ky">Бишкек ш., Кожомкул атындагы Спорт сарайы</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Чемпионат Центральной Азии по тогуз коргоол с участием сборных Кыргызстана, Казахстана, Узбекистана и Таджикистана.</span><span class="t-ky">Кыргызстан, Казакстан, Өзбекстан жана Тажикстан курама командаларынын катышуусу менен Борбор Азия чемпионаты.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></span>
+                                <span class="tag"><span class="t-ru">Чемпионат ЦА</span><span class="t-ky">БА чемпионаты</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card" data-category="festival">
+                        <div class="event-card__date">
+                            <span class="event-card__day">28</span>
+                            <span class="event-card__month"><span class="t-ru">Авг</span><span class="t-ky">Авг</span></span>
+                        </div>
+                        <div class="event-card__content">
+                            <h3 class="event-card__title"><span class="t-ru">Эр Сайыш — турнир по борьбе и манасчи</span><span class="t-ky">Эр Сайыш — күрөш жана манасчы турнири</span></h3>
+                            <p class="event-card__location">📍 <span class="t-ru">г. Талас, историческая площадь</span><span class="t-ky">Талас ш., тарыхый аянт</span></p>
+                            <p class="event-card__desc"><span class="t-ru">Традиционный турнир по борьбе курэш и хапсагай, приуроченный к годовщине эпоса «Манас». Конкурс манасчи.</span><span class="t-ky">«Манас» эпосунун жылдыгына карата курэш жана хапсагай боюнча салттуу турнир. Манасчы конкурсу.</span></p>
+                            <div class="event-card__tags">
+                                <span class="tag"><span class="t-ru">Фестиваль</span><span class="t-ky">Фестиваль</span></span>
+                                <span class="tag"><span class="t-ru">Курэш</span><span class="t-ky">Күрөш</span></span>
+                                <span class="tag"><span class="t-ru">Культура</span><span class="t-ky">Маданият</span></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="ethno-border-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--about">
+                    <a href="index.html" class="footer__logo">
+                        <div class="logo__icon">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path d="M30 5 L30 55 M5 30 L55 30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span></span>
+                    </a>
+                    <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
+                    <div class="footer__social">
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Навигация</span><span class="t-ky">Навигация</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="index.html"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></a></li>
+                        <li><a href="events.html"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></a></li>
+                        <li><a href="gallery.html"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span></a></li>
+                        <li><a href="news.html"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></a></li>
+                        <li><a href="about.html"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span></a></li>
+                        <li><a href="contacts.html"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                        <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                        <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                        <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                        <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
+                    <ul class="footer__contacts">
+                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
+                        <li>📞 +996 (312) 123-456</li>
+                        <li>✉️ info@natsport.kg</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+(function() {
+  var CAT = {
+    championship:{ru:'Чемпионат',    ky:'Чемпионат'},
+    festival:    {ru:'Фестиваль',    ky:'Фестиваль'},
+    tournament:  {ru:'Турнир',       ky:'Турнир'},
+    seminar:     {ru:'Семинар',      ky:'Семинар'},
+    competition: {ru:'Соревнования', ky:'Мелдештер'}
+  };
+  var MR=['Янв','Фев','Мар','Апр','Май','Июня','Июля','Авг','Сен','Окт','Ноя','Дек'];
+  var MK=['Янв','Фев','Мар','Апр','Май','Июнь','Июль','Авг','Сен','Окт','Ноя','Дек'];
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function day(s){if(!s)return '--';var d=new Date(s);return isNaN(d)?'--':String(d.getDate()).padStart(2,'0');}
+  function mon(s,arr){if(!s)return '';var d=new Date(s);return isNaN(d)?'':(arr[d.getMonth()]||'');}
+  function cl(cat){var c=CAT[cat]||{ru:cat||'',ky:cat||''};return '<span class="t-ru">'+esc(c.ru)+'</span><span class="t-ky">'+esc(c.ky)+'</span>';}
+  var all=[], list=document.getElementById('events-list');
+  list.innerHTML='<p style="text-align:center;padding:60px 0;opacity:.5">Загрузка мероприятий…</p>';
+
+  function render(items){
+    if(!items.length){list.innerHTML='<p style="text-align:center;padding:60px 0;opacity:.5">Мероприятий пока нет</p>';return;}
+    list.innerHTML=items.map(function(n){
+      var dRu=(n.descriptionRu||'').replace(/<[^>]+>/g,''); var dKy=(n.descriptionKy||'').replace(/<[^>]+>/g,'');
+      return '<article class="event-card" data-category="'+esc(n.category||'')+'">'
+        +'<div class="event-card__date">'
+        +'<span class="event-card__day">'+esc(day(n.date))+'</span>'
+        +'<span class="event-card__month"><span class="t-ru">'+esc(mon(n.date,MR))+'</span><span class="t-ky">'+esc(mon(n.date,MK))+'</span></span>'
+        +'</div>'
+        +'<div class="event-card__content">'
+        +'<h3 class="event-card__title"><span class="t-ru">'+esc(n.titleRu||'')+'</span><span class="t-ky">'+esc(n.titleKy||n.titleRu||'')+'</span></h3>'
+        +(n.location?'<p class="event-card__location">📍 '+esc(n.location)+'</p>':'')
+        +(dRu?'<p class="event-card__desc"><span class="t-ru">'+esc(dRu)+'</span><span class="t-ky">'+esc(dKy||dRu)+'</span></p>':'')
+        +'<div class="event-card__tags"><span class="tag">'+cl(n.category)+'</span></div>'
+        +'</div></article>';
+    }).join('');
+    if(typeof initRevealAnimations==='function') initRevealAnimations();
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('filter-btn--active');});
+      btn.classList.add('filter-btn--active');
+      var f=btn.dataset.filter;
+      render(f==='all'?all:all.filter(function(e){return e.category===f;}));
+    });
+  });
+
+  fetch('/api/events?status=published&limit=50')
+    .then(function(r){return r.json();})
+    .then(function(j){all=j.data||[];render(all);})
+    .catch(function(){list.innerHTML='<p style="text-align:center;padding:60px 0;opacity:.5">Не удалось загрузить мероприятия</p>';});
+})();
+    </script>
+</body>
+</html>

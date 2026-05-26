@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /mnt/c/Users/user/Desktop/aurora-main && grep -o \"source\\\\.unsplash\\\\.com[^\\\\\"]*\" *.html | head -30)",
+      "Read(//mnt/c/Users/user/Desktop/**)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

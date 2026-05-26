@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея — Дирекция национальных видов спорта КР</title>
+    <meta name="description" content="Фотогалерея соревнований, фестивалей и спортсменов по национальным видам спорта Кыргызской Республики.">
+    <meta property="og:title" content="Галерея — Дирекция национальных видов спорта КР">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ornaments.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/theme-blue.css">
+</head>
+<body>
+    <div class="ethno-border-top" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <div class="nav-brand">
+                        <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
+                        <div class="nav-brand-text">
+                            <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
+                            <span class="nav-brand-bottom">Дирекция спорта</span>
+                        </div>
+                    </div>
+                </a>
+                <button class="burger" id="burger" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav" id="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" class="nav__link"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li class="nav__item">
+                            <a href="sports.html" class="nav__link"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                                <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                                <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                                <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="events.html" class="nav__link"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="events.html"><span class="t-ru">Все мероприятия</span><span class="t-ky">Бардык иш-чаралар</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Предстоящие</span><span class="t-ky">Алдыдагы</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Прошедшие</span><span class="t-ky">Өткөн</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="gallery.html" class="nav__link nav__link--active"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="gallery.html"><span class="t-ru">Все фото</span><span class="t-ky">Бардык сүрөттөр</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Праздники</span><span class="t-ky">Майрамдар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="news.html" class="nav__link"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="news.html"><span class="t-ru">Все новости</span><span class="t-ky">Бардык жаңылыктар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Чемпионаты</span><span class="t-ky">Чемпионаттар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="about.html"><span class="t-ru">О дирекции</span><span class="t-ky">Дирекция жөнүндө</span></a></li>
+                                <li><a href="about.html#history"><span class="t-ru">История</span><span class="t-ky">Тарых</span></a></li>
+                                <li><a href="about.html#team"><span class="t-ru">Команда</span><span class="t-ky">Команда</span></a></li>
+                                <li><a href="about.html#mission"><span class="t-ru">Миссия и цели</span><span class="t-ky">Миссия жана максаттар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </nav>
+                <a href="/admin" class="btn-admin">Админ</a>
+                <div class="lang-switcher">
+                    <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-btn" data-lang="ky">KY</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Фотогалерея</h1>
+            <p class="page-header__subtitle">Соревнования, фестивали и атмосфера национального спорта Кыргызстана</p>
+        </div>
+    </section>
+
+    <main>
+        <section class="section">
+            <div class="container">
+
+                <div class="gallery-filter">
+                    <button class="filter-btn filter-btn--active" data-filter="all">Все фото</button>
+                    <button class="filter-btn" data-filter="wrestling"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></button>
+                    <button class="filter-btn" data-filter="archery">Стрельба из лука</button>
+                    <button class="filter-btn" data-filter="horse"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></button>
+                    <button class="filter-btn" data-filter="festival">Фестивали</button>
+                    <button class="filter-btn" data-filter="athletes">Спортсмены</button>
+                </div>
+
+                <div class="gallery-grid" id="galleryGrid">
+
+                    <div class="gallery-item" data-category="wrestling" data-caption="Чемпионат по борьбе курэш, Бишкек 2025">
+                        <img src="https://loremflickr.com/800/600/wrestling,competition?lock=21" alt="Борьба курэш" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Чемпионат по борьбе курэш, Бишкек 2025</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="archery" data-caption="Традиционная стрельба из лука, Ысык-Кёл">
+                        <img src="https://loremflickr.com/800/600/archery,traditional?lock=21" alt="Стрельба из лука" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Традиционная стрельба из лука, Ысык-Кёл</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="horse" data-caption="Конные игры на Играх кочевников">
+                        <img src="https://loremflickr.com/800/600/horse,racing?lock=22" alt="Конные скачки" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Конные игры на Играх кочевников</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="festival" data-caption="Фестиваль «Наследие предков», Чолпон-Ата">
+                        <img src="https://loremflickr.com/800/600/festival,culture?lock=21" alt="Национальный фестиваль" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Фестиваль «Наследие предков», Чолпон-Ата</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="athletes" data-caption="Молодые спортсмены на тренировке">
+                        <img src="https://loremflickr.com/800/600/athlete,sport?lock=21" alt="Молодые спортсмены" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Молодые спортсмены на тренировке</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="wrestling" data-caption="Хапсагай — динамичная якутская борьба">
+                        <img src="https://loremflickr.com/800/600/judo,fight?lock=21" alt="Хапсагай" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Хапсагай — динамичная национальная борьба</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="horse" data-caption="Байга — традиционные конные скачки на дальние дистанции">
+                        <img src="https://loremflickr.com/800/600/horse,steppe?lock=21" alt="Байга" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Байга — традиционные конные скачки</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="festival" data-caption="Открытие Всемирных игр кочевников, Кыргызстан">
+                        <img src="https://loremflickr.com/800/600/ceremony,stadium?lock=21" alt="Открытие Игр кочевников" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Всемирные игры кочевников, Кыргызстан</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="athletes" data-caption="Чемпион по мас-рестлингу — Айбек Мамытбеков">
+                        <img src="https://loremflickr.com/800/600/strength,athlete?lock=21" alt="Мас-рестлинг чемпион" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Мас-рестлинг — чемпионат Кыргызстана</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="archery" data-caption="Финальный раунд по стрельбе из лука, Ош 2025">
+                        <img src="https://loremflickr.com/800/600/archery,target?lock=21" alt="Финал по стрельбе из лука" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Финал по стрельбе из лука, Ош 2025</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="wrestling" data-caption="Турнир по борьбе курэш, Ош — полуфинал">
+                        <img src="https://loremflickr.com/800/600/wrestling,tournament?lock=21" alt="Турнир по курэш" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Турнир по борьбе курэш, Ош</div>
+                    </div>
+
+                    <div class="gallery-item" data-category="festival" data-caption="Ат-Чабыш — конный фестиваль в горах Кыргызстана">
+                        <img src="https://loremflickr.com/800/600/mountains,nomad?lock=21" alt="Горы Кыргызстана" loading="lazy">
+                        <div class="gallery-item__overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        </div>
+                        <div class="gallery-item__caption">Ат-Чабыш — конный фестиваль в горах</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="ethno-border-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--about">
+                    <a href="index.html" class="footer__logo">
+                        <div class="logo__icon">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path d="M30 5 L30 55 M5 30 L55 30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span></span>
+                    </a>
+                    <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
+                    <div class="footer__social">
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Навигация</span><span class="t-ky">Навигация</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="index.html"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></a></li>
+                        <li><a href="events.html"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></a></li>
+                        <li><a href="gallery.html"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span></a></li>
+                        <li><a href="news.html"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></a></li>
+                        <li><a href="about.html"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span></a></li>
+                        <li><a href="contacts.html"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                        <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                        <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                        <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                        <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                        <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
+                    <ul class="footer__contacts">
+                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
+                        <li>📞 +996 (312) 123-456</li>
+                        <li>✉️ info@natsport.kg</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+(function() {
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var all=[], cur=[], grid=document.getElementById('galleryGrid');
+  grid.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Загрузка галереи…</p>';
+
+  // Lightbox (replaces the one main.js may create for static items)
+  var lb=document.createElement('div'); lb.className='lightbox';
+  lb.innerHTML='<button class="lightbox__close" aria-label="Закрыть">✕</button>'
+    +'<button class="lightbox__nav lightbox__prev" aria-label="Предыдущее">‹</button>'
+    +'<img class="lightbox__img" src="" alt="">'
+    +'<button class="lightbox__nav lightbox__next" aria-label="Следующее">›</button>'
+    +'<div class="lightbox__caption"></div><div class="lightbox__counter"></div>';
+  document.body.appendChild(lb);
+  var lbImg=lb.querySelector('.lightbox__img'), lbCap=lb.querySelector('.lightbox__caption'), lbCnt=lb.querySelector('.lightbox__counter'), lbIdx=0;
+  function lbOpen(i){
+    lbIdx=i; var it=cur[i]; var lang=localStorage.getItem('site-lang')||'ru';
+    lbImg.src=it.image; lbImg.alt=it.titleRu||'';
+    lbCap.textContent=(lang==='ky'?it.titleKy:null)||it.titleRu||'';
+    lbCnt.textContent=(i+1)+' / '+cur.length;
+    lb.classList.add('lightbox--open'); document.body.style.overflow='hidden';
+  }
+  function lbClose(){lb.classList.remove('lightbox--open');document.body.style.overflow='';lbImg.src='';}
+  lb.querySelector('.lightbox__close').addEventListener('click',lbClose);
+  lb.querySelector('.lightbox__prev').addEventListener('click',function(){lbOpen((lbIdx-1+cur.length)%cur.length);});
+  lb.querySelector('.lightbox__next').addEventListener('click',function(){lbOpen((lbIdx+1)%cur.length);});
+  lb.addEventListener('click',function(e){if(e.target===lb)lbClose();});
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('lightbox--open'))return;
+    if(e.key==='Escape')lbClose();
+    if(e.key==='ArrowLeft')lbOpen((lbIdx-1+cur.length)%cur.length);
+    if(e.key==='ArrowRight')lbOpen((lbIdx+1)%cur.length);
+  });
+  grid.addEventListener('click',function(e){
+    var item=e.target.closest('.gallery-item'); if(!item)return;
+    var i=parseInt(item.dataset.idx,10); if(!isNaN(i))lbOpen(i);
+  });
+
+  function render(items){
+    cur=items;
+    if(!items.length){grid.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Фотографий пока нет</p>';return;}
+    var lang=localStorage.getItem('site-lang')||'ru';
+    grid.innerHTML=items.map(function(n,i){
+      var cap=(lang==='ky'?n.titleKy:null)||n.titleRu||'';
+      return '<div class="gallery-item" data-category="'+esc(n.category||'')+'" data-idx="'+i+'">'
+        +'<img src="'+esc(n.image||'')+'" alt="'+esc(cap)+'" loading="lazy">'
+        +'<div class="gallery-item__overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>'
+        +'<div class="gallery-item__caption">'+esc(cap)+'</div>'
+        +'</div>';
+    }).join('');
+    // Remove any extra lightbox created by main.js initLightbox on the (now-replaced) static items
+    document.querySelectorAll('.lightbox').forEach(function(el){if(el!==lb)el.remove();});
+    if(typeof initRevealAnimations==='function') initRevealAnimations();
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('filter-btn--active');});
+      btn.classList.add('filter-btn--active');
+      var f=btn.dataset.filter;
+      render(f==='all'?all:all.filter(function(it){return it.category===f;}));
+    });
+  });
+
+  fetch('/api/gallery?limit=50')
+    .then(function(r){return r.json();})
+    .then(function(j){all=j.data||[];render(all);})
+    .catch(function(){grid.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Не удалось загрузить галерею</p>';});
+})();
+    </script>
+</body>
+</html>

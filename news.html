@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости — Дирекция национальных видов спорта КР</title>
+    <meta name="description" content="Последние новости Дирекции национальных видов спорта Кыргызской Республики. Соревнования, достижения спортсменов, анонсы мероприятий.">
+    <meta property="og:title" content="Новости — Дирекция национальных видов спорта КР">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ornaments.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/theme-blue.css">
+</head>
+<body>
+    <div class="ethno-border-top" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <div class="nav-brand">
+                        <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
+                        <div class="nav-brand-text">
+                            <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
+                            <span class="nav-brand-bottom">Дирекция спорта</span>
+                        </div>
+                    </div>
+                </a>
+                <button class="burger" id="burger" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav" id="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" class="nav__link"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li class="nav__item">
+                            <a href="sports.html" class="nav__link"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="sports.html#archery"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                                <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                                <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                                <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="events.html" class="nav__link"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="events.html"><span class="t-ru">Все мероприятия</span><span class="t-ky">Бардык иш-чаралар</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Предстоящие</span><span class="t-ky">Алдыдагы</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Прошедшие</span><span class="t-ky">Өткөн</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="gallery.html" class="nav__link"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="gallery.html"><span class="t-ru">Все фото</span><span class="t-ky">Бардык сүрөттөр</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Праздники</span><span class="t-ky">Майрамдар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="news.html" class="nav__link nav__link--active"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="news.html"><span class="t-ru">Все новости</span><span class="t-ky">Бардык жаңылыктар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Чемпионаты</span><span class="t-ky">Чемпионаттар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="about.html"><span class="t-ru">О дирекции</span><span class="t-ky">Дирекция жөнүндө</span></a></li>
+                                <li><a href="about.html#history"><span class="t-ru">История</span><span class="t-ky">Тарых</span></a></li>
+                                <li><a href="about.html#team"><span class="t-ru">Команда</span><span class="t-ky">Команда</span></a></li>
+                                <li><a href="about.html#mission"><span class="t-ru">Миссия и цели</span><span class="t-ky">Миссия жана максаттар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </nav>
+                <a href="/admin" class="btn-admin">Админ</a>
+                <div class="lang-switcher">
+                    <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-btn" data-lang="ky">KY</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></h1>
+            <p class="page-header__subtitle"><span class="t-ru">Последние события из мира национальных видов спорта Кыргызстана</span><span class="t-ky">Кыргызстандын улуттук спорт дүйнөсүндөгү акыркы жаңылыктар</span></p>
+        </div>
+    </section>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="news-page-grid" id="news-list">
+
+                    <!-- Featured news -->
+                    <article class="news-full-card news-full-card--featured" id="news1">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/1200/700/festival,sport?lock=1" alt="Международный фестиваль" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Главная новость</span><span class="t-ky">Башкы жаңылык</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">20 мая 2026</span><span class="t-ky">20 май 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Фестивали</span><span class="t-ky">Фестивалдар</span></span>
+                            </div>
+                            <h2 class="news-full-card__title"><span class="t-ru">Кыргызстан примет IV Всемирные игры кочевников</span><span class="t-ky">Кыргызстан IV Дүйнөлүк Көчмөндөр оюндарын өткөрөт</span></h2>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">Кыргызская Республика подтвердила проведение четвёртых Всемирных игр кочевников на живописных берегах озера Ысык-Кёл. Мероприятие соберёт спортсменов из более чем 80 стран мира, представляющих богатейшее наследие кочевых народов.</span><span class="t-ky">Кыргыз Республикасы Ысык-Көлдүн кооз жээгинде IV Дүйнөлүк Көчмөндөр оюндарын өткөрүүнү ырастады. Иш-чара дүйнөнүн 80дөн ашык өлкөсүнүн спортчуларын чогултат.</span>
+                            </p>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">В программу войдут борьба курэш, конные игры (байга, кок-бору, аударыспак), стрельба из лука, мас-рестлинг, тогуз коргоол и другие традиционные дисциплины. Дирекция национальных видов спорта КР возглавляет подготовку кыргызской сборной.</span><span class="t-ky">Программага күрөш, ат оюндары (байга, кок-бору, аударыспак), жаа атуу, мас-рестлинг, тогуз коргоол жана башка салттуу тартиптер кирет. КР Улуттук спорт дирекциясы кыргыз курамасынын даярдыгына жетекчилик кылат.</span>
+                            </p>
+                            <a href="contacts.html" class="news-full-card__link"><span class="t-ru">Подробнее об участии →</span><span class="t-ky">Катышуу жөнүндө толугураак →</span></a>
+                        </div>
+                    </article>
+
+                    <!-- News 2 -->
+                    <article class="news-full-card" id="news2">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/800/500/sports,indoor?lock=1" alt="Центр подготовки спортсменов" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Инфраструктура</span><span class="t-ky">Инфраструктура</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">1<span class="t-ru">5 мая 2026</span><span class="t-ky">5 май 2026</span></span><span class="t-ky">15 май 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Развитие</span><span class="t-ky">Өнүгүү</span></span>
+                            </div>
+                            <h3 class="news-full-card__title"><span class="t-ru">Открытие нового центра подготовки спортсменов в Бишкеке</span><span class="t-ky">Бишкекте жаңы спортчуларды даярдоо борборун ачуу</span></h3>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">В столице Кыргызстана торжественно открыт современный специализированный центр подготовки атлетов по национальным видам спорта. Комплекс оснащён борцовскими залами, манежем для стрельбы из лука и залом для тогуз коргоол.</span><span class="t-ky">Кыргызстандын борбор шаарында улуттук спорт боюнча атлеттерди даярдоонун заманбап атайын борбору салтанаттуу ачылды. Комплекс күрөш залдары, жаа атуу манежи жана тогуз коргоол залы менен жабдылган.</span>
+                            </p>
+                            <a href="contacts.html" class="news-full-card__link"><span class="t-ru">Записаться на занятия →</span><span class="t-ky">Машыгууга жазылуу →</span></a>
+                        </div>
+                    </article>
+
+                    <!-- News 3 -->
+                    <article class="news-full-card" id="news3">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/800/500/championship,trophy?lock=1" alt="Мас-рестлинг на Всемирных играх" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Достижение</span><span class="t-ky">Жетишкендик</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">10 мая 2026</span><span class="t-ky">10 май 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Международный спорт</span><span class="t-ky">Эл аралык спорт</span></span>
+                            </div>
+                            <h3 class="news-full-card__title"><span class="t-ru">Мас-рестлинг включён в программу Всемирных игр</span><span class="t-ky">Мас-рестлинг Дүйнөлүк оюндардын программасына кирди</span></h3>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">Историческое решение принято на заседании Международного общества Всемирных игр — мас-рестлинг официально вошёл в программу соревнований. Спортсмены Кыргызстана занимают лидирующие позиции в мировом рейтинге по этой дисциплине.</span><span class="t-ky">Дүйнөлүк оюндардын Эл аралык коомунун жыйынында тарыхый чечим кабыл алынды — мас-рестлинг расмий түрдө мелдеш программасына кирди. Кыргызстан спортчулары бул тартип боюнча дүйнөлүк рейтингде жетекчи орунду ээлейт.</span>
+                            </p>
+                            <a href="sports.html#mas" class="news-full-card__link"><span class="t-ru">О мас-рестлинге →</span><span class="t-ky">Мас-рестлинг жөнүндө →</span></a>
+                        </div>
+                    </article>
+
+                    <!-- News 4 -->
+                    <article class="news-full-card">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/800/500/archery,competition?lock=2" alt="Чемпионат по стрельбе из лука" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Соревнования</span><span class="t-ky">Мелдештер</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">5 мая 2026</span><span class="t-ky">5 май 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span>
+                            </div>
+                            <h3 class="news-full-card__title"><span class="t-ru">Сборная Кыргызстана завоевала золото на Азиатском чемпионате по стрельбе из лука</span><span class="t-ky">Кыргызстандын курама командасы жаа атуу боюнча Азия чемпионатында алтын жеңип алды</span></h3>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">Кыргызские лучники выступили блестяще на чемпионате Азии по традиционной стрельбе из лука. Алтынай Бейшенова и Урмат Садыков принесли в копилку сборной два золота и одно серебро.</span><span class="t-ky">Кыргыз мергенчилери салттуу жаа атуу боюнча Азия чемпионатында мыкты көрсөткүч бөлүштүрдү. Алтынай Бейшенова жана Урмат Садыков куромага эки алтын жана бир күмүш алып келди.</span>
+                            </p>
+                            <a href="sports.html#archery" class="news-full-card__link"><span class="t-ru">О виде спорта →</span><span class="t-ky">Спорт түрү жөнүндө →</span></a>
+                        </div>
+                    </article>
+
+                    <!-- News 5 -->
+                    <article class="news-full-card">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/800/500/horse,nomad?lock=2" alt="Конные игры" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Традиции</span><span class="t-ky">Салттар</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">28 апреля 2026</span><span class="t-ky">28 апрель 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Конный спорт</span><span class="t-ky">Ат спорту</span></span>
+                            </div>
+                            <h3 class="news-full-card__title"><span class="t-ru">Кок-бору — кыргызская национальная конная игра — обретает международный статус</span><span class="t-ky">Кок-бору — кыргыздын улуттук ат оюну — эл аралык статус алды</span></h3>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">Традиционная кыргызская конная игра кок-бору подана на включение в список нематериального культурного наследия ЮНЕСКО. Дирекция активно поддерживает эту инициативу и продвигает игру на международной арене.</span><span class="t-ky">Салттуу кыргыз ат оюну кок-бору ЮНЕСКОнун материалдык эмес маданий мурас тизмесине киргизүү үчүн берилди. Дирекция бул демилгени активдүү колдойт жана оюнду эл аралык аренага алып чыгат.</span>
+                            </p>
+                            <a href="sports.html#horse" class="news-full-card__link"><span class="t-ru">О конных играх →</span><span class="t-ky">Ат оюндары жөнүндө →</span></a>
+                        </div>
+                    </article>
+
+                    <!-- News 6 -->
+                    <article class="news-full-card">
+                        <div class="news-full-card__image">
+                            <img src="https://loremflickr.com/800/500/children,sport?lock=1" alt="Детские секции" loading="lazy">
+                            <span class="news-full-card__badge"><span class="t-ru">Образование</span><span class="t-ky">Билим берүү</span></span>
+                        </div>
+                        <div class="news-full-card__content">
+                            <div class="news-full-card__meta">
+                                <time class="news-full-card__date"><span class="t-ru">20 апреля 2026</span><span class="t-ky">20 апрель 2026</span></time>
+                                <span class="news-full-card__tag"><span class="t-ru">Молодёжь</span><span class="t-ky">Жаштар</span></span>
+                            </div>
+                            <h3 class="news-full-card__title"><span class="t-ru">Открытие 15 детских секций по национальным видам спорта по всему Кыргызстану</span><span class="t-ky">Бүткүл Кыргызстан боюнча улуттук спорт боюнча 15 балдар секциясын ачуу</span></h3>
+                            <p class="news-full-card__text">
+                                <span class="t-ru">В рамках государственной программы развития национального спорта по всем областям Кыргызстана открыты новые детские и юношеские секции. Тренировки по борьбе курэш, тогуз коргоол и стрельбе из лука теперь доступны в каждом областном центре.</span><span class="t-ky">Улуттук спортту өнүктүрүүнүн мамлекеттик программасы алкагында Кыргызстандын бардык облустарында жаңы балдар жана жаштар секциялары ачылды. Күрөш, тогуз коргоол жана жаа атуу боюнча машыгуулар азыр ар бир облустук борборда жеткиликтүү.</span>
+                            </p>
+                            <a href="contacts.html" class="news-full-card__link"><span class="t-ru">Записать ребёнка →</span><span class="t-ky">Баланы жазуу →</span></a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="ethno-border-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--about">
+                    <a href="index.html" class="footer__logo">
+                        <div class="logo__icon">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path d="M30 5 L30 55 M5 30 L55 30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span></span>
+                    </a>
+                    <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
+                    <div class="footer__social">
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Навигация</span><span class="t-ky">Навигация</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="index.html"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></a></li>
+                        <li><a href="events.html"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></a></li>
+                        <li><a href="gallery.html"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span></a></li>
+                        <li><a href="news.html"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></a></li>
+                        <li><a href="about.html"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span></a></li>
+                        <li><a href="contacts.html"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                        <li><a href="sports.html#archery"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                        <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                        <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                        <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                        <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
+                    <ul class="footer__contacts">
+                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
+                        <li>📞 +996 (312) 123-456</li>
+                        <li>✉️ info@natsport.kg</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+(function() {
+  var CAT = {
+    news:        {ru:'Новости',      ky:'Жаңылыктар'},
+    achievement: {ru:'Достижения',   ky:'Жетишкендиктер'},
+    competition: {ru:'Соревнования', ky:'Мелдештер'},
+    event:       {ru:'Мероприятия',  ky:'Иш-чаралар'}
+  };
+  function esc(s) { return (s||'').replace(/[&<>"]/g, function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function fmtDate(s) { if (!s) return ''; var d=new Date(s); return isNaN(d)?'':d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}); }
+  function cl(cat) { var c=CAT[cat]||{ru:cat||'',ky:cat||''}; return '<span class="t-ru">'+esc(c.ru)+'</span><span class="t-ky">'+esc(c.ky)+'</span>'; }
+  var list = document.getElementById('news-list');
+  list.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Загрузка новостей…</p>';
+  fetch('/api/news?status=published&limit=20')
+    .then(function(r){return r.json();})
+    .then(function(json){
+      var data = json.data || [];
+      if (!data.length) { list.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Новостей пока нет</p>'; return; }
+      list.innerHTML = data.map(function(n,i){
+        var imgH = n.image ? '<div class="news-full-card__image"><img src="'+esc(n.image)+'" alt="'+esc(n.titleRu||'')+'" loading="lazy"><span class="news-full-card__badge">'+cl(n.category)+'</span></div>' : '';
+        var bRu=(n.contentRu||'').replace(/<[^>]+>/g,''); var bKy=(n.contentKy||'').replace(/<[^>]+>/g,'');
+        var eRu=bRu.length>250?bRu.slice(0,250)+'…':bRu; var eKy=bKy.length>250?bKy.slice(0,250)+'…':(bKy||eRu);
+        return '<article class="news-full-card'+(i===0?' news-full-card--featured':'')+'">'+imgH
+          +'<div class="news-full-card__content">'
+          +'<div class="news-full-card__meta"><time class="news-full-card__date">'+esc(fmtDate(n.createdAt))+'</time>'
+          +'<span class="news-full-card__tag">'+cl(n.category)+'</span></div>'
+          +'<h2 class="news-full-card__title"><span class="t-ru">'+esc(n.titleRu||'')+'</span><span class="t-ky">'+esc(n.titleKy||n.titleRu||'')+'</span></h2>'
+          +(eRu?'<p class="news-full-card__text"><span class="t-ru">'+esc(eRu)+'</span><span class="t-ky">'+esc(eKy)+'</span></p>':'')
+          +'</div></article>';
+      }).join('');
+      if (typeof initRevealAnimations === 'function') initRevealAnimations();
+    })
+    .catch(function(){ list.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Не удалось загрузить новости</p>'; });
+})();
+    </script>
+</body>
+</html>
