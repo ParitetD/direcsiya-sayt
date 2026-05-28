@@ -2,167 +2,112 @@
    National Sports Website — Main JavaScript
    ========================================================================== */
 
-/* ── Hero Slideshow with Typewriter effect ── */
-(async function initHero() {
-    let slides = [];
+/* ── Hero Slideshow ── */
+var heroSlides   = [];
+var currentSlide = 0;
+var slideTimer   = null;
+
+async function initHeroSlider() {
     try {
         const r = await fetch('/api/slides');
         const d = await r.json();
-        slides = (Array.isArray(d) ? d : d.data || [])
+        heroSlides = (Array.isArray(d) ? d : (d.data || []))
             .filter(s => s.active !== false)
             .sort((a, b) => (a.order || 0) - (b.order || 0));
     } catch (e) {}
 
-    if (!slides.length) {
-        slides = [
+    if (!heroSlides.length) {
+        heroSlides = [
             {
-                image: 'https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=1600&q=80',
+                image: 'https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1600&q=80',
                 titleRu: 'Дирекция национальных видов спорта Кыргызстана',
                 titleKy: 'Кыргызстандын улуттук спорт түрлөрү боюнча дирекциясы',
-                subtitleRu: 'Сохраняем и развиваем национальные спортивные традиции',
-                subtitleKy: 'Улуттук спорт салттарын сактап жана өнүктүрөбүз'
+                subtitleRu: 'Сохраняем и развиваем национальные спортивные традиции кыргызского народа',
+                subtitleKy: 'Кыргыз элинин улуттук спорт салттарын сактап жана өнүктүрөбүз',
+                active: true, order: 1
             },
             {
-                image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80',
-                titleRu: 'Кыргызские спортсмены на мировой арене',
-                titleKy: 'Кыргыз спортчулары дүйнөлүк аренада',
-                subtitleRu: 'Наши атлеты представляют Кыргызстан на международных соревнованиях',
-                subtitleKy: 'Биздин спортчулар Кыргызстанды намыс менен коргойт'
+                image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1600&q=80',
+                titleRu: 'Кыргызские спортсмены — гордость нации',
+                titleKy: 'Кыргыз спортчулары — элдин сыймыгы',
+                subtitleRu: 'Наши атлеты с честью представляют страну на мировых соревнованиях',
+                subtitleKy: 'Биздин спортчулар дүйнөлүк мелдештерде өлкөбүздү намыс менен коргойт',
+                active: true, order: 2
             },
             {
-                image: 'https://images.unsplash.com/photo-1526676037777-05a232554f77?w=1600&q=80',
+                image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80',
                 titleRu: 'Развитие спорта по всему Кыргызстану',
                 titleKy: 'Бүткүл Кыргызстанда спортту өнүктүрүү',
                 subtitleRu: 'Строим объекты и воспитываем чемпионов в каждом регионе',
-                subtitleKy: 'Ар бир аймакта чемпиондорду даярдайбыз'
+                subtitleKy: 'Ар бир аймакта спорт курулуштарын куруп, чемпиондорду тарбиялайбыз',
+                active: true, order: 3
             }
         ];
     }
 
-    const lang = localStorage.getItem('lang') || localStorage.getItem('site-lang') || 'ru';
-    const container = document.getElementById('heroSlides');
-    const dotsEl = document.getElementById('heroDots');
-    if (!container) return;
+    renderHeroSlides();
+    startSlider();
+}
 
-    // Render slide backgrounds only (text is typed dynamically)
-    container.innerHTML = slides.map((s, i) => `
-        <div class="hero-slide ${i === 0 ? 'active' : ''}"
+function renderHeroSlides() {
+    const container = document.getElementById('heroSlides');
+    const dotsEl    = document.getElementById('heroDots');
+    if (!container || !heroSlides.length) return;
+
+    const lang     = localStorage.getItem('site-lang') || localStorage.getItem('lang') || 'ru';
+    const btnSport = lang === 'ky' ? 'Спорт түрлөрү' : 'Виды спорта';
+    const btnNews  = lang === 'ky' ? 'Жаңылыктар'    : 'Новости';
+
+    container.innerHTML = heroSlides.map((s, i) => `
+        <div class="hero-slide${i === currentSlide ? ' active' : ''}"
              style="background-image:url('${s.image}')">
             <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <img src="/logo.png" class="hero-logo"
+                     onerror="this.style.display='none'" alt="ДНВС">
+                <h1 class="hero-title">${lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '')}</h1>
+                <p class="hero-sub">${lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '')}</p>
+                <div class="hero-btns">
+                    <a href="sports.html" class="btn-hero-primary">${btnSport}</a>
+                    <a href="news.html" class="btn-hero-outline">${btnNews}</a>
+                </div>
+            </div>
         </div>
     `).join('');
 
-    // Single shared content panel (not inside each slide)
-    const heroSection = document.getElementById('hero') || container.parentElement;
-    const panel = document.createElement('div');
-    panel.className = 'hero-content';
-    panel.innerHTML = `
-        <img src="/logo.png" class="hero-logo" onerror="this.style.display='none'" alt="ДНВС">
-        <h1 class="hero-title"><span id="_htxt"></span><span class="hero-cursor">|</span></h1>
-        <p class="hero-sub" id="_hsub"></p>
-        <div class="hero-btns" id="_hbtns" style="opacity:0">
-            <a href="/sports" class="btn-hero-primary">${lang === 'ky' ? 'Спорт түрлөрү' : 'Виды спорта'}</a>
-            <a href="/news" class="btn-hero-outline">${lang === 'ky' ? 'Жаңылыктар' : 'Новости'}</a>
-        </div>
-    `;
-    heroSection.appendChild(panel);
-
     if (dotsEl) {
-        dotsEl.innerHTML = slides.map((_, i) =>
-            `<span class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goSlide(${i})"></span>`
+        dotsEl.innerHTML = heroSlides.map((_, i) =>
+            `<span class="hero-dot${i === currentSlide ? ' active' : ''}"
+                   onclick="goSlide(${i});startSlider()"></span>`
         ).join('');
     }
+}
 
-    // Helpers
-    const wait = ms => new Promise(r => setTimeout(r, ms));
+function goSlide(n) {
+    const container = document.getElementById('heroSlides');
+    const dotsEl    = document.getElementById('heroDots');
+    if (!container) return;
+    const allSlides = container.querySelectorAll('.hero-slide');
+    const allDots   = dotsEl ? dotsEl.querySelectorAll('.hero-dot') : [];
+    if (!allSlides.length) return;
 
-    function typeText(el, text, speed) {
-        return new Promise(resolve => {
-            el.textContent = '';
-            let i = 0;
-            (function tick() {
-                if (i < text.length) {
-                    el.textContent += text[i++];
-                    setTimeout(tick, speed);
-                } else {
-                    resolve();
-                }
-            })();
-        });
-    }
+    allSlides[currentSlide]?.classList.remove('active');
+    allDots[currentSlide]?.classList.remove('active');
 
-    let cur = 0;
-    let skip = false;
+    currentSlide = ((n % heroSlides.length) + heroSlides.length) % heroSlides.length;
 
-    async function runSlide(index) {
-        cur = index;
-        skip = false;
+    allSlides[currentSlide]?.classList.add('active');
+    allDots[currentSlide]?.classList.add('active');
+}
+window.goSlide = goSlide;
 
-        const allSlides = container.querySelectorAll('.hero-slide');
-        const allDots   = dotsEl ? dotsEl.querySelectorAll('.hero-dot') : [];
+function startSlider() {
+    if (slideTimer) clearInterval(slideTimer);
+    slideTimer = setInterval(() => goSlide(currentSlide + 1), 5000);
+}
+window.startSlider = startSlider;
 
-        const s         = slides[index];
-        const titleText = lang === 'ky' ? (s.titleKy    || s.titleRu    || '') : (s.titleRu    || s.titleKy    || '');
-        const subText   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '');
-
-        const titleEl = document.getElementById('_htxt');
-        const subEl   = document.getElementById('_hsub');
-        const btnsEl  = document.getElementById('_hbtns');
-        const panel   = document.querySelector('.hero-content');
-
-        // ── Phase 1: fade out entire panel as one piece ──
-        panel.style.transition = 'opacity 0.7s ease';
-        panel.style.opacity    = '0';
-
-        // Switch background during the fade (crossfade happens simultaneously)
-        allSlides.forEach((el, i) => el.classList.toggle('active', i === index));
-        allDots.forEach((d, i)   => d.classList.toggle('active', i === index));
-
-        await wait(720);
-        if (skip) return;
-
-        // Reset content while panel is invisible
-        titleEl.textContent  = '';
-        subEl.textContent    = '';
-        btnsEl.style.opacity = '0';
-
-        // ── Phase 2: fade panel back in ──
-        panel.style.opacity = '1';
-        await wait(380);
-        if (skip) return;
-
-        // Type title
-        await typeText(titleEl, titleText, 40);
-        if (skip) return;
-
-        await wait(220);
-        if (skip) return;
-
-        // Type subtitle
-        await typeText(subEl, subText, 30);
-        if (skip) return;
-
-        // Slide buttons in — they stay until the next cycle's fade-out
-        btnsEl.style.transition = 'opacity 0.6s ease';
-        btnsEl.style.opacity    = '1';
-
-        // Hold for reading
-        await wait(3800);
-        if (skip) return;
-
-        runSlide((index + 1) % slides.length);
-    }
-
-    // Manual dot nav — panel fades out cleanly at the top of the next runSlide
-    window.goSlide = function (n) {
-        const panel = document.querySelector('.hero-content');
-        if (panel) { panel.style.transition = 'opacity 0.35s ease'; panel.style.opacity = '0'; }
-        skip = true;
-        setTimeout(() => runSlide(n), 360);
-    };
-
-    runSlide(0);
-})();
+initHeroSlider();
 
 /* ── Sports Icons ── */
 const SPORT_ICONS = {
@@ -322,6 +267,8 @@ function applyLang(lang, save) {
     document.querySelectorAll('option[data-ru]').forEach(el => {
         el.textContent = lang === 'ky' ? el.dataset.ky : el.dataset.ru;
     });
+    // Re-render hero slides in new language without losing position
+    if (heroSlides.length) renderHeroSlides();
 }
 
 /* ---------- Header Scroll Effect ---------- */
