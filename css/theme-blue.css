@@ -1083,3 +1083,170 @@ body { background-color: #F7FAFF; }
     .ticker-icon { width: 56px; height: 56px; }
     .sport-modal-inner { padding: 36px 24px 28px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   NOMAD GAMES COUNTDOWN WIDGET
+   ══════════════════════════════════════════════════════════════════════════ */
+.nomad-countdown {
+    background: linear-gradient(135deg, #0b1f50 0%, #1b3b7d 45%, #0f2860 100%);
+    padding: 36px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle tunduk pattern overlay */
+.nomad-countdown::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(200,150,62,0.06) 0%, transparent 55%),
+                      radial-gradient(circle at 80% 50%, rgba(200,150,62,0.06) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+/* gold top/bottom accent lines */
+.nomad-countdown::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #C8963E 20%, #e8b84d 50%, #C8963E 80%, transparent);
+}
+
+.nomad-countdown__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.nomad-countdown__emblem {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    opacity: 0.9;
+}
+
+.nomad-countdown__text {
+    flex: 1;
+    min-width: 200px;
+}
+
+.nomad-countdown__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C8963E;
+    margin-bottom: 4px;
+}
+
+.nomad-countdown__title {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 4px;
+}
+
+.nomad-countdown__date {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.5px;
+}
+
+.nomad-countdown__timer {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.nomad-countdown__unit {
+    text-align: center;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(200,150,62,0.25);
+    border-radius: 10px;
+    padding: 10px 16px 8px;
+    min-width: 72px;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s;
+}
+
+.nomad-countdown__unit:hover {
+    border-color: rgba(200,150,62,0.5);
+}
+
+.nomad-countdown__num {
+    display: block;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: #e8b84d;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    transition: transform 0.15s ease;
+}
+
+.nomad-countdown__num.tick {
+    transform: scale(1.08);
+}
+
+.nomad-countdown__lbl {
+    display: block;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 5px;
+}
+
+.nomad-countdown__sep {
+    color: rgba(200,150,62,0.4);
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 20px;
+    user-select: none;
+}
+
+.nomad-countdown__link {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    background: rgba(200,150,62,0.15);
+    border: 1px solid rgba(200,150,62,0.45);
+    border-radius: 8px;
+    color: #e8b84d;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    white-space: nowrap;
+}
+
+.nomad-countdown__link:hover {
+    background: rgba(200,150,62,0.28);
+    border-color: rgba(200,150,62,0.75);
+    color: #f5cc70;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+    .nomad-countdown__inner { justify-content: center; text-align: center; }
+    .nomad-countdown__text { min-width: 100%; order: -1; }
+    .nomad-countdown__emblem { display: none; }
+}
+
+@media (max-width: 560px) {
+    .nomad-countdown__unit { min-width: 58px; padding: 8px 10px 6px; }
+    .nomad-countdown__num { font-size: 1.5rem; }
+    .nomad-countdown__sep { font-size: 1.4rem; margin-bottom: 16px; }
+    .nomad-countdown__link { width: 100%; justify-content: center; }
+}

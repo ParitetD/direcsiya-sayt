@@ -110,6 +110,111 @@
         <div class="hero-dots" id="heroDots"></div>
     </section>
 
+    <!-- Nomad Games 2028 Countdown -->
+    <section class="nomad-countdown" id="nomadCountdown">
+        <div class="container">
+            <div class="nomad-countdown__inner">
+                <svg class="nomad-countdown__emblem" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(200,150,62,0.4)" stroke-width="1.5"/>
+                    <circle cx="40" cy="40" r="24" fill="none" stroke="rgba(200,150,62,0.6)" stroke-width="1.5"/>
+                    <circle cx="40" cy="40" r="6" fill="#C8963E"/>
+                    <line x1="40" y1="4" x2="40" y2="76" stroke="rgba(200,150,62,0.35)" stroke-width="1"/>
+                    <line x1="4" y1="40" x2="76" y2="40" stroke="rgba(200,150,62,0.35)" stroke-width="1"/>
+                    <line x1="14.9" y1="14.9" x2="65.1" y2="65.1" stroke="rgba(200,150,62,0.25)" stroke-width="1"/>
+                    <line x1="65.1" y1="14.9" x2="14.9" y2="65.1" stroke="rgba(200,150,62,0.25)" stroke-width="1"/>
+                    <circle cx="40" cy="4"  r="3" fill="rgba(200,150,62,0.7)"/>
+                    <circle cx="40" cy="76" r="3" fill="rgba(200,150,62,0.7)"/>
+                    <circle cx="4"  cy="40" r="3" fill="rgba(200,150,62,0.7)"/>
+                    <circle cx="76" cy="40" r="3" fill="rgba(200,150,62,0.7)"/>
+                </svg>
+                <div class="nomad-countdown__text">
+                    <p class="nomad-countdown__label">
+                        <span class="t-ru">Обратный отсчёт</span>
+                        <span class="t-ky">Кайра эсептөө</span>
+                    </p>
+                    <p class="nomad-countdown__title">
+                        <span class="t-ru">IV Всемирные игры кочевников</span>
+                        <span class="t-ky">IV Дүйнөлүк көчмөндөр оюндары</span>
+                    </p>
+                    <p class="nomad-countdown__date">
+                        <span class="t-ru">Чолпон-Ата, Иссык-Куль · 1 сентября 2028</span>
+                        <span class="t-ky">Чолпон-Ата, Ысык-Көл · 2028-жылдын 1-сентябры</span>
+                    </p>
+                </div>
+                <div class="nomad-countdown__timer" id="cdTimer">
+                    <div class="nomad-countdown__unit">
+                        <span class="nomad-countdown__num" id="cdDays">---</span>
+                        <span class="nomad-countdown__lbl">
+                            <span class="t-ru">дней</span>
+                            <span class="t-ky">күн</span>
+                        </span>
+                    </div>
+                    <div class="nomad-countdown__sep" aria-hidden="true">:</div>
+                    <div class="nomad-countdown__unit">
+                        <span class="nomad-countdown__num" id="cdHours">--</span>
+                        <span class="nomad-countdown__lbl">
+                            <span class="t-ru">часов</span>
+                            <span class="t-ky">саат</span>
+                        </span>
+                    </div>
+                    <div class="nomad-countdown__sep" aria-hidden="true">:</div>
+                    <div class="nomad-countdown__unit">
+                        <span class="nomad-countdown__num" id="cdMins">--</span>
+                        <span class="nomad-countdown__lbl">
+                            <span class="t-ru">минут</span>
+                            <span class="t-ky">мүнөт</span>
+                        </span>
+                    </div>
+                    <div class="nomad-countdown__sep" aria-hidden="true">:</div>
+                    <div class="nomad-countdown__unit">
+                        <span class="nomad-countdown__num" id="cdSecs">--</span>
+                        <span class="nomad-countdown__lbl">
+                            <span class="t-ru">секунд</span>
+                            <span class="t-ky">секунд</span>
+                        </span>
+                    </div>
+                </div>
+                <a href="events.html" class="nomad-countdown__link">
+                    <span class="t-ru">Подробнее →</span>
+                    <span class="t-ky">Толугураак →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <script>
+    (function() {
+        var target = new Date('2028-09-01T09:00:00+06:00').getTime();
+        var pad = function(n) { return String(n).padStart(2, '0'); };
+        function tick() {
+            var diff = target - Date.now();
+            if (diff <= 0) {
+                document.getElementById('nomadCountdown').style.display = 'none';
+                return;
+            }
+            var days  = Math.floor(diff / 86400000);
+            var hours = Math.floor((diff % 86400000) / 3600000);
+            var mins  = Math.floor((diff % 3600000)  / 60000);
+            var secs  = Math.floor((diff % 60000)    / 1000);
+            var update = function(id, val) {
+                var el = document.getElementById(id);
+                if (el && el.textContent !== val) {
+                    el.textContent = val;
+                    el.classList.remove('tick');
+                    void el.offsetWidth;
+                    el.classList.add('tick');
+                    setTimeout(function() { el.classList.remove('tick'); }, 150);
+                }
+            };
+            update('cdDays',  String(days));
+            update('cdHours', pad(hours));
+            update('cdMins',  pad(mins));
+            update('cdSecs',  pad(secs));
+        }
+        tick();
+        setInterval(tick, 1000);
+    })();
+    </script>
+
     <!-- Sports Ticker Section -->
     <section class="sports-ticker-section">
         <div class="container">

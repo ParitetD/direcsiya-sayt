@@ -52,11 +52,11 @@ const CFG = {
   },
   gallery: {
     title:'Галерея', hint:'Фотографии соревнований и событий', api:'/api/gallery', viewType:'grid',
-    filterKey:'category', filterOpts:[{v:'',l:'Все'},{v:'general',l:'Общее'},{v:'competition',l:'Соревнования'},{v:'training',l:'Тренировки'},{v:'event',l:'Мероприятия'}],
+    filterKey:'category', filterOpts:[{v:'',l:'Все'},{v:'wrestling',l:'Борьба'},{v:'archery',l:'Стрельба из лука'},{v:'horse',l:'Конные игры'},{v:'festival',l:'Праздники'},{v:'athletes',l:'Спортсмены'}],
     fields:[
       {key:'titleRu',label:'Подпись',lang:'ru',type:'text',ph:'Описание фотографии'},
       {key:'titleKy',label:'Сүрөт жазуусу',lang:'ky',type:'text',ph:'Сүрөт жазуусу'},
-      {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'general',l:'Общее'},{v:'competition',l:'Соревнования'},{v:'training',l:'Тренировки'},{v:'event',l:'Мероприятия'}]},
+      {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'wrestling',l:'Борьба'},{v:'archery',l:'Стрельба из лука'},{v:'horse',l:'Конные игры'},{v:'festival',l:'Праздники'},{v:'athletes',l:'Спортсмены'}]},
       {key:'image',label:'Фотография',type:'upload',req:true}
     ]
   },

@@ -9,7 +9,7 @@
     "location": "Чолпон-Ата, Ысык-Көл",
     "category": "championship",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&q=80",
     "createdAt": "2026-05-01T10:00:00.000Z",
     "updatedAt": "2026-05-01T10:00:00.000Z"
   },
@@ -23,7 +23,7 @@
     "location": "Бишкек, Спорткомплекс «Манас»",
     "category": "championship",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
     "createdAt": "2026-05-10T09:00:00.000Z",
     "updatedAt": "2026-05-10T09:00:00.000Z"
   },
@@ -37,7 +37,7 @@
     "location": "Ош шаары",
     "category": "competition",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1519430044529-9627f93cb47f?w=800&q=80",
     "createdAt": "2026-05-08T11:00:00.000Z",
     "updatedAt": "2026-05-08T11:00:00.000Z"
   },
@@ -51,7 +51,7 @@
     "location": "Бишкек",
     "category": "championship",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=800&q=80",
     "createdAt": "2026-05-05T10:00:00.000Z",
     "updatedAt": "2026-05-05T10:00:00.000Z"
   },
@@ -65,7 +65,7 @@
     "location": "Балыкчы, Ысык-Көл",
     "category": "competition",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800&q=80",
     "createdAt": "2026-05-03T12:00:00.000Z",
     "updatedAt": "2026-05-03T12:00:00.000Z"
   },
@@ -79,7 +79,7 @@
     "location": "Бишкек, Дирекция спорта КР",
     "category": "seminar",
     "status": "published",
-    "image": "",
+    "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
     "createdAt": "2026-05-02T09:00:00.000Z",
     "updatedAt": "2026-05-02T09:00:00.000Z"
   }

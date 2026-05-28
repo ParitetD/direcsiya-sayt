@@ -59,6 +59,7 @@ app.use('/api/people', require('./api/people'));
 app.use('/api/settings', require('./api/settings'));
 app.use('/api/sports', require('./api/sports'));
 app.use('/api/slides', require('./api/slides'));
+app.use('/api/contact', require('./api/contact'));
 
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 app.get('/admin/*', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));

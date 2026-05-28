@@ -426,35 +426,57 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const btn = form.querySelector('[type="submit"]');
+        const lang = localStorage.getItem('site-lang') || 'ru';
 
-        const formData = new FormData(form);
         let isValid = true;
-
-        formData.forEach((value, key) => {
-            const input = form.querySelector(`[name="${key}"]`);
-            if (input && input.hasAttribute('required') && !value.trim()) {
-                input.style.borderColor = 'var(--color-primary)';
-                isValid = false;
-            } else if (input) {
-                input.style.borderColor = '';
-            }
+        form.querySelectorAll('[required]').forEach(input => {
+            const ok = input.value.trim();
+            input.style.borderColor = ok ? '' : 'var(--color-primary)';
+            if (!ok) isValid = false;
         });
+        if (!isValid) return;
 
-        if (isValid) {
-            const btn = form.querySelector('.btn');
-            const originalText = btn.textContent;
-            btn.textContent = 'Отправлено!';
-            btn.style.backgroundColor = 'var(--color-accent)';
-            btn.style.borderColor = 'var(--color-accent)';
+        const origHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = lang === 'ky'
+            ? '<span class="t-ky">Жиберилүүдө...</span>'
+            : '<span class="t-ru">Отправка...</span>';
 
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name:    form.querySelector('[name="name"]')?.value.trim(),
+                    email:   form.querySelector('[name="email"]')?.value.trim(),
+                    subject: form.querySelector('[name="subject"]')?.value,
+                    message: form.querySelector('[name="message"]')?.value.trim()
+                })
+            });
+            if (!res.ok) throw new Error((await res.json()).error || 'Ошибка');
+            btn.innerHTML = lang === 'ky'
+                ? '<span class="t-ky">✓ Жиберилди!</span>'
+                : '<span class="t-ru">✓ Отправлено!</span>';
+            btn.style.background = 'var(--color-accent-light, #2D6A4F)';
+            form.reset();
             setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.backgroundColor = '';
-                btn.style.borderColor = '';
-                form.reset();
-            }, 3000);
+                btn.innerHTML = origHTML;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 4000);
+        } catch (err) {
+            btn.innerHTML = lang === 'ky'
+                ? '<span class="t-ky">Ката: ' + err.message + '</span>'
+                : '<span class="t-ru">Ошибка: ' + err.message + '</span>';
+            btn.style.background = '#c0392b';
+            setTimeout(() => {
+                btn.innerHTML = origHTML;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 4000);
         }
     });
 }

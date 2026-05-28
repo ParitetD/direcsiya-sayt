@@ -130,7 +130,7 @@
                             </div>
                             <div class="contact-info__text">
                                 <h4><span class="t-ru">Телефон</span><span class="t-ky">Телефон</span></h4>
-                                <p>+996 (312) 123-456<br>+996 (312) 123-457</p>
+                                <p id="contactPhone">+996 (312) 65-88-00</p>
                             </div>
                         </div>
                         <div class="contact-info__item">
@@ -141,7 +141,7 @@
                             </div>
                             <div class="contact-info__text">
                                 <h4><span class="t-ru">Электронная почта</span><span class="t-ky">Электрондук почта</span></h4>
-                                <p>info@natsport.kg<br>press@natsport.kg</p>
+                                <p id="contactEmail">info@natsport.kg</p>
                             </div>
                         </div>
                         <div class="contact-info__item">
@@ -267,5 +267,16 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+    fetch('/api/settings').then(r => r.json()).then(s => {
+        if (s.phone) document.getElementById('contactPhone').textContent = s.phone;
+        if (s.email) document.getElementById('contactEmail').textContent = s.email;
+        const lang = localStorage.getItem('site-lang') || 'ru';
+        if (s.address) {
+            const addrEl = document.querySelector('.contact-info__item:first-child .contact-info__text p');
+            if (addrEl) addrEl.innerHTML = (lang === 'ky' ? s.address.ky : s.address.ru) || addrEl.innerHTML;
+        }
+    }).catch(() => {});
+    </script>
 </body>
 </html>

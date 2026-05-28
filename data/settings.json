@@ -3,13 +3,17 @@
     "ru": "Дирекция спорта Кыргызстана",
     "ky": "Кыргызстандын спорт дирекциясы"
   },
-  "email": "info@sport.kg",
-  "phone": "+996 999955572",
+  "email": "info@natsport.kg",
+  "phone": "+996 (312) 65-88-00",
   "address": {
     "ru": "г. Бишкек, пр. Манаса, д. 40",
     "ky": "Бишкек ш., Манас даңгыры, 40"
   },
-  "socialVk": "",
+  "workHours": {
+    "ru": "Пн–Пт: 9:00 — 18:00",
+    "ky": "Дш–Жм: 9:00 — 18:00"
+  },
   "socialTelegram": "",
-  "socialInstagram": ""
+  "socialInstagram": "",
+  "socialYoutube": ""
 }

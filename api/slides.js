@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
   const { active } = req.query;
   if (active === 'true') items = items.filter(s => s.active === true);
   items.sort((a, b) => (a.order || 0) - (b.order || 0));
-  res.json(items);
+  res.json({ data: items, total: items.length });
 });
 
 router.get('/:id', (req, res) => {
