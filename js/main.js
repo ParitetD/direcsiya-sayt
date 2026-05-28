@@ -91,79 +91,74 @@
         });
     }
 
-    function eraseText(el, speed) {
-        return new Promise(resolve => {
-            (function tick() {
-                if (el.textContent.length > 0) {
-                    el.textContent = el.textContent.slice(0, -1);
-                    setTimeout(tick, speed);
-                } else {
-                    resolve();
-                }
-            })();
-        });
-    }
-
     let cur = 0;
-    let skip = false; // set true to abort current typing and jump
+    let skip = false;
 
     async function runSlide(index) {
         cur = index;
         skip = false;
+
         const allSlides = container.querySelectorAll('.hero-slide');
         const allDots   = dotsEl ? dotsEl.querySelectorAll('.hero-dot') : [];
 
-        allSlides.forEach((s, i) => s.classList.toggle('active', i === index));
-        allDots.forEach((d, i)   => d.classList.toggle('active', i === index));
-
-        const s = slides[index];
-        const titleText = lang === 'ky' ? (s.titleKy   || s.titleRu   || '') : (s.titleRu   || s.titleKy   || '');
+        const s         = slides[index];
+        const titleText = lang === 'ky' ? (s.titleKy    || s.titleRu    || '') : (s.titleRu    || s.titleKy    || '');
         const subText   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '');
 
         const titleEl = document.getElementById('_htxt');
         const subEl   = document.getElementById('_hsub');
         const btnsEl  = document.getElementById('_hbtns');
+        const panel   = document.querySelector('.hero-content');
 
-        titleEl.textContent = '';
-        subEl.textContent   = '';
+        // ── Phase 1: fade out entire panel as one piece ──
+        panel.style.transition = 'opacity 0.7s ease';
+        panel.style.opacity    = '0';
+
+        // Switch background during the fade (crossfade happens simultaneously)
+        allSlides.forEach((el, i) => el.classList.toggle('active', i === index));
+        allDots.forEach((d, i)   => d.classList.toggle('active', i === index));
+
+        await wait(720);
+        if (skip) return;
+
+        // Reset content while panel is invisible
+        titleEl.textContent  = '';
+        subEl.textContent    = '';
         btnsEl.style.opacity = '0';
 
-        await wait(350);
+        // ── Phase 2: fade panel back in ──
+        panel.style.opacity = '1';
+        await wait(380);
         if (skip) return;
 
         // Type title
-        await typeText(titleEl, titleText, 38);
+        await typeText(titleEl, titleText, 40);
         if (skip) return;
 
-        await wait(180);
+        await wait(220);
+        if (skip) return;
 
         // Type subtitle
-        await typeText(subEl, subText, 28);
+        await typeText(subEl, subText, 30);
         if (skip) return;
 
-        // Show buttons
-        btnsEl.style.opacity = '1';
+        // Slide buttons in — they stay until the next cycle's fade-out
+        btnsEl.style.transition = 'opacity 0.6s ease';
+        btnsEl.style.opacity    = '1';
 
         // Hold for reading
-        await wait(2800);
+        await wait(3800);
         if (skip) return;
 
-        // Erase subtitle then title
-        btnsEl.style.opacity = '0';
-        await eraseText(subEl, 18);
-        if (skip) return;
-        await eraseText(titleEl, 22);
-
-        await wait(300);
-
-        // Move to next slide
         runSlide((index + 1) % slides.length);
     }
 
-    // Manual dot navigation — skip current, jump immediately
+    // Manual dot nav — panel fades out cleanly at the top of the next runSlide
     window.goSlide = function (n) {
+        const panel = document.querySelector('.hero-content');
+        if (panel) { panel.style.transition = 'opacity 0.35s ease'; panel.style.opacity = '0'; }
         skip = true;
-        setTimeout(() => runSlide(n), 50);
+        setTimeout(() => runSlide(n), 360);
     };
 
     runSlide(0);
