@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спортсмены — Дирекция национальных видов спорта</title>
+    <meta name="description" content="Лучшие спортсмены и тренеры Кыргызстана. Чемпионы Азии, мира и Олимпийских игр.">
+    <meta property="og:title" content="Спортсмены — Дирекция спорта КР">
+    <meta property="og:description" content="Лучшие спортсмены и тренеры Кыргызстана. Чемпионы Азии, мира и Олимпийских игр.">
+    <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1200&q=80">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ornaments.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/theme-blue.css">
+    <link rel="stylesheet" href="css/ux.css">
+</head>
+<body>
+    <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span></p></div></div></noscript>
+    <a href="#main-content" class="skip-link"><span class="t-ru">Перейти к содержимому</span><span class="t-ky">Мазмунга өтүү</span></a>
+    <div class="ethno-border-top" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <div class="nav-brand">
+                        <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
+                        <div class="nav-brand-text">
+                            <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
+                            <span class="nav-brand-bottom">Дирекция спорта</span>
+                        </div>
+                    </div>
+                </a>
+                <button class="burger" id="burger" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav" id="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" class="nav__link"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li class="nav__item">
+                            <a href="sports.html" class="nav__link"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
+                                <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
+                                <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                                <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="events.html" class="nav__link"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="events.html"><span class="t-ru">Все мероприятия</span><span class="t-ky">Бардык иш-чаралар</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Предстоящие</span><span class="t-ky">Алдыдагы</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Прошедшие</span><span class="t-ky">Өткөн</span></a></li>
+                                <li><a href="events.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="gallery.html" class="nav__link"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="gallery.html"><span class="t-ru">Все фото</span><span class="t-ky">Бардык сүрөттөр</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Праздники</span><span class="t-ky">Майрамдар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item">
+                            <a href="news.html" class="nav__link"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="news.html"><span class="t-ru">Все новости</span><span class="t-ky">Бардык жаңылыктар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Чемпионаты</span><span class="t-ky">Чемпионаттар</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Игры кочевников</span><span class="t-ky">Көчмөндөр оюндары</span></a></li>
+                                <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item"><a href="athletes.html" class="nav__link nav__link--active"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
+                        <li class="nav__item">
+                            <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
+                            <ul class="nav__dropdown">
+                                <li><a href="about.html"><span class="t-ru">О дирекции</span><span class="t-ky">Дирекция жөнүндө</span></a></li>
+                                <li><a href="about.html#history"><span class="t-ru">История</span><span class="t-ky">Тарых</span></a></li>
+                                <li><a href="about.html#team"><span class="t-ru">Команда</span><span class="t-ky">Команда</span></a></li>
+                                <li><a href="about.html#mission"><span class="t-ru">Миссия и цели</span><span class="t-ky">Миссия жана максаттар</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </nav>
+                <div class="lang-switcher">
+                    <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-btn" data-lang="ky">KY</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">
+                <span class="t-ru">Спортсмены</span>
+                <span class="t-ky">Спортчулар</span>
+            </h1>
+            <p class="page-header__subtitle">
+                <span class="t-ru">Чемпионы Азии, мира и Олимпийских игр — гордость Кыргызстана</span>
+                <span class="t-ky">Азия, дүйнө жана Олимпиада чемпиондору — Кыргызстандын сыймыгы</span>
+            </p>
+        </div>
+    </section>
+
+    <main id="main-content">
+        <section class="section">
+            <div class="container">
+
+                <!-- Toolbar: search + sport chips -->
+                <div class="athletes-toolbar">
+                    <div class="athletes-search-wrap">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input
+                            type="text"
+                            id="athleteSearch"
+                            class="athletes-search-input"
+                            placeholder="Поиск по имени или виду спорта..."
+                            data-ph-ru="Поиск по имени или виду спорта..."
+                            data-ph-ky="Аты же спорт түрү боюнча издөө..."
+                            oninput="filterAthletes(this.value)"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="sport-filter-chips" id="sportFilterChips" role="group" aria-label="Фильтр по виду спорта"></div>
+                </div>
+
+                <!-- Role tabs -->
+                <div class="athlete-tabs" id="athleteTabs" role="tablist">
+                    <button class="athlete-tab active" onclick="setRoleTab('all', this)" role="tab" aria-selected="true">
+                        <span class="t-ru">Все</span><span class="t-ky">Баары</span>
+                    </button>
+                    <button class="athlete-tab" onclick="setRoleTab('athlete', this)" role="tab" aria-selected="false">
+                        <span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span>
+                    </button>
+                    <button class="athlete-tab" onclick="setRoleTab('coach', this)" role="tab" aria-selected="false">
+                        <span class="t-ru">Тренеры</span><span class="t-ky">Машыктыруучулар</span>
+                    </button>
+                    <button class="athlete-tab" onclick="setRoleTab('staff', this)" role="tab" aria-selected="false">
+                        <span class="t-ru">Руководство</span><span class="t-ky">Жетекчилик</span>
+                    </button>
+                </div>
+
+                <!-- Athletes grid -->
+                <div class="athletes-grid" id="athletesGrid">
+                    <div class="athlete-skeleton"></div>
+                    <div class="athlete-skeleton"></div>
+                    <div class="athlete-skeleton"></div>
+                    <div class="athlete-skeleton"></div>
+                    <div class="athlete-skeleton"></div>
+                    <div class="athlete-skeleton"></div>
+                </div>
+
+                <!-- Empty state -->
+                <div class="athletes-empty hidden" id="athletesEmpty">
+                    <div class="athletes-empty__icon">🏅</div>
+                    <h3>
+                        <span class="t-ru">Ничего не найдено</span>
+                        <span class="t-ky">Эч нерсе табылган жок</span>
+                    </h3>
+                    <p>
+                        <span class="t-ru">Попробуйте другой вид спорта или имя</span>
+                        <span class="t-ky">Башка спорт түрүн же атты издеп көрүңүз</span>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="ethno-border-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--about">
+                    <a href="index.html" class="footer__logo">
+                        <div class="logo__icon">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path d="M30 5 L30 55 M5 30 L55 30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span></span>
+                    </a>
+                    <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
+                    <div class="footer__social">
+                        <a href="#" class="social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                        <a href="#" class="social-link" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Навигация</span><span class="t-ky">Навигация</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="index.html"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></a></li>
+                        <li><a href="events.html"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></a></li>
+                        <li><a href="gallery.html"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span></a></li>
+                        <li><a href="news.html"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></a></li>
+                        <li><a href="athletes.html"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
+                        <li><a href="about.html"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span></a></li>
+                        <li><a href="contacts.html"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
+                        <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
+                        <li><a href="sports.html#horse"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
+                        <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
+                    <ul class="footer__contacts">
+                        <li>📍 <span class="t-ru">г. Бишкек, пр. Манаса, д. 40</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40</span></li>
+                        <li>📞 +996 (312) 65-88-00</li>
+                        <li>✉️ info@natsport.kg</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; <span id="footer-year">2026</span> <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+            </div>
+        </div>
+    </footer>
+
+<!-- Athlete Bio Modal -->
+<div class="athlete-bio-overlay hidden" id="athleteBioModal" onclick="closeAthleteBio(event)">
+  <div class="athlete-bio-dialog" role="dialog" aria-modal="true">
+    <button class="athlete-bio-close" onclick="closeAthleteBio()" aria-label="Закрыть">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="athleteBioContent"></div>
+  </div>
+</div>
+
+    <script src="js/main.js"></script>
+    <script src="js/ux.js"></script>
+</body>
+</html>

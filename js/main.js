@@ -2,6 +2,13 @@
    National Sports Website — Main JavaScript
    ========================================================================== */
 
+/* ── XSS Protection: sanitize HTML before insertion ── */
+function escapeHtml(str) {
+    if (typeof str !== 'string') return '';
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return str.replace(/[&<>"']/g, c => map[c]);
+}
+
 /* ── Hero Slideshow ── */
 var heroSlides   = [];
 var currentSlide = 0;
@@ -12,8 +19,8 @@ async function initHeroSlider() {
         const r = await fetch('/api/slides');
         const d = await r.json();
         heroSlides = (Array.isArray(d) ? d : (d.data || []))
-            .filter(s => s.active !== false)
-            .sort((a, b) => (a.order || 0) - (b.order || 0));
+            .filter(s => s.active !== false && s.active !== 'false')
+            .sort((a, b) => (parseInt(a.order) || 0) - (parseInt(b.order) || 0));
     } catch (e) {}
 
     if (!heroSlides.length) {
@@ -54,19 +61,19 @@ function renderHeroSlides() {
     const dotsEl    = document.getElementById('heroDots');
     if (!container || !heroSlides.length) return;
 
-    const lang     = localStorage.getItem('site-lang') || localStorage.getItem('lang') || 'ru';
+    const lang     = localStorage.getItem('site-lang') || 'ru';
     const btnSport = lang === 'ky' ? 'Спорт түрлөрү' : 'Виды спорта';
     const btnNews  = lang === 'ky' ? 'Жаңылыктар'    : 'Новости';
 
     container.innerHTML = heroSlides.map((s, i) => `
         <div class="hero-slide${i === currentSlide ? ' active' : ''}"
-             style="background-image:url('${s.image}')">
+             style="background-image:url('${escapeHtml(s.image)}')">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <img src="/logo.png" class="hero-logo"
                      onerror="this.style.display='none'" alt="ДНВС">
-                <h1 class="hero-title">${lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '')}</h1>
-                <p class="hero-sub">${lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '')}</p>
+                <h1 class="hero-title">${escapeHtml(lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || ''))}</h1>
+                <p class="hero-sub">${escapeHtml(lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || ''))}</p>
                 <div class="hero-btns">
                     <a href="sports.html" class="btn-hero-primary">${btnSport}</a>
                     <a href="news.html" class="btn-hero-outline">${btnNews}</a>
@@ -123,6 +130,10 @@ const SPORT_ICONS = {
 };
 
 /* ── Sports Ticker ── */
+/* sportRegistry stores sport objects by stable key for safe modal lookup.
+   Data never passes through HTML attributes — no injection surface. */
+const sportRegistry = new Map();
+
 (async function initTicker() {
     const track = document.getElementById('tickerTrack');
     if (!track) return;
@@ -136,28 +147,38 @@ const SPORT_ICONS = {
 
     if (!sports.length) return;
 
-    const lang = localStorage.getItem('lang') || localStorage.getItem('site-lang') || 'ru';
+    const lang = localStorage.getItem('site-lang') || 'ru';
 
-    function makeCard(s) {
+    // Populate registry before building HTML so click handler can look up safely
+    sports.forEach((s, i) => sportRegistry.set(String(i), s));
+
+    function makeCard(s, idx) {
         const name = lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu;
         const icon = SPORT_ICONS[s.nameRu] || SPORT_ICONS['default'];
-        const data = encodeURIComponent(JSON.stringify(s));
-        return `<div class="ticker-card"
-            onclick="openSportModal('${data}')"
+        // data-sport-idx carries only a numeric index — no user data in HTML attributes
+        return `<div class="ticker-card" data-sport-idx="${idx}"
             onmouseenter="document.getElementById('tickerTrack').style.animationPlayState='paused'"
             onmouseleave="document.getElementById('tickerTrack').style.animationPlayState='running'">
             <div class="ticker-icon">${icon}</div>
-            <span class="ticker-name">${name}</span>
+            <span class="ticker-name">${escapeHtml(name)}</span>
         </div>`;
     }
 
-    const cards = sports.map(makeCard).join('');
+    const cards = sports.map((s, i) => makeCard(s, i)).join('');
     track.innerHTML = cards + cards;
+
+    // Event delegation — one listener, no inline onclick, no data in HTML
+    track.addEventListener('click', e => {
+        const card = e.target.closest('.ticker-card[data-sport-idx]');
+        if (!card) return;
+        const s = sportRegistry.get(card.dataset.sportIdx);
+        if (s) openSportModal(s);
+    });
 })();
 
-window.openSportModal = function (encoded) {
-    const s = JSON.parse(decodeURIComponent(encoded));
-    const lang = localStorage.getItem('lang') || localStorage.getItem('site-lang') || 'ru';
+window.openSportModal = function (s) {
+    // Accept sport object directly — data never travels through the DOM
+    const lang = localStorage.getItem('site-lang') || 'ru';
     const name = lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu;
     const desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu) : s.descriptionRu;
     document.getElementById('modalIcon').innerHTML = SPORT_ICONS[s.nameRu] || SPORT_ICONS['default'];
@@ -166,7 +187,7 @@ window.openSportModal = function (encoded) {
     const extra = document.getElementById('modalExtra');
     const count = s.athletesCount || s.athleteCount;
     extra.innerHTML = count
-        ? `<div class="modal-stat"><strong>${count}</strong><span>${lang === 'ky' ? 'спортчу' : 'спортсменов'}</span></div>`
+        ? `<div class="modal-stat"><strong>${Number(count)}</strong><span>${lang === 'ky' ? 'спортчу' : 'спортсменов'}</span></div>`
         : '';
     document.getElementById('sportModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -182,7 +203,7 @@ window.closeSportModal = function () {
     const grid = document.getElementById('homeNewsGrid');
     if (!grid) return;
 
-    const lang = localStorage.getItem('lang') || localStorage.getItem('site-lang') || 'ru';
+    const lang = localStorage.getItem('site-lang') || 'ru';
     const fallbackImg = 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=70';
 
     let items = [];
@@ -200,8 +221,8 @@ window.closeSportModal = function () {
     }
 
     grid.innerHTML = items.map(n => {
-        const title = lang === 'ky' ? (n.titleKy || n.titleRu) : (n.titleRu || n.titleKy);
-        const img = n.image || fallbackImg;
+        const title = escapeHtml(lang === 'ky' ? (n.titleKy || n.titleRu) : (n.titleRu || n.titleKy));
+        const img = escapeHtml(n.image || fallbackImg);
         const date = n.createdAt ? new Date(n.createdAt).toLocaleDateString('ru-RU') : '';
         const catMap = { news: lang === 'ky' ? 'Жаңылык' : 'Новость', announcement: lang === 'ky' ? 'Билдирүү' : 'Объявление', result: lang === 'ky' ? 'Натыйжа' : 'Результат' };
         const cat = catMap[n.category] || '';
@@ -212,9 +233,9 @@ window.closeSportModal = function () {
                     ${cat ? `<span class="news-cat-badge">${cat}</span>` : ''}
                 </div>
                 <div class="news-card-body">
-                    <h3 class="news-card-title">${title || ''}</h3>
+                    <h3 class="news-card-title">${title}</h3>
                     <p class="news-card-date">${date}</p>
-                    <a href="/news" class="news-read-link">${lang === 'ky' ? 'Окуу →' : 'Читать →'}</a>
+                    <a href="news.html" class="news-read-link">${lang === 'ky' ? 'Окуу →' : 'Читать →'}</a>
                 </div>
             </div>`;
     }).join('');
@@ -238,10 +259,67 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initLightbox();
     initLangSwitcher();
+    loadFooterFromSettings();
+    // Dynamic copyright year
+    const yr = document.getElementById('footer-year');
+    if (yr) yr.textContent = new Date().getFullYear();
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') window.closeSportModal && window.closeSportModal();
+        if (e.key === 'Escape') {
+            window.closeSportModal  && window.closeSportModal();
+            window.closeEventModal  && window.closeEventModal();
+        }
     });
 });
+
+/* ── Footer: load phone/email/social from settings API ── */
+async function loadFooterFromSettings() {
+    try {
+        const s = await fetch('/api/settings').then(r => r.json());
+
+        // Update phone in all footer contact lists
+        if (s.phone) {
+            document.querySelectorAll('.footer__contacts li').forEach(li => {
+                if (li.textContent.includes('+996') || li.innerHTML.includes('phone')) {
+                    const svg = li.querySelector('svg');
+                    li.textContent = '';
+                    if (svg) { li.appendChild(svg); li.appendChild(document.createTextNode(' ')); }
+                    li.appendChild(document.createTextNode(s.phone));
+                }
+            });
+        }
+
+        // Update email
+        if (s.email) {
+            document.querySelectorAll('.footer__contacts li').forEach(li => {
+                if (li.textContent.includes('@') || li.innerHTML.includes('mail')) {
+                    const svg = li.querySelector('svg');
+                    li.textContent = '';
+                    if (svg) { li.appendChild(svg); li.appendChild(document.createTextNode(' ')); }
+                    li.appendChild(document.createTextNode(s.email));
+                }
+            });
+        }
+
+        // Update social links if configured
+        const socials = {
+            'Instagram':  s.socialInstagram,
+            'Telegram':   s.socialTelegram,
+            'YouTube':    s.socialYoutube,
+            'ВКонтакте':  s.socialVk,
+        };
+        document.querySelectorAll('.social-link').forEach(a => {
+            const label = a.getAttribute('aria-label') || '';
+            const url = socials[label];
+            if (url) {
+                a.href = url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                // Remove the click-prevent handler added by ux.js
+                a.replaceWith(a.cloneNode(true));
+            }
+        });
+    } catch(e) {}
+}
 
 /* ---------- Language Switcher ---------- */
 function initLangSwitcher() {
@@ -254,6 +332,7 @@ function initLangSwitcher() {
 
 function applyLang(lang, save) {
     if (save !== false) localStorage.setItem('site-lang', lang);
+    document.documentElement.lang = lang;
     document.body.className = document.body.className.replace(/\blang-\w+\b/g, '').trim();
     document.body.classList.add('lang-' + lang);
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -547,4 +626,214 @@ function initLightbox() {
         if (e.key === 'ArrowLeft') openAt((currentIndex - 1 + items.length) % items.length);
         if (e.key === 'ArrowRight') openAt((currentIndex + 1) % items.length);
     });
+}
+
+/* ── Athletes Page ── */
+var allAthletes = [];
+var currentRoleTab = 'all';
+var currentSearchQuery = '';
+var activeSportFilter = '';
+var _athleteSearchTimer = null;
+
+async function loadAthletesPage() {
+    try {
+        const r = await fetch('/api/people');
+        const d = await r.json();
+        allAthletes = Array.isArray(d) ? d : (d.data || []);
+    } catch (e) {
+        allAthletes = [];
+    }
+    buildSportChips();
+    renderAthletes();
+}
+
+function buildSportChips() {
+    const container = document.getElementById('sportFilterChips');
+    if (!container) return;
+    const lang = localStorage.getItem('site-lang') || 'ru';
+
+    const sports = [...new Set(allAthletes.filter(a => a.sportRu).map(a => a.sportRu))].sort();
+    const chips = [{ ru: 'Все', ky: 'Баары', val: '' }, ...sports.map(s => {
+        const a = allAthletes.find(p => p.sportRu === s);
+        return { ru: s, ky: a?.sportKy || s, val: s };
+    })];
+
+    container.innerHTML = chips.map(c => `
+        <button class="sport-chip${activeSportFilter === c.val ? ' active' : ''}"
+                onclick="filterBySport('${c.val.replace(/'/g, "\\'")}', this)">
+            <span class="t-ru">${c.ru}</span>
+            <span class="t-ky">${c.ky}</span>
+        </button>
+    `).join('');
+}
+
+function filterBySport(sport, btn) {
+    activeSportFilter = sport;
+    document.querySelectorAll('.sport-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderAthletes();
+}
+window.filterBySport = filterBySport;
+
+function setRoleTab(role, btn) {
+    currentRoleTab = role;
+    document.querySelectorAll('.athlete-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+    });
+    if (btn) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+    }
+    renderAthletes();
+}
+window.setRoleTab = setRoleTab;
+
+function filterAthletes(query) {
+    clearTimeout(_athleteSearchTimer);
+    _athleteSearchTimer = setTimeout(() => {
+        currentSearchQuery = query.trim().toLowerCase();
+        renderAthletes();
+    }, 250);
+}
+window.filterAthletes = filterAthletes;
+
+function renderAthletes() {
+    const grid  = document.getElementById('athletesGrid');
+    const empty = document.getElementById('athletesEmpty');
+    if (!grid) return;
+
+    const lang = localStorage.getItem('site-lang') || 'ru';
+
+    const filtered = allAthletes.filter(a => {
+        if (currentRoleTab !== 'all' && a.role !== currentRoleTab) return false;
+        if (activeSportFilter && a.sportRu !== activeSportFilter) return false;
+        if (currentSearchQuery) {
+            const name  = (lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '')).toLowerCase();
+            const sport = (lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '')).toLowerCase();
+            const title = (lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || '')).toLowerCase();
+            if (!name.includes(currentSearchQuery) && !sport.includes(currentSearchQuery) && !title.includes(currentSearchQuery)) return false;
+        }
+        return true;
+    });
+
+    if (!filtered.length) {
+        grid.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
+        return;
+    }
+    if (empty) empty.classList.add('hidden');
+
+    const roleMap = {
+        athlete: { ru: 'Спортсмен',  ky: 'Спортчу' },
+        coach:   { ru: 'Тренер',     ky: 'Машыктыруучу' },
+        staff:   { ru: 'Сотрудник',  ky: 'Кызматкер' }
+    };
+
+    grid.innerHTML = filtered.map(a => {
+        const name       = escapeHtml(lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || ''));
+        const sport      = escapeHtml(lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || ''));
+        const title      = escapeHtml(lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || ''));
+        const roleMeta   = roleMap[a.role] || { ru: '', ky: '' };
+        const roleLabel  = escapeHtml(lang === 'ky' ? roleMeta.ky : roleMeta.ru);
+        const isRetired  = a.careerStatus === 'retired';
+        const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
+        const achList    = (Array.isArray(achievements) ? achievements : []).slice(0, 2);
+
+        const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+        const photoHtml = a.photo
+            ? `<img src="${escapeHtml(a.photo)}" alt="${name}" class="athlete-photo" loading="lazy"
+                    onerror="this.parentElement.innerHTML='<div class=\\"athlete-initials\\">${initials}</div>'">`
+            : `<div class="athlete-initials">${initials}</div>`;
+
+        return `
+        <article class="athlete-card" onclick="openAthleteBio('${escapeHtml(String(a.id))}')">
+            <div class="athlete-photo-wrap">
+                ${photoHtml}
+                <span class="athlete-role-badge athlete-role-badge--${a.role || 'athlete'}">${roleLabel}</span>
+            </div>
+            <div class="athlete-card-body">
+                <h3 class="athlete-name">${name}</h3>
+                ${sport ? `<p class="athlete-sport">${sport}</p>` : ''}
+                ${title ? `<p class="athlete-title">${title}</p>` : ''}
+                ${achList.length ? `<ul class="athlete-achievements">${achList.map(ach => `<li>${escapeHtml(ach)}</li>`).join('')}</ul>` : ''}
+                <span class="athlete-status athlete-status--${isRetired ? 'retired' : 'active'}">
+                    <span class="t-ru">${isRetired ? 'В отставке' : 'Действующий'}</span>
+                    <span class="t-ky">${isRetired ? 'Зейнеткерде' : 'Активдүү'}</span>
+                </span>
+            </div>
+        </article>`;
+    }).join('');
+}
+
+function openAthleteBio(id) {
+    const a = allAthletes.find(x => String(x.id) === String(id));
+    if (!a) return;
+    const lang = localStorage.getItem('site-lang') || 'ru';
+    const name  = escapeHtml(lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || ''));
+    const sport = escapeHtml(lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || ''));
+    const title = escapeHtml(lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || ''));
+    const bio   = lang === 'ky' ? (a.bioKy || a.bioRu || '') : (a.bioRu || a.bioKy || '');
+    const isRetired = a.careerStatus === 'retired';
+    const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+    const photoHtml = a.photo
+        ? `<img class="bio-photo" src="${escapeHtml(a.photo)}" alt="${name}" onerror="this.outerHTML='<div class=\\"bio-initials\\">${initials}</div>'">`
+        : `<div class="bio-initials">${initials}</div>`;
+    const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
+    const achArr = Array.isArray(achievements) ? achievements : [];
+    const statusLabel = lang === 'ky'
+        ? (isRetired ? 'Зейнеткерде' : 'Активдүү')
+        : (isRetired ? 'В отставке'  : 'Действующий');
+
+    document.getElementById('athleteBioContent').innerHTML = `
+        <div class="bio-header">
+            ${photoHtml}
+            <div class="bio-header-info">
+                <div class="bio-name">${name}</div>
+                ${sport ? `<div class="bio-sport">${sport}</div>` : ''}
+                ${title ? `<div class="bio-title-txt">${title}</div>` : ''}
+                <span class="bio-badge${isRetired ? ' bio-badge--retired' : ''}">${statusLabel}</span>
+            </div>
+        </div>
+        <div class="bio-body">
+            ${bio ? `<div class="bio-section"><div class="bio-section-title">${lang === 'ky' ? 'Өмүр баяны' : 'Биография'}</div><p class="bio-text">${escapeHtml(bio)}</p></div>` : ''}
+            ${achArr.length ? `<div class="bio-section"><div class="bio-section-title">${lang === 'ky' ? 'Жетишкендиктер' : 'Достижения'}</div><ul class="bio-achievements">${achArr.map(ach => `<li>${escapeHtml(ach)}</li>`).join('')}</ul></div>` : ''}
+            ${!bio && !achArr.length ? `<p class="bio-text" style="color:#999;text-align:center;padding:12px 0">${lang === 'ky' ? 'Маалымат жок' : 'Информация не добавлена'}</p>` : ''}
+        </div>`;
+    const modal = document.getElementById('athleteBioModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAthleteBio(e) {
+    if (e && e.target !== document.getElementById('athleteBioModal')) return;
+    document.getElementById('athleteBioModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAthleteBio();
+});
+
+/* Minimal HTML sanitizer for user-generated rich text (news content).
+   Allows only safe formatting tags and strips all attributes. */
+function sanitizeHtml(html) {
+    if (!html) return '';
+    const ALLOWED = new Set(['P','BR','STRONG','B','EM','I','UL','OL','LI','H2','H3','H4','BLOCKQUOTE','SPAN']);
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('*').forEach(el => {
+        if (!ALLOWED.has(el.tagName)) {
+            el.replaceWith(document.createTextNode(el.textContent));
+        } else {
+            // strip every attribute — prevents onerror, onclick, style, etc.
+            Array.from(el.attributes).forEach(a => el.removeAttribute(a.name));
+        }
+    });
+    return wrap.innerHTML;
+}
+window.sanitizeHtml = sanitizeHtml;
+
+if (window.location.pathname === '/athletes' || window.location.pathname.endsWith('/athletes.html')) {
+    document.addEventListener('DOMContentLoaded', loadAthletesPage);
 }

@@ -1,0 +1,21 @@
+
+node_modules/
+data/
+uploads/
+.env
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.claude/
+*.mp4
+*.pdf
+Снимок*.png
+# Garbage files created by dev tooling (JS code fragments as filenames)
+(*
+{*
+w[*
+el.*
+sportRegistry*
+console.log*
+String(*

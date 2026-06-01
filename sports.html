@@ -6,7 +6,9 @@
     <title>Виды спорта — Дирекция национальных видов спорта</title>
     <meta name="description" content="Борьба курэш, стрельба из лука, конные скачки, мас-рестлинг, тогуз коргоол, хапсагай — традиционные виды спорта народов Кыргызстана.">
     <meta property="og:title" content="Виды спорта — Дирекция национальных видов спорта">
+    <meta property="og:description" content="Борьба курэш, стрельба из лука, конные скачки, мас-рестлинг, тогуз коргоол, хапсагай — традиционные виды спорта народов Кыргызстана.">
     <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1200&q=80">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +18,11 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/theme-blue.css">
+    <link rel="stylesheet" href="css/ux.css">
 </head>
 <body>
+    <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span></p></div></div></noscript>
+    <a href="#main-content" class="skip-link"><span class="t-ru">Перейти к содержимому</span><span class="t-ky">Мазмунга өтүү</span></a>
     <div class="ethno-border-top" aria-hidden="true"></div>
 
     <!-- Header -->
@@ -78,6 +83,7 @@
                                 <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
                             </ul>
                         </li>
+                        <li class="nav__item"><a href="athletes.html" class="nav__link"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
                         <li class="nav__item">
                             <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
                             <ul class="nav__dropdown">
@@ -90,7 +96,6 @@
                         <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
                     </ul>
                 </nav>
-                <a href="/admin" class="btn-admin">Админ</a>
                 <div class="lang-switcher">
                     <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
                     <span class="lang-sep">/</span>
@@ -124,7 +129,7 @@
     </section>
 
     <!-- Sports Details -->
-    <main>
+    <main id="main-content">
         <section class="sport-detail" id="kuresh">
             <div class="container">
                 <div class="sport-detail__inner">
@@ -310,14 +315,14 @@
                 <div class="footer__col">
                     <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
                     <ul class="footer__contacts">
-                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
-                        <li>📞 +996 (312) 123-456</li>
+                        <li>📍 <span class="t-ru">г. Бишкек, пр. Манаса, д. 40</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40</span></li>
+                        <li>📞 +996 (312) 65-88-00</li>
                         <li>✉️ info@natsport.kg</li>
                     </ul>
                 </div>
             </div>
             <div class="footer__bottom">
-                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+                <p>&copy; <span id="footer-year">2026</span> <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
             </div>
         </div>
     </footer>
@@ -327,6 +332,7 @@
     (function() {
         const grid = document.getElementById('sports-api-grid');
         const isKy = document.body.classList.contains('lang-ky');
+        function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
         fetch('/api/sports?status=published&limit=20')
             .then(r => r.json())
             .then(({ data }) => {
@@ -336,11 +342,11 @@
                 }
                 grid.innerHTML = data.map(s => `
                     <div class="sport-api-card reveal-on-scroll">
-                        ${s.image ? `<div class="sport-api-card__img"><img src="${s.image}" alt="${s.nameRu}" loading="lazy"></div>` : '<div class="sport-api-card__img sport-api-card__img--placeholder"><svg viewBox="0 0 60 60" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><circle cx="30" cy="30" r="27"/><circle cx="30" cy="30" r="12"/><circle cx="30" cy="30" r="4" fill="currentColor" stroke="none"/></svg></div>'}
+                        ${s.image ? `<div class="sport-api-card__img"><img src="${esc(s.image)}" alt="${esc(s.nameRu)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=60'"></div>` : '<div class="sport-api-card__img sport-api-card__img--placeholder"><svg viewBox="0 0 60 60" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><circle cx="30" cy="30" r="27"/><circle cx="30" cy="30" r="12"/><circle cx="30" cy="30" r="4" fill="currentColor" stroke="none"/></svg></div>'}
                         <div class="sport-api-card__body">
-                            <h3 class="sport-api-card__name"><span class="t-ru">${s.nameRu||''}</span><span class="t-ky">${s.nameKy||''}</span></h3>
-                            ${s.athletesCount ? `<div class="sport-api-card__count"><span class="t-ru">${s.athletesCount} спортсменов</span><span class="t-ky">${s.athletesCount} спортсмен</span></div>` : ''}
-                            <p class="sport-api-card__desc"><span class="t-ru">${(s.descriptionRu||'').slice(0,140)}${(s.descriptionRu||'').length>140?'…':''}</span><span class="t-ky">${(s.descriptionKy||'').slice(0,140)}${(s.descriptionKy||'').length>140?'…':''}</span></p>
+                            <h3 class="sport-api-card__name"><span class="t-ru">${esc(s.nameRu||'')}</span><span class="t-ky">${esc(s.nameKy||'')}</span></h3>
+                            ${s.athletesCount ? `<div class="sport-api-card__count"><span class="t-ru">${esc(s.athletesCount)} спортсменов</span><span class="t-ky">${esc(s.athletesCount)} спортсмен</span></div>` : ''}
+                            <p class="sport-api-card__desc"><span class="t-ru">${esc((s.descriptionRu||'').slice(0,140))}${(s.descriptionRu||'').length>140?'…':''}</span><span class="t-ky">${esc((s.descriptionKy||'').slice(0,140))}${(s.descriptionKy||'').length>140?'…':''}</span></p>
                         </div>
                     </div>
                 `).join('');
@@ -351,5 +357,6 @@
             });
     })();
     </script>
+    <script src="js/ux.js"></script>
 </body>
 </html>

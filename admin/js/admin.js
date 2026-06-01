@@ -7,6 +7,10 @@ let currentSearch = {};
 let drawerSection = null;
 let drawerItemId = null;
 let searchTimers = {};
+let cropperInstance = null;
+let cropCallback = null;
+let currentCropRatio = 16/9;
+const croppedBlobs = {};
 
 /* ── Section config ── */
 const CFG = {
@@ -61,26 +65,28 @@ const CFG = {
     ]
   },
   people: {
-    title:'Люди', hint:'Спортсмены, тренеры и сотрудники', api:'/api/people',
+    title:'Спортсмены', hint:'Спортсмены, тренеры и сотрудники', api:'/api/people',
     cols:[
       {key:'photo',label:'Фото',type:'img'},
       {key:'nameRu',label:'Имя',type:'name'},
       {key:'role',label:'Роль',type:'badge',map:{athlete:'Спортсмен',staff:'Сотрудник',coach:'Тренер'}},
       {key:'sportRu',label:'Вид спорта'},
-      {key:'titleRu',label:'Должность'}
+      {key:'careerStatus',label:'Статус',type:'badge',map:{active:'Активный',retired:'В отставке'}}
     ],
     filterKey:'role', filterOpts:[{v:'',l:'Все роли'},{v:'athlete',l:'Спортсмены'},{v:'coach',l:'Тренеры'},{v:'staff',l:'Сотрудники'}],
     fields:[
       {key:'nameRu',label:'Имя',lang:'ru',type:'text',req:true,ph:'ФИО на русском'},
       {key:'nameKy',label:'Аты-жөнү',lang:'ky',type:'text',req:true,ph:'Кыргызча аты-жөнү'},
       {key:'role',label:'Роль',type:'select',noLang:true,opts:[{v:'athlete',l:'Спортсмен'},{v:'coach',l:'Тренер'},{v:'staff',l:'Сотрудник'}]},
+      {key:'careerStatus',label:'Карьерный статус',type:'select',noLang:true,opts:[{v:'active',l:'Действующий'},{v:'retired',l:'В отставке'}]},
       {key:'titleRu',label:'Должность',lang:'ru',type:'text',ph:'Должность или звание'},
       {key:'titleKy',label:'Кызматы',lang:'ky',type:'text',ph:'Кызматы же наамы'},
       {key:'sportRu',label:'Вид спорта',lang:'ru',type:'text',ph:'Дисциплина'},
       {key:'sportKy',label:'Спорт түрү',lang:'ky',type:'text',ph:'Спорт тармагы'},
       {key:'bioRu',label:'Биография',lang:'ru',type:'textarea',ph:'Краткая биография...'},
       {key:'bioKy',label:'Өмүр баяны',lang:'ky',type:'textarea',ph:'Кыскача өмүр баяны...'},
-      {key:'achievements',label:'Достижения',type:'textarea',noLang:true,ph:'Медали, титулы, звания...'},
+      {key:'achievementsRu',label:'Достижения',lang:'ru',type:'textarea',ph:'Медали, титулы — по одному на строку'},
+      {key:'achievementsKy',label:'Жетишкендиктер',lang:'ky',type:'textarea',ph:'Медалдар, наамдар — ар бири жаңы сапта'},
       {key:'photo',label:'Фотография',type:'upload'}
     ]
   },
@@ -97,8 +103,10 @@ const CFG = {
       {key:'titleKy', label:'Аталышы', lang:'ky', type:'text', req:true, ph:'Слайддын аталышы'},
       {key:'subtitleRu', label:'Подзаголовок', lang:'ru', type:'textarea', ph:'Краткое описание'},
       {key:'subtitleKy', label:'Кыскача', lang:'ky', type:'textarea', ph:'Кыскача маалымат'},
-      {key:'order', label:'Порядок', type:'number', noLang:true},
-      {key:'image', label:'Фото слайда', type:'upload', req:true}
+      {key:'order',  label:'Порядок показа', type:'number', noLang:true},
+      {key:'active', label:'Статус слайда', type:'select', noLang:true,
+        opts:[{v:'true',l:'Активен — показывается на сайте'},{v:'false',l:'Скрыт — не показывается'}]},
+      {key:'image',  label:'Фото слайда', type:'upload', req:true}
     ]
   },
   sports: {
@@ -128,6 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function route() {
+  if (!token) token = localStorage.getItem('adminToken');
   if (!token) { showLogin(); return; }
   try {
     const r = await api('/api/auth/verify');
@@ -166,15 +175,23 @@ async function loadBadges() {
       if (el && r.total) el.textContent = r.total;
     } catch {}
   }
+  // Contacts: show count of unread messages
+  try {
+    const r = await api('/api/contact?limit=50');
+    const unread = (r.data || []).filter(m => !m.read).length;
+    const el = document.getElementById('badge-contacts');
+    if (el) el.textContent = unread || '';
+  } catch {}
 }
 
 /* ── Navigation ── */
 function navigate(section) {
   document.querySelectorAll('.sb-item').forEach(n => n.classList.toggle('active', n.dataset.section === section));
-  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Люди',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки'};
+  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения'};
   document.getElementById('topbar-section').textContent = labels[section] || section;
   if (section === 'dashboard') renderDashboard();
   else if (section === 'settings') renderSettings();
+  else if (section === 'contacts') renderContacts();
   else if (CFG[section]) renderSection(section);
 }
 
@@ -231,19 +248,19 @@ async function renderDashboard() {
 
   const newsList = (recentNews.data||[]).map(n => `
     <div class="dash-item" onclick="location.hash='news';navigate('news')">
-      ${n.image ? `<img class="dash-item-img" src="${n.image}" loading="lazy">` : '<div class="dash-item-img-ph">📰</div>'}
+      ${n.image ? `<img class="dash-item-img" src="${escapeHtml(n.image)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="dash-item-img-ph">📰</div>'}
       <div class="dash-item-txt">
-        <div class="dash-item-title">${n.titleRu||'Без заголовка'}</div>
+        <div class="dash-item-title">${escapeHtml(n.titleRu||'Без заголовка')}</div>
         <div class="dash-item-meta">${n.status==='published'?'✓ Опубликовано':'⬤ Черновик'} · ${n.createdAt?new Date(n.createdAt).toLocaleDateString('ru-RU'):''}</div>
       </div>
     </div>`).join('') || '<div class="empty" style="padding:24px"><p>Нет новостей</p></div>';
 
   const eventsList = (recentEvents.data||[]).map(n => `
     <div class="dash-item" onclick="location.hash='events';navigate('events')">
-      ${n.image ? `<img class="dash-item-img" src="${n.image}" loading="lazy">` : '<div class="dash-item-img-ph">📅</div>'}
+      ${n.image ? `<img class="dash-item-img" src="${escapeHtml(n.image)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="dash-item-img-ph">📅</div>'}
       <div class="dash-item-txt">
-        <div class="dash-item-title">${n.titleRu||'Без названия'}</div>
-        <div class="dash-item-meta">${n.date?new Date(n.date).toLocaleDateString('ru-RU'):''} ${n.location?`· ${n.location}`:''}</div>
+        <div class="dash-item-title">${escapeHtml(n.titleRu||'Без названия')}</div>
+        <div class="dash-item-meta">${n.date?new Date(n.date).toLocaleDateString('ru-RU'):''} ${n.location?`· ${escapeHtml(n.location)}`:''}</div>
       </div>
     </div>`).join('') || '<div class="empty" style="padding:24px"><p>Нет мероприятий</p></div>';
 
@@ -333,7 +350,7 @@ async function renderSection(section) {
         </div>
         ${data.length ? `<div class="gal-grid">${data.map(item=>`
           <div class="gal-item">
-            <img src="${item.image}" alt="${item.titleRu||''}" loading="lazy">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.titleRu||'')}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">
             <div class="gal-over">
               <button class="btn btn-icon" style="background:rgba(255,255,255,.9)" onclick="openDrawer('${section}','${item.id}')" title="Изменить">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -342,7 +359,7 @@ async function renderSection(section) {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
               </button>
             </div>
-            <div class="gal-cap">${item.titleRu||''}</div>
+            <div class="gal-cap">${escapeHtml(item.titleRu||'')}</div>
           </div>`).join('')}</div>` : '<div class="empty"><div class="empty-icon">🖼</div><h4>Нет фотографий</h4><p>Загрузите первое фото</p></div>'}
         ${totalPages>1 ? renderPager(section,pg,totalPages,total) : ''}
       </div>`;
@@ -387,12 +404,18 @@ async function renderSection(section) {
 
 function renderCell(col, item) {
   const v = item[col.key];
-  if (col.type === 'img') { const s = item.image||item.photo; return s ? `<img class="td-thumb" src="${s}" loading="lazy">` : '<div class="td-thumb-ph">📷</div>'; }
-  if (col.type === 'name') return `<div class="td-name">${v||'—'}</div><div class="td-meta">${item.titleKy||''}</div>`;
-  if (col.type === 'badge') { const l=col.map?.[v]||v||'—'; const cls={published:'b-pub',draft:'b-draft',athlete:'b-athlete',staff:'b-staff',coach:'b-coach'}[v]||'b-draft'; return `<span class="badge ${cls}">${l}</span>`; }
+  if (col.type === 'img') { const s = item.image||item.photo; return s ? `<img class="td-thumb" src="${escapeHtml(s)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">` : '<div class="td-thumb-ph">📷</div>'; }
+  if (col.type === 'name') return `<div class="td-name">${escapeHtml(v||'—')}</div><div class="td-meta">${escapeHtml(item.titleKy||'')}</div>`;
+  if (col.type === 'badge') {
+    const sv = String(v);
+    const l = col.map?.[sv] ?? col.map?.[v] ?? sv ?? '—';
+    const clsMap = {published:'b-pub', draft:'b-draft', athlete:'b-athlete', staff:'b-staff', coach:'b-coach', true:'b-pub', false:'b-draft', active:'b-pub', retired:'b-draft'};
+    const cls = clsMap[sv] || clsMap[v] || 'b-draft';
+    return `<span class="badge ${cls}">${escapeHtml(l)}</span>`;
+  }
   if (col.type === 'date') return v ? new Date(v).toLocaleDateString('ru-RU') : '—';
-  if (col.map) return col.map[v]||v||'—';
-  return v||'—';
+  if (col.map) return escapeHtml(col.map[v]||v||'—');
+  return escapeHtml(v||'—');
 }
 
 function renderPager(section, pg, total, count) {
@@ -413,6 +436,11 @@ function debounce(section) {
 async function openDrawer(section, id) {
   const cfg = CFG[section];
   drawerSection = section; drawerItemId = id||null;
+  const sectionRatios = { news: 16/9, events: 16/9, gallery: 4/3, people: 3/4, slides: 16/9 };
+  currentCropRatio = sectionRatios[section] || 16/9;
+  document.querySelectorAll('.crop-ratio-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', [16/9, 4/3, 1/1, 3/4][i] === currentCropRatio);
+  });
   let item = null;
   if (id) {
     try { item = await api(`${cfg.api}/${id}`); }
@@ -445,9 +473,13 @@ async function openDrawer(section, id) {
     body += genFields.map(f=>renderField(f,item)).join('');
   }
 
-  // Status toggle
-  const isPublished = item?.status === 'published';
-  body += `
+  // Status toggle — only for sections that use a 'status' field (not 'active' or no status)
+  const hasStatusField = cfg.fields.some(f => f.key === 'status') ||
+    (cfg.cols && cfg.cols.some(c => c.key === 'status'));
+  const usesActiveField = cfg.fields.some(f => f.key === 'active');
+  if (hasStatusField && !usesActiveField) {
+    const isPublished = item?.status === 'published';
+    body += `
     <div class="form-field">
       <label class="form-lbl">Статус публикации</label>
       <div class="status-toggle" id="status-toggle" onclick="toggleStatus(this)">
@@ -456,6 +488,7 @@ async function openDrawer(section, id) {
         <input type="hidden" name="status" id="status-val" value="${isPublished?'published':'draft'}">
       </div>
     </div>`;
+  }
 
   if (uploadField) body += renderField(uploadField, item);
   body += `</form>`;
@@ -463,12 +496,12 @@ async function openDrawer(section, id) {
   document.getElementById('drawer-body').innerHTML = body;
   document.getElementById('drawer-foot').innerHTML = `
     <button class="btn btn-outline" onclick="closeDrawer()">Отмена</button>
-    <button class="btn btn-save" onclick="document.getElementById('drawer-form').requestSubmit()">
+    <button class="btn btn-save" onclick="triggerDrawerSubmit()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       ${id ? 'Сохранить изменения' : 'Добавить запись'}
     </button>`;
 
-  setupUploadZone();
+  setupGridDragDrop();
   document.getElementById('drawer-bg').classList.add('open');
   document.getElementById('drawer').classList.add('open');
   document.getElementById('drawer-body').scrollTop = 0;
@@ -494,34 +527,50 @@ function renderField(f, item) {
       </div>
     </div>`;
   }
-  if (f.type === 'textarea') return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><textarea class="form-input" name="${f.key}" placeholder="${f.ph||''}" rows="4">${v}</textarea></div>`;
-  if (f.type === 'select') return `<div class="form-field"><label class="form-lbl">${f.label}</label><select class="form-input form-select" name="${f.key}">${(f.opts||[]).map(o=>`<option value="${o.v}"${v===o.v?' selected':''}>${o.l}</option>`).join('')}</select></div>`;
-  if (f.type === 'date') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="date" class="form-input" name="${f.key}" value="${v}"></div>`;
-  if (f.type === 'number') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="number" class="form-input" name="${f.key}" value="${v}" min="1"></div>`;
+  if (f.type === 'textarea') return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><textarea class="form-input" name="${f.key}" placeholder="${f.ph||''}" rows="4">${escapeHtml(v)}</textarea></div>`;
+  if (f.type === 'select') return `<div class="form-field"><label class="form-lbl">${f.label}</label><select class="form-input form-select" name="${f.key}">${(f.opts||[]).map(o=>`<option value="${o.v}"${String(v)===String(o.v)?' selected':''}>${o.l}</option>`).join('')}</select></div>`;
+  if (f.type === 'date') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="date" class="form-input" name="${f.key}" value="${escapeHtml(v)}"></div>`;
+  if (f.type === 'number') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="number" class="form-input" name="${f.key}" value="${escapeHtml(v)}" min="1"></div>`;
   if (f.type === 'upload') {
-    const src = item ? (item.image||item.photo) : null;
+    const existingImages = item
+      ? [item.image, ...(item.images || [])].filter(Boolean)
+      : [];
     const urlInput = drawerSection === 'slides' ? `
-      <div style="margin-top:12px">
-        <label class="form-lbl">Или вставьте URL фотографии</label>
+      <div class="form-field" style="margin-top:8px">
+        <label class="form-lbl">URL фото слайда</label>
         <input type="text" class="form-input" name="imageUrl"
-               placeholder="https://..."
-               value="${item?.imageUrl || (src && src.startsWith('http') ? src : '') || ''}"
-               oninput="previewFromUrl(this.value)">
+               placeholder="https://images.unsplash.com/..."
+               value="${item?.imageUrl || (existingImages[0] && existingImages[0].startsWith('http') ? existingImages[0] : '') || ''}">
       </div>` : '';
-    return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label>
-      <div class="upload-zone" id="upload-zone">
-        <input type="file" name="${f.key}" id="upload-input" accept="image/*">
-        <div class="upload-icon">📷</div>
-        <div class="upload-text"><strong>Нажмите</strong> или перетащите фото сюда</div>
-        <div class="upload-hint">JPG, PNG, WebP · до 5 МБ</div>
-        <div class="upload-preview" id="upload-preview" style="${src?'display:block':''}">
-          <img src="${src||''}" id="upload-preview-img" alt="Превью">
-          <button type="button" class="upload-remove" onclick="removePreview()" title="Удалить">✕</button>
+    return `
+      <div class="form-field">
+        <label class="form-lbl">${f.label}${f.req ? '<span>*</span>' : ''}</label>
+        <div class="img-grid" id="imgGrid-${f.key}">
+          ${existingImages.map((src, i) => `
+            <div class="img-grid-item">
+              <img src="${escapeHtml(src)}" alt="Фото ${i + 1}" onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">
+              <button type="button" class="img-grid-remove" onclick="removeGridImage(this,'${f.key}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              ${i === 0 ? '<span class="img-grid-main-badge">Обложка</span>' : ''}
+            </div>`).join('')}
+          <div class="img-grid-add" id="imgGridAdd-${f.key}" onclick="document.getElementById('imgInput-${f.key}').click()">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span>Добавить фото</span>
+          </div>
         </div>
-      </div>${urlInput}
-    </div>`;
+        <input type="file" id="imgInput-${f.key}" name="${f.key}" accept="image/*" multiple style="display:none" onchange="handleImageSelect(this,'${f.key}')">
+        <div class="img-url-row">
+          <input type="text" class="form-input img-url-input" id="imgUrl-${f.key}" placeholder="Или вставьте ссылку на фото (https://...)">
+          <button type="button" class="btn btn-outline btn-sm" onclick="addImageFromUrl('${f.key}')">Добавить</button>
+        </div>
+        <div id="imgHidden-${f.key}">
+          ${existingImages.map((src, i) => `<input type="hidden" name="${i === 0 ? f.key : 'images[]'}" value="${escapeHtml(src)}">`).join('')}
+        </div>
+        ${urlInput}
+      </div>`;
   }
-  return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><input type="text" class="form-input" name="${f.key}" value="${v}" placeholder="${f.ph||''}"></div>`;
+  return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><input type="text" class="form-input" name="${f.key}" value="${escapeHtml(v)}" placeholder="${f.ph||''}"></div>`;
 }
 
 function closeDrawer() {
@@ -550,49 +599,208 @@ function toggleStatus(wrap) {
 function edCmd(cmd, val=null) { document.execCommand(cmd, false, val); }
 function syncEd(el) { el.closest('.editor-wrap').querySelector('input[type=hidden]').value = el.innerHTML; }
 
-/* ── Upload drag & drop ── */
-function setupUploadZone() {
-  const zone = document.getElementById('upload-zone');
-  const input = document.getElementById('upload-input');
-  if (!zone || !input) return;
-  ['dragenter','dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('drag-over'); }));
-  ['dragleave','drop'].forEach(e => zone.addEventListener(e, () => zone.classList.remove('drag-over')));
-  zone.addEventListener('drop', ev => { ev.preventDefault(); const f=ev.dataTransfer.files[0]; if(f&&/image/.test(f.type)) showPreview(f); });
-  input.addEventListener('change', () => { if(input.files[0]) showPreview(input.files[0]); });
+/* ── Image grid upload ── */
+function handleImageSelect(input, fieldKey) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  input.value = '';
+  let index = 0;
+  function processNext() {
+    if (index >= files.length) return;
+    const file = files[index++];
+    if (!file.type.startsWith('image/')) { processNext(); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      openCropper(e.target.result, (croppedUrl, blob) => {
+        addImageToGrid(fieldKey, croppedUrl, true);
+        if (!croppedBlobs[fieldKey]) croppedBlobs[fieldKey] = [];
+        croppedBlobs[fieldKey].push({ blob, name: file.name });
+        processNext();
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+  processNext();
 }
 
-function showPreview(file) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const wrap = document.getElementById('upload-preview');
-    const img = document.getElementById('upload-preview-img');
-    if (wrap && img) { img.src = e.target.result; wrap.style.display = 'block'; }
-  };
-  reader.readAsDataURL(file);
+function openCropper(imageSrc, callback) {
+  cropCallback = callback;
+  const modal = document.getElementById('cropModal');
+  const img = document.getElementById('cropImage');
+  if (!modal || !img) { callback(imageSrc, null); return; }
+  img.src = imageSrc;
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+  function initCropper() {
+    cropperInstance = new Cropper(img, {
+      aspectRatio: currentCropRatio,
+      viewMode: 2,
+      dragMode: 'move',
+      autoCropArea: 0.85,
+      restore: false,
+      guides: true,
+      center: true,
+      highlight: true,
+      cropBoxMovable: true,
+      cropBoxResizable: true,
+      toggleDragModeOnDblclick: false
+    });
+  }
+  if (img.complete && img.naturalWidth) { initCropper(); } else { img.onload = initCropper; }
 }
 
-function removePreview() {
-  const wrap = document.getElementById('upload-preview');
-  const input = document.getElementById('upload-input');
-  if (wrap) wrap.style.display = 'none';
-  if (input) input.value = '';
+function setCropRatio(ratio, btn) {
+  currentCropRatio = ratio;
+  document.querySelectorAll('.crop-ratio-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (cropperInstance) cropperInstance.setAspectRatio(ratio);
 }
 
-function previewFromUrl(url) {
-  if (!url) return;
-  const img = document.getElementById('upload-preview-img');
-  const wrap = document.getElementById('upload-preview');
-  if (img && wrap) { img.src = url; wrap.style.display = 'block'; }
+function applyCrop() {
+  if (!cropperInstance) return;
+  const btn = document.getElementById('cropApplyBtn');
+  btn.disabled = true; btn.textContent = 'Обработка...';
+  const h = Math.round(1200 / currentCropRatio);
+  const canvas = cropperInstance.getCroppedCanvas({ width: 1200, height: h, imageSmoothingEnabled: true, imageSmoothingQuality: 'high', fillColor: '#fff' });
+  if (!canvas) { toast('Ошибка обрезки', 'e'); btn.disabled = false; btn.textContent = 'Применить обрезку'; return; }
+  const croppedUrl = canvas.toDataURL('image/jpeg', 0.92);
+  canvas.toBlob((blob) => {
+    if (cropCallback) cropCallback(croppedUrl, blob);
+    cancelCrop();
+    btn.disabled = false; btn.textContent = 'Применить обрезку';
+  }, 'image/jpeg', 0.92);
+}
+
+function cancelCrop() {
+  const modal = document.getElementById('cropModal');
+  if (modal) modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+  cropCallback = null;
+}
+
+function attachCroppedBlobs(fd) {
+  Object.keys(croppedBlobs).forEach(fieldKey => {
+    croppedBlobs[fieldKey].forEach((item, i) => {
+      const filename = `cropped_${Date.now()}_${i}.jpg`;
+      if (i === 0) { fd.set(fieldKey, item.blob, filename); }
+      else { fd.append('images[]', item.blob, filename); }
+    });
+    delete croppedBlobs[fieldKey];
+  });
+}
+
+function addImageToGrid(fieldKey, src, isFile) {
+  const grid = document.getElementById(`imgGrid-${fieldKey}`);
+  const addBtn = document.getElementById(`imgGridAdd-${fieldKey}`);
+  const hiddenContainer = document.getElementById(`imgHidden-${fieldKey}`);
+  if (!grid || !addBtn) return;
+  const isFirst = grid.querySelectorAll('.img-grid-item').length === 0;
+  const div = document.createElement('div');
+  div.className = 'img-grid-item';
+  div.dataset.src = src;
+  div.innerHTML = `
+    <img src="${src}" alt="Фото" onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">
+    <button type="button" class="img-grid-remove" onclick="removeGridImage(this,'${fieldKey}')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    ${isFirst ? '<span class="img-grid-main-badge">Обложка</span>' : ''}`;
+  grid.insertBefore(div, addBtn);
+  if (!isFile && hiddenContainer) {
+    const inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = isFirst ? fieldKey : 'images[]';
+    inp.value = src;
+    hiddenContainer.appendChild(inp);
+  }
+  updateMainBadge(fieldKey);
+}
+
+function addImageFromUrl(fieldKey) {
+  const urlInput = document.getElementById(`imgUrl-${fieldKey}`);
+  if (!urlInput) return;
+  const url = urlInput.value.trim();
+  if (!url || !url.startsWith('http')) { toast('Введите корректный URL', 'e'); return; }
+  addImageToGrid(fieldKey, url, false);
+  urlInput.value = '';
+}
+
+function removeGridImage(btn, fieldKey) {
+  btn.closest('.img-grid-item')?.remove();
+  updateMainBadge(fieldKey);
+  rebuildHiddenInputs(fieldKey);
+}
+
+function rebuildHiddenInputs(fieldKey) {
+  const container = document.getElementById(`imgHidden-${fieldKey}`);
+  const grid = document.getElementById(`imgGrid-${fieldKey}`);
+  if (!container || !grid) return;
+  container.innerHTML = '';
+  grid.querySelectorAll('.img-grid-item').forEach((item, i) => {
+    const src = item.dataset.src || item.querySelector('img')?.src;
+    if (!src || src.startsWith('data:')) return;
+    const inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = i === 0 ? fieldKey.replace('imgGrid-', '') : 'images[]';
+    inp.value = src;
+    container.appendChild(inp);
+  });
+}
+
+function updateMainBadge(fieldKey) {
+  const grid = document.getElementById(`imgGrid-${fieldKey}`);
+  if (!grid) return;
+  grid.querySelectorAll('.img-grid-item').forEach((item, i) => {
+    const existing = item.querySelector('.img-grid-main-badge');
+    if (i === 0) {
+      if (!existing) { const b = document.createElement('span'); b.className = 'img-grid-main-badge'; b.textContent = 'Обложка'; item.appendChild(b); }
+    } else { existing?.remove(); }
+  });
+}
+
+function setupGridDragDrop() {
+  document.querySelectorAll('.img-grid').forEach(grid => {
+    const fieldKey = grid.id.replace('imgGrid-', '');
+    grid.addEventListener('dragover', e => { e.preventDefault(); grid.classList.add('drag-over'); });
+    ['dragleave', 'dragend'].forEach(ev => grid.addEventListener(ev, () => grid.classList.remove('drag-over')));
+    grid.addEventListener('drop', e => {
+      e.preventDefault();
+      grid.classList.remove('drag-over');
+      Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = ev => addImageToGrid(fieldKey, ev.target.result, true);
+        reader.readAsDataURL(file);
+      });
+    });
+  });
+}
+
+/* ── Trigger drawer form submit (cross-browser) ── */
+function triggerDrawerSubmit() {
+  const form = document.getElementById('drawer-form');
+  if (!form) return;
+  if (typeof form.requestSubmit === 'function') {
+    // Modern browsers: triggers validation + submit event
+    form.requestSubmit();
+  } else {
+    // Fallback for Safari < 16: dispatch submit event manually
+    // onsubmit="submitDrawer(event)" will be invoked by the browser
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  }
 }
 
 /* ── Submit ── */
 async function submitDrawer(e) {
   e.preventDefault();
   const cfg = CFG[drawerSection];
+  // Ensure rich-text editors are synced into their hidden inputs before reading FormData
+  e.target.querySelectorAll('.editor-area').forEach(syncEd);
   const btn = document.querySelector('#drawer-foot .btn-save');
   btn.disabled=true; btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .7s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Сохранение...';
 
   const fd = new FormData(e.target);
+  attachCroppedBlobs(fd);
   const url = drawerItemId ? `${cfg.api}/${drawerItemId}` : cfg.api;
   const method = drawerItemId ? 'PUT' : 'POST';
   try {
@@ -629,6 +837,112 @@ async function doDelete(section, id) {
 
 function closeConfirm() { document.getElementById('dialog-wrap').classList.add('hidden'); }
 
+/* ── HTML escape (coerces any type to string — safe for numbers/dates) ── */
+function escapeHtml(s) { return String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ── Contacts (inbox) ── */
+function escA(s) { return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDt(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  return isNaN(d) ? '' : d.toLocaleDateString('ru-RU', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+async function renderContacts() {
+  const c = document.getElementById('content');
+  c.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div></div>';
+  let data = [], total = 0;
+  try {
+    const r = await api('/api/contact?limit=100');
+    data = r.data || [];
+    total = r.total || 0;
+  } catch { toast('Ошибка загрузки','e'); return; }
+
+  const unread = data.filter(m => !m.read).length;
+
+  c.innerHTML = `
+    <div class="page-head">
+      <div class="page-head-txt">
+        <h2>Обращения ${unread > 0 ? `<span style="background:#e53e3e;color:#fff;padding:2px 8px;border-radius:12px;font-size:.75rem;vertical-align:middle">${unread} новых</span>` : ''}</h2>
+        <p>Сообщения с формы обратной связи — всего: ${total}</p>
+      </div>
+    </div>
+    ${!data.length
+      ? '<p style="text-align:center;padding:80px;opacity:.4;font-size:1.1rem">Обращений пока нет</p>'
+      : `<div class="table-wrap">
+          <table class="data-table" style="table-layout:fixed;width:100%">
+            <colgroup>
+              <col style="width:8px">
+              <col style="width:150px">
+              <col style="width:180px">
+              <col style="width:160px">
+              <col>
+              <col style="width:130px">
+              <col style="width:80px">
+            </colgroup>
+            <thead><tr>
+              <th></th>
+              <th>Имя</th>
+              <th>Email</th>
+              <th>Тема</th>
+              <th>Сообщение</th>
+              <th>Дата</th>
+              <th></th>
+            </tr></thead>
+            <tbody>
+              ${data.map(m => `
+                <tr id="crow-${escA(m.id)}" style="${m.read ? '' : 'font-weight:600;background:var(--color-accent,#eef2ff)'}">
+                  <td style="padding:0 6px">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${m.read ? '#ccc' : '#e53e3e'}"></span>
+                  </td>
+                  <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escA(m.name)}">${escA(m.name)}</td>
+                  <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                    <a href="mailto:${escA(m.email)}" style="color:var(--color-primary)">${escA(m.email)}</a>
+                  </td>
+                  <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escA(m.subject)}">${escA(m.subject || '—')}</td>
+                  <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escA(m.message)}">${escA(m.message)}</td>
+                  <td style="font-size:.8rem;color:#666;white-space:nowrap">${fmtDt(m.createdAt)}</td>
+                  <td style="white-space:nowrap;text-align:right">
+                    ${!m.read ? `<button class="btn btn-icon" title="Прочитано" onclick="markContactRead('${escA(m.id)}')">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>` : ''}
+                    <button class="btn btn-icon-danger" title="Удалить" style="color:#e53e3e" onclick="deleteContact('${escA(m.id)}')">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    </button>
+                  </td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`}`;
+}
+
+async function markContactRead(id) {
+  try {
+    await api(`/api/contact/${id}/read`, 'PATCH', {});
+    const row = document.getElementById(`crow-${id}`);
+    if (row) {
+      row.style.fontWeight = '';
+      row.style.background = '';
+      const dot = row.querySelector('span[style*="border-radius:50%"]');
+      if (dot) dot.style.background = '#ccc';
+      const readBtn = row.querySelector('.btn-icon');
+      if (readBtn && readBtn.title === 'Прочитано') readBtn.remove();
+    }
+    toast('Отмечено как прочитанное');
+    loadBadges();
+  } catch { toast('Ошибка','e'); }
+}
+
+async function deleteContact(id) {
+  if (!confirm('Удалить это обращение?')) return;
+  try {
+    await api(`/api/contact/${id}`, 'DELETE');
+    document.getElementById(`crow-${id}`)?.remove();
+    toast('Удалено');
+    loadBadges();
+  } catch { toast('Ошибка','e'); }
+}
+
 /* ── Settings ── */
 async function renderSettings() {
   const c = document.getElementById('content');
@@ -643,10 +957,10 @@ async function renderSettings() {
         <div class="settings-card-head"><h3>Контактная информация</h3><p>Адрес, телефон и почта</p></div>
         <div class="settings-card-body">
           <form onsubmit="saveSettings(event)">
-            <div class="form-field"><label class="form-lbl">Email</label><input class="form-input" name="email" value="${s.email||''}" type="email"></div>
-            <div class="form-field"><label class="form-lbl">Телефон</label><input class="form-input" name="phone" value="${s.phone||''}"></div>
-            <div class="form-field"><label class="form-lbl">Адрес (RU)</label><input class="form-input" name="addressRu" value="${s.address?.ru||''}"></div>
-            <div class="form-field"><label class="form-lbl">Адрес (KY)</label><input class="form-input" name="addressKy" value="${s.address?.ky||''}"></div>
+            <div class="form-field"><label class="form-lbl">Email</label><input class="form-input" name="email" value="${escapeHtml(s.email||'')}" type="email"></div>
+            <div class="form-field"><label class="form-lbl">Телефон</label><input class="form-input" name="phone" value="${escapeHtml(s.phone||'')}"></div>
+            <div class="form-field"><label class="form-lbl">Адрес (RU)</label><input class="form-input" name="addressRu" value="${escapeHtml(s.address?.ru||'')}"></div>
+            <div class="form-field"><label class="form-lbl">Адрес (KY)</label><input class="form-input" name="addressKy" value="${escapeHtml(s.address?.ky||'')}"></div>
             <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
           </form>
         </div>
@@ -656,9 +970,9 @@ async function renderSettings() {
           <div class="settings-card-head"><h3>Социальные сети</h3></div>
           <div class="settings-card-body">
             <form onsubmit="saveSettings(event)">
-              <div class="form-field"><label class="form-lbl">ВКонтакте</label><input class="form-input" name="socialVk" value="${s.socialVk||''}" placeholder="https://vk.com/..."></div>
-              <div class="form-field"><label class="form-lbl">Telegram</label><input class="form-input" name="socialTelegram" value="${s.socialTelegram||''}" placeholder="@channel"></div>
-              <div class="form-field"><label class="form-lbl">Instagram</label><input class="form-input" name="socialInstagram" value="${s.socialInstagram||''}" placeholder="@account"></div>
+              <div class="form-field"><label class="form-lbl">ВКонтакте</label><input class="form-input" name="socialVk" value="${escapeHtml(s.socialVk||'')}" placeholder="https://vk.com/..."></div>
+              <div class="form-field"><label class="form-lbl">Telegram</label><input class="form-input" name="socialTelegram" value="${escapeHtml(s.socialTelegram||'')}" placeholder="@channel"></div>
+              <div class="form-field"><label class="form-lbl">Instagram</label><input class="form-input" name="socialInstagram" value="${escapeHtml(s.socialInstagram||'')}" placeholder="@account"></div>
               <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
             </form>
           </div>

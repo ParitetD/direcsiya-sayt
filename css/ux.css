@@ -1,0 +1,183 @@
+/* ==========================================================================
+   UX Enhancements — scroll-to-top, skip-link, cookie-banner, breadcrumbs
+   ========================================================================== */
+
+/* ── Skip Link (accessibility) ── */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-primary, #8B2500);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 10000;
+    text-decoration: none;
+    transition: top 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* ── Scroll to Top Button ── */
+.scroll-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary, #8B2500);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(139, 37, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+.scroll-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.scroll-top:hover {
+    background: #B83000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(139, 37, 0, 0.4);
+}
+.scroll-top:active {
+    transform: translateY(0);
+}
+
+/* ── Cookie Banner ── */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-white, #fff);
+    border-top: 3px solid var(--color-secondary, #C8963E);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
+    z-index: 9998;
+    padding: 1rem 0;
+    animation: slideUp 0.4s ease;
+}
+.cookie-banner.hidden {
+    display: none;
+}
+.cookie-banner__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+.cookie-banner__inner p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text, #2C2C2C);
+    line-height: 1.5;
+    flex: 1;
+    min-width: 280px;
+}
+.cookie-banner__btn {
+    background: var(--color-primary, #8B2500);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.8rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+.cookie-banner__btn:hover {
+    background: #B83000;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── Breadcrumbs ── */
+.breadcrumbs {
+    padding: 1rem 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #888);
+}
+.breadcrumbs__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.breadcrumbs__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.breadcrumbs__list li + li::before {
+    content: '›';
+    color: var(--color-text-muted, #888);
+    margin-right: 0.1rem;
+}
+.breadcrumbs__list a {
+    color: var(--color-text-muted, #888);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.breadcrumbs__list a:hover {
+    color: var(--color-primary, #8B2500);
+}
+.breadcrumbs__list li:last-child {
+    color: var(--color-text, #2C2C2C);
+    font-weight: 500;
+}
+
+/* ── Footer contact icons (replace emoji) ── */
+.footer__contacts li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.footer__contacts .contact-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--color-secondary, #C8963E);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .scroll-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 42px;
+        height: 42px;
+    }
+    .cookie-banner__inner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .cookie-banner__btn {
+        width: 100%;
+    }
+}

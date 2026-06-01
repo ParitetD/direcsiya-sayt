@@ -1,18 +1,86 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/* ── Security middleware ── */
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:     ["'self'"],
+      scriptSrc:      ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr:  ["'unsafe-inline'"],
+      styleSrc:       ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc:        ["'self'", "https://fonts.gstatic.com"],
+      imgSrc:         ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://loremflickr.com"],
+      connectSrc:     ["'self'"],
+      frameSrc:       ["https://www.openstreetmap.org"],
+      objectSrc:      ["'none'"],
+      baseUri:        ["'self'"],
+      formAction:     ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+
+/* ── Page routes ── */
+app.get('/athletes', (req, res) => res.sendFile(path.join(__dirname, 'athletes.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
+
+/* ── Static files (before admin SPA fallback) ── */
 app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+/* ── Admin SPA fallback: only for non-file paths (no extension) ── */
+app.get('/admin/*', (req, res) => {
+  // If the path has a file extension (css, js, png, etc), it's a missing static file — 404
+  if (path.extname(req.path)) {
+    return res.status(404).send('Not found');
+  }
+  res.sendFile(path.join(__dirname, 'admin', 'index.html'));
+});
+
+/* ── Rate limiting ── */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Слишком много попыток входа. Попробуйте позже.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: { error: 'Слишком много сообщений. Попробуйте через час.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/auth/login', authLimiter);
+app.use('/api/contact', contactLimiter);
+app.use('/api/', apiLimiter);
+
+/* ── Data directories & defaults ── */
 const dirs = ['data', 'uploads/news', 'uploads/events', 'uploads/gallery', 'uploads/people', 'uploads/sports', 'uploads/slides'];
 dirs.forEach(d => { if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true }); });
 
@@ -36,12 +104,14 @@ Object.entries(dataDefaults).forEach(([file, def]) => {
   if (!fs.existsSync(file)) fs.writeFileSync(file, JSON.stringify(def, null, 2));
 });
 
+/* ── Init auth with env-based password ── */
 async function initAuth() {
   const f = 'data/auth.json';
+  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'admin123';
   if (!fs.existsSync(f)) {
-    const hash = await bcrypt.hash('admin123', 10);
+    const hash = await bcrypt.hash(defaultPassword, 10);
     fs.writeFileSync(f, JSON.stringify({ username: 'admin', password: hash }, null, 2));
-    console.log('Default admin created: admin / admin123');
+    console.log('⚠ Default admin created — change password after first login!');
   } else {
     const auth = JSON.parse(fs.readFileSync(f, 'utf8'));
     if (!auth.password.startsWith('$2a$')) {
@@ -51,6 +121,7 @@ async function initAuth() {
   }
 }
 
+/* ── API routes ── */
 app.use('/api/auth', require('./api/auth'));
 app.use('/api/news', require('./api/news'));
 app.use('/api/events', require('./api/events'));
@@ -61,12 +132,41 @@ app.use('/api/sports', require('./api/sports'));
 app.use('/api/slides', require('./api/slides'));
 app.use('/api/contact', require('./api/contact'));
 
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
-app.get('/admin/*', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
+/* ── Page routes moved before static middleware ── */
 
+/* ── SEO static files ── */
+app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').sendFile(path.join(__dirname, 'sitemap.xml'));
+});
+
+/* ── 404 handler ── */
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
+
+/* ── Global error handler ── */
+app.use((err, req, res, next) => {
+  console.error('[Server Error]', err.message);
+  res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+});
+
+/* ── Start ── */
 initAuth().then(() => {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Server: http://localhost:${PORT}`);
     console.log(`Admin:  http://localhost:${PORT}/admin`);
+  });
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n❌ Порт ${PORT} уже занят!`);
+      console.error('Решение: закройте другой процесс или выполните:');
+      console.error('  taskkill /F /IM node.exe');
+      console.error('  npm start\n');
+      process.exit(1);
+    } else {
+      console.error('[Server Error]', err.message);
+      process.exit(1);
+    }
   });
 }).catch(console.error);

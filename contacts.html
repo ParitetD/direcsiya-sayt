@@ -6,7 +6,9 @@
     <title>Контакты — Дирекция национальных видов спорта</title>
     <meta name="description" content="Контакты Дирекции национальных видов спорта. Адрес, телефон, электронная почта. Форма обратной связи.">
     <meta property="og:title" content="Контакты — Дирекция национальных видов спорта">
+    <meta property="og:description" content="Контакты Дирекции национальных видов спорта. Адрес, телефон, электронная почта. Форма обратной связи.">
     <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1200&q=80">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +18,11 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/theme-blue.css">
+    <link rel="stylesheet" href="css/ux.css">
 </head>
 <body>
+    <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span></p></div></div></noscript>
+    <a href="#main-content" class="skip-link"><span class="t-ru">Перейти к содержимому</span><span class="t-ky">Мазмунга өтүү</span></a>
     <div class="ethno-border-top" aria-hidden="true"></div>
 
     <header class="header" id="header">
@@ -77,6 +82,7 @@
                                 <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
                             </ul>
                         </li>
+                        <li class="nav__item"><a href="athletes.html" class="nav__link"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
                         <li class="nav__item">
                             <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
                             <ul class="nav__dropdown">
@@ -89,7 +95,6 @@
                         <li class="nav__item"><a href="contacts.html" class="nav__link nav__link--active"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
                     </ul>
                 </nav>
-                <a href="/admin" class="btn-admin">Админ</a>
                 <div class="lang-switcher">
                     <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
                     <span class="lang-sep">/</span>
@@ -106,7 +111,7 @@
         </div>
     </section>
 
-    <main>
+    <main id="main-content">
         <section class="section">
             <div class="container">
                 <div class="contact-grid">
@@ -119,7 +124,7 @@
                             </div>
                             <div class="contact-info__text">
                                 <h4><span class="t-ru">Адрес</span><span class="t-ky">Дарек</span></h4>
-                                <p>г. Бишкек, пр. Манаса, д. 40<br>Индекс: 720040</p>
+                                <p><span class="t-ru">г. Бишкек, пр. Манаса, д. 40<br>Индекс: 720040</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40<br>Индекс: 720040</span></p>
                             </div>
                         </div>
                         <div class="contact-info__item">
@@ -187,11 +192,23 @@
                     </div>
                 </div>
 
-                <div class="map-placeholder">
-                    <div class="map-placeholder__text">
-                        <p>📍</p>
-                        <p><span class="t-ru">Карта расположения офиса</span><span class="t-ky">Кеңселик картасы</span><br><small>г. Бишкек, пр. Манаса, д. 40</small></p>
-                    </div>
+                <div class="map-embed">
+                    <iframe
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=74.5757%2C42.8676%2C74.6057%2C42.8796&amp;layer=mapnik&amp;marker=42.8736%2C74.5907"
+                        width="100%" height="400"
+                        style="border:none;border-radius:12px;display:block;"
+                        loading="lazy"
+                        title="Расположение офиса — г. Бишкек, пр. Манаса, д. 40"
+                        aria-label="Карта расположения офиса Дирекции спорта КР"
+                    ></iframe>
+                    <p class="map-caption">
+                        <span class="t-ru">г. Бишкек, пр. Манаса, д. 40 —
+                            <a href="https://www.openstreetmap.org/?mlat=42.8736&mlon=74.5907#map=16/42.8736/74.5907" target="_blank" rel="noopener">Открыть на карте →</a>
+                        </span>
+                        <span class="t-ky">Бишкек ш., Манас даңгыры, 40 —
+                            <a href="https://www.openstreetmap.org/?mlat=42.8736&mlon=74.5907#map=16/42.8736/74.5907" target="_blank" rel="noopener">Картадан ачуу →</a>
+                        </span>
+                    </p>
                 </div>
             </div>
         </section>
@@ -254,14 +271,14 @@
                 <div class="footer__col">
                     <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
                     <ul class="footer__contacts">
-                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
-                        <li>📞 +996 (312) 123-456</li>
+                        <li>📍 <span class="t-ru">г. Бишкек, пр. Манаса, д. 40</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40</span></li>
+                        <li>📞 +996 (312) 65-88-00</li>
                         <li>✉️ info@natsport.kg</li>
                     </ul>
                 </div>
             </div>
             <div class="footer__bottom">
-                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+                <p>&copy; <span id="footer-year">2026</span> <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
             </div>
         </div>
     </footer>
@@ -274,9 +291,11 @@
         const lang = localStorage.getItem('site-lang') || 'ru';
         if (s.address) {
             const addrEl = document.querySelector('.contact-info__item:first-child .contact-info__text p');
-            if (addrEl) addrEl.innerHTML = (lang === 'ky' ? s.address.ky : s.address.ru) || addrEl.innerHTML;
+            const addrText = (lang === 'ky' ? s.address.ky : s.address.ru);
+            if (addrEl && addrText) addrEl.textContent = addrText;
         }
     }).catch(() => {});
     </script>
+    <script src="js/ux.js"></script>
 </body>
 </html>

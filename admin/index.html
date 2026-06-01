@@ -7,7 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="/admin/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 </head>
 <body>
 
@@ -16,15 +17,7 @@
   <div class="login-bg" aria-hidden="true"></div>
   <div class="login-card">
     <div class="login-brand">
-      <div class="login-emblem" aria-hidden="true">
-        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-          <circle cx="26" cy="26" r="24" stroke="#C8963E" stroke-width="1.5" opacity=".5"/>
-          <circle cx="26" cy="26" r="16" stroke="#8B2500" stroke-width="1.5"/>
-          <line x1="26" y1="2" x2="26" y2="50" stroke="#8B2500" stroke-width="1.2" opacity=".4"/>
-          <line x1="2" y1="26" x2="50" y2="26" stroke="#8B2500" stroke-width="1.2" opacity=".4"/>
-          <circle cx="26" cy="26" r="5" fill="#8B2500"/>
-        </svg>
-      </div>
+      <img src="/logo.png" alt="ДНВС" class="login-logo">
       <div>
         <h1 class="login-title">Дирекция спорта КР</h1>
         <p class="login-sub">Система управления сайтом</p>
@@ -49,9 +42,8 @@
         </div>
       </div>
       <div id="login-error" class="login-err hidden"></div>
-      <button type="submit" class="btn-login" id="login-btn">Войти в систему</button>
+      <button type="button" class="btn-login" id="login-btn" onclick="handleLogin(event)">Войти в систему</button>
     </form>
-    <p class="login-hint">По умолчанию: admin / admin123</p>
   </div>
 </div>
 
@@ -62,7 +54,7 @@
   <aside class="sb" id="sidebar">
     <div class="sb-top">
       <div class="sb-brand">
-        <img src="/logo.png" alt="ДНВС" style="width:36px;height:36px;object-fit:contain;border-radius:50%;flex-shrink:0" onerror="this.style.display='none'">
+        <img src="/logo.png" alt="ДНВС" style="width:40px;height:40px;object-fit:contain;flex-shrink:0" onerror="this.style.display='none'">
         <div class="sb-brand-txt">
           <span class="sb-bname">Дирекция спорта</span>
           <span class="sb-brole">Панель управления</span>
@@ -96,7 +88,7 @@
       </a>
       <a href="#people" class="sb-item" data-section="people">
         <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <span>Люди</span>
+        <span>Спортсмены</span>
         <span class="sb-badge" id="badge-people"></span>
       </a>
       <a href="#slides" class="sb-item" data-section="slides">
@@ -108,6 +100,11 @@
         <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
         <span>Виды спорта</span>
         <span class="sb-badge" id="badge-sports"></span>
+      </a>
+      <a href="#contacts" class="sb-item" data-section="contacts">
+        <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Обращения</span>
+        <span class="sb-badge" id="badge-contacts"></span>
       </a>
       <p class="sb-group-lbl" style="margin-top:8px">Система</p>
       <a href="#settings" class="sb-item" data-section="settings">
@@ -183,6 +180,48 @@
 <!-- ═══ TOASTS ═══ -->
 <div id="toasts" class="toasts" aria-live="polite"></div>
 
-<script src="js/admin.js"></script>
+<!-- ═══ CROP MODAL ═══ -->
+<div class="crop-modal hidden" id="cropModal">
+  <div class="crop-modal-inner">
+    <div class="crop-modal-head">
+      <div>
+        <h3 class="crop-title">Обрезка фотографии</h3>
+        <p class="crop-subtitle">Выберите нужную область — все фото будут одного формата</p>
+      </div>
+      <button class="crop-close" onclick="cancelCrop()" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="crop-ratios">
+      <button class="crop-ratio-btn active" onclick="setCropRatio(16/9,this)"><span class="ratio-preview ratio-16-9"></span>16:9</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(4/3,this)"><span class="ratio-preview ratio-4-3"></span>4:3</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(1/1,this)"><span class="ratio-preview ratio-1-1"></span>1:1</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(3/4,this)"><span class="ratio-preview ratio-3-4"></span>3:4</button>
+    </div>
+    <div class="crop-canvas-wrap">
+      <img id="cropImage" src="" alt="crop">
+    </div>
+    <div class="crop-tools">
+      <button class="crop-tool-btn" onclick="cropperInstance&&cropperInstance.rotate(-90)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Влево
+      </button>
+      <button class="crop-tool-btn" onclick="cropperInstance&&cropperInstance.rotate(90)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>Вправо
+      </button>
+      <button class="crop-tool-btn" onclick="cropperInstance&&cropperInstance.reset()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Сбросить
+      </button>
+    </div>
+    <div class="crop-actions">
+      <button class="btn btn-outline" onclick="cancelCrop()">Отмена</button>
+      <button class="btn btn-primary" onclick="applyCrop()" id="cropApplyBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Применить обрезку
+      </button>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script src="/admin/js/admin.js"></script>
 </body>
 </html>

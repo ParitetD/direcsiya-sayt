@@ -4,7 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
-const SECRET = process.env.JWT_SECRET || 'aurora-sport-kg-2025';
+const SECRET = process.env.JWT_SECRET;
+if (!SECRET) {
+  console.error('❌ JWT_SECRET is not set in .env — server cannot start securely');
+  process.exit(1);
+}
 const AUTH_FILE = 'data/auth.json';
 
 function readAuth() { return JSON.parse(fs.readFileSync(AUTH_FILE, 'utf8')); }

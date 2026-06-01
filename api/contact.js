@@ -20,7 +20,8 @@ router.post('/', (req, res) => {
   if (!emailRe.test(email)) {
     return res.status(400).json({ error: 'Некорректный email' });
   }
-  const items = read();
+  const MAX_CONTACTS = 500;
+  let items = read();
   items.unshift({
     id: Date.now().toString(),
     name: String(name).slice(0, 200),
@@ -30,6 +31,8 @@ router.post('/', (req, res) => {
     read: false,
     createdAt: new Date().toISOString()
   });
+  // Keep only the most recent MAX_CONTACTS entries to prevent unbounded growth
+  if (items.length > MAX_CONTACTS) items = items.slice(0, MAX_CONTACTS);
   write(items);
   res.json({ success: true });
 });

@@ -6,7 +6,9 @@
     <title>Новости — Дирекция национальных видов спорта КР</title>
     <meta name="description" content="Последние новости Дирекции национальных видов спорта Кыргызской Республики. Соревнования, достижения спортсменов, анонсы мероприятий.">
     <meta property="og:title" content="Новости — Дирекция национальных видов спорта КР">
+    <meta property="og:description" content="Последние новости Дирекции национальных видов спорта Кыргызской Республики. Соревнования, достижения спортсменов, анонсы мероприятий.">
     <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1200&q=80">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +18,11 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/theme-blue.css">
+    <link rel="stylesheet" href="css/ux.css">
 </head>
 <body>
+    <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span></p></div></div></noscript>
+    <a href="#main-content" class="skip-link"><span class="t-ru">Перейти к содержимому</span><span class="t-ky">Мазмунга өтүү</span></a>
     <div class="ethno-border-top" aria-hidden="true"></div>
 
     <header class="header" id="header">
@@ -42,7 +47,7 @@
                             <a href="sports.html" class="nav__link"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
                             <ul class="nav__dropdown">
                                 <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
-                                <li><a href="sports.html#archery"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
                                 <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
                                 <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
                                 <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
@@ -63,7 +68,7 @@
                             <ul class="nav__dropdown">
                                 <li><a href="gallery.html"><span class="t-ru">Все фото</span><span class="t-ky">Бардык сүрөттөр</span></a></li>
                                 <li><a href="gallery.html"><span class="t-ru">Борьба</span><span class="t-ky">Күрөш</span></a></li>
-                                <li><a href="gallery.html"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                                <li><a href="gallery.html"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
                                 <li><a href="gallery.html"><span class="t-ru">Конные игры</span><span class="t-ky">Ат оюндары</span></a></li>
                                 <li><a href="gallery.html"><span class="t-ru">Праздники</span><span class="t-ky">Майрамдар</span></a></li>
                             </ul>
@@ -77,6 +82,7 @@
                                 <li><a href="news.html"><span class="t-ru">Молодёжный спорт</span><span class="t-ky">Жаштар спорту</span></a></li>
                             </ul>
                         </li>
+                        <li class="nav__item"><a href="athletes.html" class="nav__link"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
                         <li class="nav__item">
                             <a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span> <span class="nav__arrow">▾</span></a>
                             <ul class="nav__dropdown">
@@ -89,7 +95,6 @@
                         <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
                     </ul>
                 </nav>
-                <a href="/admin" class="btn-admin">Админ</a>
                 <div class="lang-switcher">
                     <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
                     <span class="lang-sep">/</span>
@@ -106,12 +111,61 @@
         </div>
     </section>
 
-    <main>
+    <!-- News detail modal -->
+    <div class="news-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" hidden>
+        <div class="news-modal__backdrop" onclick="closeNewsModal()"></div>
+        <article class="news-modal__box">
+            <button class="news-modal__close" onclick="closeNewsModal()" aria-label="Закрыть">✕</button>
+            <div class="news-modal__img-wrap" id="newsModalImg"></div>
+            <div class="news-modal__body">
+                <div class="news-modal__meta">
+                    <time class="news-modal__date" id="newsModalDate"></time>
+                    <span class="news-modal__cat" id="newsModalCat"></span>
+                </div>
+                <h2 class="news-modal__title" id="newsModalTitle"></h2>
+                <div class="news-modal__content" id="newsModalContent"></div>
+            </div>
+        </article>
+    </div>
+
+    <main id="main-content">
         <section class="section">
             <div class="container">
-                <div class="news-page-grid" id="news-list">
 
-                    <!-- Featured news -->
+                <!-- Search + category filter toolbar -->
+                <div class="news-toolbar">
+                    <div class="news-search-wrap">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="newsSearchInput" class="news-search-input"
+                            placeholder="Поиск новостей..."
+                            data-ph-ru="Поиск новостей..." data-ph-ky="Жаңылыктарды издөө..."
+                            autocomplete="off" oninput="newsSearch(this.value)">
+                    </div>
+                    <div class="news-cats" id="newsCats">
+                        <button class="news-cat active" data-cat="" onclick="newsCat('',this)"><span class="t-ru">Все</span><span class="t-ky">Баары</span></button>
+                        <button class="news-cat" data-cat="news" onclick="newsCat('news',this)"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></button>
+                        <button class="news-cat" data-cat="achievement" onclick="newsCat('achievement',this)"><span class="t-ru">Достижения</span><span class="t-ky">Жетишкендиктер</span></button>
+                        <button class="news-cat" data-cat="competition" onclick="newsCat('competition',this)"><span class="t-ru">Соревнования</span><span class="t-ky">Мелдештер</span></button>
+                        <button class="news-cat" data-cat="event" onclick="newsCat('event',this)"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span></button>
+                    </div>
+                </div>
+
+                <div class="news-page-grid" id="news-list">
+                    <!-- skeleton loaders shown until JS renders real content -->
+                    <div class="news-skeleton"></div>
+                    <div class="news-skeleton"></div>
+                    <div class="news-skeleton"></div>
+                    <div class="news-skeleton news-skeleton--wide"></div>
+                </div>
+
+                <div class="news-load-more-wrap">
+                    <button id="newsLoadMore" class="news-load-more-btn" onclick="newsLoadMore()" hidden>
+                        <span class="t-ru">Загрузить ещё</span><span class="t-ky">Дагы жүктөө</span>
+                    </button>
+                </div>
+
+                <!-- BEGIN REMOVED STATIC CONTENT — now fully dynamic via API -->
+                <template id="staticNewsBackup">
                     <article class="news-full-card news-full-card--featured" id="news1">
                         <div class="news-full-card__image">
                             <img src="https://loremflickr.com/1200/700/festival,sport?lock=1" alt="Международный фестиваль" loading="lazy">
@@ -141,7 +195,7 @@
                         </div>
                         <div class="news-full-card__content">
                             <div class="news-full-card__meta">
-                                <time class="news-full-card__date"><span class="t-ru">1<span class="t-ru">5 мая 2026</span><span class="t-ky">5 май 2026</span></span><span class="t-ky">15 май 2026</span></time>
+                                <time class="news-full-card__date"><span class="t-ru">15 мая 2026</span><span class="t-ky">15 май 2026</span></time>
                                 <span class="news-full-card__tag"><span class="t-ru">Развитие</span><span class="t-ky">Өнүгүү</span></span>
                             </div>
                             <h3 class="news-full-card__title"><span class="t-ru">Открытие нового центра подготовки спортсменов в Бишкеке</span><span class="t-ky">Бишкекте жаңы спортчуларды даярдоо борборун ачуу</span></h3>
@@ -227,8 +281,9 @@
                             <a href="contacts.html" class="news-full-card__link"><span class="t-ru">Записать ребёнка →</span><span class="t-ky">Баланы жазуу →</span></a>
                         </div>
                     </article>
+                </template>
+                <!-- END STATIC CONTENT -->
 
-                </div>
             </div>
         </section>
     </main>
@@ -281,7 +336,7 @@
                     <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
                     <ul class="footer__links">
                         <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
-                        <li><a href="sports.html#archery"><span class="t-ru"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></span><span class="t-ky">Жаа атуу</span></a></li>
+                        <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
                         <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
                         <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
                         <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
@@ -291,53 +346,223 @@
                 <div class="footer__col">
                     <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
                     <ul class="footer__contacts">
-                        <li>📍 г. Бишкек, пр. Манаса, д. 40</li>
-                        <li>📞 +996 (312) 123-456</li>
+                        <li>📍 <span class="t-ru">г. Бишкек, пр. Манаса, д. 40</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40</span></li>
+                        <li>📞 +996 (312) 65-88-00</li>
                         <li>✉️ info@natsport.kg</li>
                     </ul>
                 </div>
             </div>
             <div class="footer__bottom">
-                <p>&copy; 2026 <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
+                <p>&copy; <span id="footer-year">2026</span> <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики. Все права защищены.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы. Бардык укуктар корголгон.</span></p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
     <script>
-(function() {
+(function () {
+  'use strict';
+
   var CAT = {
-    news:        {ru:'Новости',      ky:'Жаңылыктар'},
-    achievement: {ru:'Достижения',   ky:'Жетишкендиктер'},
-    competition: {ru:'Соревнования', ky:'Мелдештер'},
-    event:       {ru:'Мероприятия',  ky:'Иш-чаралар'}
+    news:        { ru: 'Новости',         ky: 'Жаңылыктар' },
+    achievement: { ru: 'Достижения',      ky: 'Жетишкендиктер' },
+    competition: { ru: 'Соревнования',    ky: 'Мелдештер' },
+    event:       { ru: 'Мероприятия',     ky: 'Иш-чаралар' },
+    announcement:{ ru: 'Объявление',      ky: 'Билдирүү' },
+    result:      { ru: 'Результат',       ky: 'Натыйжа' }
   };
-  function esc(s) { return (s||'').replace(/[&<>"]/g, function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function fmtDate(s) { if (!s) return ''; var d=new Date(s); return isNaN(d)?'':d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}); }
-  function cl(cat) { var c=CAT[cat]||{ru:cat||'',ky:cat||''}; return '<span class="t-ru">'+esc(c.ru)+'</span><span class="t-ky">'+esc(c.ky)+'</span>'; }
-  var list = document.getElementById('news-list');
-  list.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Загрузка новостей…</p>';
-  fetch('/api/news?status=published&limit=20')
-    .then(function(r){return r.json();})
-    .then(function(json){
-      var data = json.data || [];
-      if (!data.length) { list.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Новостей пока нет</p>'; return; }
-      list.innerHTML = data.map(function(n,i){
-        var imgH = n.image ? '<div class="news-full-card__image"><img src="'+esc(n.image)+'" alt="'+esc(n.titleRu||'')+'" loading="lazy"><span class="news-full-card__badge">'+cl(n.category)+'</span></div>' : '';
-        var bRu=(n.contentRu||'').replace(/<[^>]+>/g,''); var bKy=(n.contentKy||'').replace(/<[^>]+>/g,'');
-        var eRu=bRu.length>250?bRu.slice(0,250)+'…':bRu; var eKy=bKy.length>250?bKy.slice(0,250)+'…':(bKy||eRu);
-        return '<article class="news-full-card'+(i===0?' news-full-card--featured':'')+'">'+imgH
-          +'<div class="news-full-card__content">'
-          +'<div class="news-full-card__meta"><time class="news-full-card__date">'+esc(fmtDate(n.createdAt))+'</time>'
-          +'<span class="news-full-card__tag">'+cl(n.category)+'</span></div>'
-          +'<h2 class="news-full-card__title"><span class="t-ru">'+esc(n.titleRu||'')+'</span><span class="t-ky">'+esc(n.titleKy||n.titleRu||'')+'</span></h2>'
-          +(eRu?'<p class="news-full-card__text"><span class="t-ru">'+esc(eRu)+'</span><span class="t-ky">'+esc(eKy)+'</span></p>':'')
-          +'</div></article>';
-      }).join('');
-      if (typeof initRevealAnimations === 'function') initRevealAnimations();
-    })
-    .catch(function(){ list.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">Не удалось загрузить новости</p>'; });
+
+  var allNews   = [];
+  var page      = 1;
+  var pageSize  = 9;
+  var activeCat = '';
+  var searchQ   = '';
+  var searchTimer = null;
+
+  function esc(s) {
+    return (s || '').replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function fmtDate(s) {
+    if (!s) return '';
+    var d = new Date(s);
+    return isNaN(d) ? '' : d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function catLabel(cat, lang) {
+    var c = CAT[cat] || { ru: cat || '', ky: cat || '' };
+    return lang === 'ky' ? c.ky : c.ru;
+  }
+
+  function getLang() {
+    return localStorage.getItem('site-lang') || 'ru';
+  }
+
+  function filtered() {
+    return allNews.filter(function (n) {
+      if (activeCat && n.category !== activeCat) return false;
+      if (searchQ) {
+        var hay = ((n.titleRu || '') + ' ' + (n.titleKy || '') + ' ' + (n.contentRu || '')).toLowerCase();
+        return hay.indexOf(searchQ) !== -1;
+      }
+      return true;
+    });
+  }
+
+  function renderCards() {
+    var list = document.getElementById('news-list');
+    if (!list) return;
+    var lang  = getLang();
+    var items = filtered();
+    var slice = items.slice(0, page * pageSize);
+    var hasMore = slice.length < items.length;
+
+    if (!items.length) {
+      list.innerHTML = '<p class="news-empty" style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">'
+        + (lang === 'ky' ? 'Жаңылыктар жок' : 'Новостей пока нет') + '</p>';
+      var btn = document.getElementById('newsLoadMore');
+      if (btn) btn.hidden = true;
+      return;
+    }
+
+    list.innerHTML = slice.map(function (n, i) {
+      var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : (n.titleRu || n.titleKy || '');
+      var bRu = (n.contentRu || '').replace(/<[^>]+>/g, '');
+      var bKy = (n.contentKy || '').replace(/<[^>]+>/g, '');
+      var excerpt = lang === 'ky'
+        ? ((bKy || bRu).slice(0, 220) + ((bKy || bRu).length > 220 ? '…' : ''))
+        : (bRu.slice(0, 220) + (bRu.length > 220 ? '…' : ''));
+      var imgH = n.image
+        ? '<div class="news-full-card__image"><img src="' + esc(n.image) + '" alt="' + esc(title) + '" loading="lazy" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=60\'">'
+          + '<span class="news-full-card__badge">' + esc(catLabel(n.category, lang)) + '</span></div>'
+        : '';
+      var readLabel = lang === 'ky' ? 'Окуу →' : 'Читать →';
+      var nid = esc(n.id || '');
+      return '<article class="news-full-card' + (i === 0 && page === 1 ? ' news-full-card--featured' : '') + '">'
+        + imgH
+        + '<div class="news-full-card__content">'
+        + '<div class="news-full-card__meta">'
+        + '<time class="news-full-card__date">' + esc(fmtDate(n.createdAt)) + '</time>'
+        + '<span class="news-full-card__tag">' + esc(catLabel(n.category, lang)) + '</span>'
+        + '</div>'
+        + '<h2 class="news-full-card__title">' + esc(title) + '</h2>'
+        + (excerpt ? '<p class="news-full-card__text">' + esc(excerpt) + '</p>' : '')
+        + '<button class="news-full-card__link" onclick="openNewsModal(\'' + nid + '\')">' + readLabel + '</button>'
+        + '</div></article>';
+    }).join('');
+
+    var loadBtn = document.getElementById('newsLoadMore');
+    if (loadBtn) {
+      loadBtn.hidden = !hasMore;
+      loadBtn.textContent = lang === 'ky' ? 'Дагы жүктөө' : 'Загрузить ещё';
+    }
+
+    if (typeof initRevealAnimations === 'function') initRevealAnimations();
+  }
+
+  function showSkeleton() {
+    var list = document.getElementById('news-list');
+    if (list) list.innerHTML = '<div class="news-skeleton"></div><div class="news-skeleton"></div>'
+      + '<div class="news-skeleton"></div><div class="news-skeleton news-skeleton--wide"></div>';
+  }
+
+  function loadNews(searchQuery) {
+    showSkeleton();
+    // Use server-side search when query is present, otherwise load first batch
+    var url = '/api/news?status=published&limit=50';
+    if (searchQuery) url += '&search=' + encodeURIComponent(searchQuery);
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        allNews = (json.data || []);
+        renderCards();
+      })
+      .catch(function () {
+        var list = document.getElementById('news-list');
+        var lang = getLang();
+        if (list) list.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">'
+          + (lang === 'ky' ? 'Жүктөө мүмкүн болгон жок' : 'Не удалось загрузить новости') + '</p>';
+      });
+  }
+
+  /* ── Public API ── */
+  window.newsSearch = function (val) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      searchQ = val.trim().toLowerCase();
+      page = 1;
+      // Use server-side search for non-empty queries (avoids loading 50+ items client-side)
+      if (searchQ) {
+        loadNews(searchQ);
+      } else {
+        loadNews();
+      }
+    }, 280);
+  };
+
+  window.newsCat = function (cat, el) {
+    activeCat = cat;
+    page = 1;
+    document.querySelectorAll('.news-cat').forEach(function (b) { b.classList.remove('active'); });
+    if (el) el.classList.add('active');
+    renderCards();
+  };
+
+  window.newsLoadMore = function () {
+    page++;
+    renderCards();
+    // scroll to new cards
+    var list = document.getElementById('news-list');
+    if (list) {
+      var cards = list.querySelectorAll('.news-full-card');
+      var firstNew = cards[(page - 1) * pageSize];
+      if (firstNew) firstNew.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  /* ── News detail modal ── */
+  window.openNewsModal = function (id) {
+    var n = allNews.find(function (x) { return x.id === id; });
+    if (!n) return;
+    var lang  = getLang();
+    var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : (n.titleRu || n.titleKy || '');
+    var body  = lang === 'ky' ? (n.contentKy || n.contentRu || '') : (n.contentRu || n.contentKy || '');
+
+    document.getElementById('newsModalTitle').textContent = title;
+    document.getElementById('newsModalDate').textContent  = fmtDate(n.createdAt);
+    document.getElementById('newsModalCat').textContent   = catLabel(n.category, lang);
+
+    var imgWrap = document.getElementById('newsModalImg');
+    imgWrap.innerHTML = n.image
+      ? '<img src="' + esc(n.image) + '" alt="' + esc(title) + '">'
+      : '';
+    imgWrap.style.display = n.image ? '' : 'none';
+
+    var contentEl = document.getElementById('newsModalContent');
+    var safeBody = (typeof sanitizeHtml === 'function') ? sanitizeHtml(body) : '';
+    contentEl.innerHTML = safeBody || ('<em>' + (lang === 'ky' ? 'Мазмун жок' : 'Содержание отсутствует') + '</em>');
+
+    var modal = document.getElementById('newsModal');
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.news-modal__close').focus();
+  };
+
+  window.closeNewsModal = function () {
+    var modal = document.getElementById('newsModal');
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') window.closeNewsModal();
+  });
+
+  loadNews(null);
 })();
     </script>
+    <script src="js/ux.js"></script>
 </body>
 </html>
