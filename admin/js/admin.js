@@ -623,6 +623,25 @@ function handleImageSelect(input, fieldKey) {
   processNext();
 }
 
+function updateCropPreview() {
+  if (!cropperInstance) return;
+  const canvas = document.getElementById('cropPreviewCanvas');
+  const box = document.getElementById('cropPreviewBox');
+  if (!canvas || !box) return;
+  try {
+    const previewW = box.clientWidth || 200;
+    const ratio = currentCropRatio || 16/9;
+    const previewH = Math.round(previewW / ratio);
+    const cropped = cropperInstance.getCroppedCanvas({ width: previewW * 2, height: previewH * 2 });
+    if (!cropped) return;
+    canvas.width = previewW;
+    canvas.height = previewH;
+    canvas.style.width = previewW + 'px';
+    canvas.style.height = previewH + 'px';
+    canvas.getContext('2d').drawImage(cropped, 0, 0, previewW, previewH);
+  } catch(e) {}
+}
+
 function openCropper(imageSrc, callback) {
   cropCallback = callback;
   const modal = document.getElementById('cropModal');
@@ -644,7 +663,9 @@ function openCropper(imageSrc, callback) {
       highlight: true,
       cropBoxMovable: true,
       cropBoxResizable: true,
-      toggleDragModeOnDblclick: false
+      toggleDragModeOnDblclick: false,
+      ready() { updateCropPreview(); },
+      crop()  { updateCropPreview(); },
     });
   }
   if (img.complete && img.naturalWidth) { initCropper(); } else { img.onload = initCropper; }
@@ -654,7 +675,10 @@ function setCropRatio(ratio, btn) {
   currentCropRatio = ratio;
   document.querySelectorAll('.crop-ratio-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (cropperInstance) cropperInstance.setAspectRatio(ratio);
+  if (cropperInstance) {
+    cropperInstance.setAspectRatio(ratio);
+    setTimeout(updateCropPreview, 100);
+  }
 }
 
 function applyCrop() {

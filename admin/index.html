@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/admin/css/admin.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+  <link rel="stylesheet" href="/admin/lib/cropper.min.css">
 </head>
 <body>
 
@@ -193,13 +193,22 @@
       </button>
     </div>
     <div class="crop-ratios">
-      <button class="crop-ratio-btn active" onclick="setCropRatio(16/9,this)"><span class="ratio-preview ratio-16-9"></span>16:9</button>
-      <button class="crop-ratio-btn" onclick="setCropRatio(4/3,this)"><span class="ratio-preview ratio-4-3"></span>4:3</button>
-      <button class="crop-ratio-btn" onclick="setCropRatio(1/1,this)"><span class="ratio-preview ratio-1-1"></span>1:1</button>
-      <button class="crop-ratio-btn" onclick="setCropRatio(3/4,this)"><span class="ratio-preview ratio-3-4"></span>3:4</button>
+      <button class="crop-ratio-btn active" onclick="setCropRatio(16/9,this)" title="Для новостей, мероприятий, слайдов"><span class="ratio-preview ratio-16-9"></span>16:9</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(4/3,this)" title="Для галереи"><span class="ratio-preview ratio-4-3"></span>4:3</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(1/1,this)" title="Квадрат"><span class="ratio-preview ratio-1-1"></span>1:1</button>
+      <button class="crop-ratio-btn" onclick="setCropRatio(3/4,this)" title="Для портретов / спортсменов"><span class="ratio-preview ratio-3-4"></span>3:4</button>
     </div>
-    <div class="crop-canvas-wrap">
-      <img id="cropImage" src="" alt="crop">
+    <div class="crop-body">
+      <div class="crop-canvas-wrap">
+        <img id="cropImage" src="" alt="crop">
+      </div>
+      <div class="crop-preview-panel">
+        <p class="crop-preview-label">Результат:</p>
+        <div class="crop-preview-box" id="cropPreviewBox">
+          <canvas id="cropPreviewCanvas"></canvas>
+        </div>
+        <p class="crop-preview-hint">Перетащите область на фото чтобы выбрать нужный кадр</p>
+      </div>
     </div>
     <div class="crop-tools">
       <button class="crop-tool-btn" onclick="cropperInstance&&cropperInstance.rotate(-90)">
@@ -221,7 +230,7 @@
     </div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script src="/admin/lib/cropper.min.js"></script>
 <script src="/admin/js/admin.js"></script>
 </body>
 </html>
