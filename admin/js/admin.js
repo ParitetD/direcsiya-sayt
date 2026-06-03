@@ -645,13 +645,22 @@ function updateCropPreview() {
 function openCropper(imageSrc, callback) {
   cropCallback = callback;
   const modal = document.getElementById('cropModal');
-  const img = document.getElementById('cropImage');
+  const img   = document.getElementById('cropImage');
   if (!modal || !img) { callback(imageSrc, null); return; }
-  img.src = imageSrc;
+
+  // Destroy previous instance and reset image completely
+  if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+  img.onload  = null;
+  img.onerror = null;
+  img.src = '';
+
+  // Show modal BEFORE loading image — CropperJS requires visible element
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
-  if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+
   function initCropper() {
+    img.onload = null; img.onerror = null;
+    if (cropperInstance) return;
     cropperInstance = new Cropper(img, {
       aspectRatio: currentCropRatio,
       viewMode: 2,
@@ -668,7 +677,16 @@ function openCropper(imageSrc, callback) {
       crop()  { updateCropPreview(); },
     });
   }
-  if (img.complete && img.naturalWidth) { initCropper(); } else { img.onload = initCropper; }
+
+  // Attach onload BEFORE setting src (prevents race condition with dataURLs)
+  img.onerror = () => { img.onerror = null; toast('Ошибка загрузки фото', 'e'); cancelCrop(); };
+  img.onload  = initCropper;
+  img.src     = imageSrc;
+
+  // Safety fallback: dataURLs can load synchronously before onload fires
+  requestAnimationFrame(() => {
+    if (!cropperInstance && img.complete && img.naturalWidth) initCropper();
+  });
 }
 
 function setCropRatio(ratio, btn) {
