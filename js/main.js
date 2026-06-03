@@ -743,7 +743,8 @@ function renderAthletes() {
         const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
         const photoHtml = a.photo
             ? `<img src="${escapeHtml(a.photo)}" alt="${name}" class="athlete-photo" loading="lazy"
-                    onerror="this.parentElement.innerHTML='<div class=\\"athlete-initials\\">${initials}</div>'">`
+                    onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+               <div class="athlete-initials" style="display:none">${initials}</div>`
             : `<div class="athlete-initials">${initials}</div>`;
 
         return `
@@ -777,7 +778,9 @@ function openAthleteBio(id) {
     const isRetired = a.careerStatus === 'retired';
     const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
     const photoHtml = a.photo
-        ? `<img class="bio-photo" src="${escapeHtml(a.photo)}" alt="${name}" onerror="this.outerHTML='<div class=\\"bio-initials\\">${initials}</div>'">`
+        ? `<img class="bio-photo" src="${escapeHtml(a.photo)}" alt="${name}"
+               onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div class="bio-initials" style="display:none">${initials}</div>`
         : `<div class="bio-initials">${initials}</div>`;
     const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
     const achArr = Array.isArray(achievements) ? achievements : [];
