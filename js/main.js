@@ -547,9 +547,8 @@ function initContactForm() {
                 btn.disabled = false;
             }, 4000);
         } catch (err) {
-            btn.innerHTML = lang === 'ky'
-                ? '<span class="t-ky">Ката: ' + err.message + '</span>'
-                : '<span class="t-ru">Ошибка: ' + err.message + '</span>';
+            const prefix = lang === 'ky' ? 'Ката: ' : 'Ошибка: ';
+            btn.textContent = prefix + (err.message || '');
             btn.style.background = '#c0392b';
             setTimeout(() => {
                 btn.innerHTML = origHTML;
@@ -658,13 +657,24 @@ function buildSportChips() {
         return { ru: s, ky: a?.sportKy || s, val: s };
     })];
 
-    container.innerHTML = chips.map(c => `
+    // Use data-sport attribute + event delegation — no sport value in onclick="" attributes
+    container.innerHTML = chips.map((c, i) => `
         <button class="sport-chip${activeSportFilter === c.val ? ' active' : ''}"
-                onclick="filterBySport('${c.val.replace(/'/g, "\\'")}', this)">
-            <span class="t-ru">${c.ru}</span>
-            <span class="t-ky">${c.ky}</span>
+                data-sport-chip="${i}">
+            <span class="t-ru">${escapeHtml(c.ru)}</span>
+            <span class="t-ky">${escapeHtml(c.ky)}</span>
         </button>
     `).join('');
+
+    // Store chip values in a registry to avoid inline event data
+    const chipRegistry = chips;
+    container.addEventListener('click', e => {
+        const btn = e.target.closest('[data-sport-chip]');
+        if (!btn) return;
+        const idx = Number(btn.dataset.sportChip);
+        const chip = chipRegistry[idx];
+        if (chip) filterBySport(chip.val, btn);
+    });
 }
 
 function filterBySport(sport, btn) {
@@ -840,3 +850,35 @@ window.sanitizeHtml = sanitizeHtml;
 if (window.location.pathname === '/athletes' || window.location.pathname.endsWith('/athletes.html')) {
     document.addEventListener('DOMContentLoaded', loadAthletesPage);
 }
+
+/* ── Home Athletes Preview ── */
+async function loadHomeAthletes() {
+    const grid = document.getElementById('homeAthletesGrid');
+    if (!grid) return;
+    const lang = localStorage.getItem('site-lang') || 'ru';
+    try {
+        const r = await fetch('/api/people');
+        const d = await r.json();
+        const athletes = (Array.isArray(d) ? d : (d.data || []))
+            .filter(a => a.status === 'published' && a.role === 'athlete')
+            .sort((a, b) => (parseInt(a.order) || 99) - (parseInt(b.order) || 99))
+            .slice(0, 4);
+        if (!athletes.length) { grid.closest('section')?.remove(); return; }
+        grid.innerHTML = athletes.map(a => {
+            const name  = lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '');
+            const sport = lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '');
+            const photo = a.photo || 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80';
+            return `<div class="athlete-preview-card">
+                <img class="athlete-preview-card__img" src="${escapeHtml(photo)}" alt="${escapeHtml(name)}" loading="lazy"
+                     onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80'">
+                <div class="athlete-preview-card__body">
+                    <div class="athlete-preview-card__name">${escapeHtml(name)}</div>
+                    <div class="athlete-preview-card__sport">${escapeHtml(sport)}</div>
+                </div>
+            </div>`;
+        }).join('');
+    } catch {
+        grid.closest('section')?.remove();
+    }
+}
+document.addEventListener('DOMContentLoaded', loadHomeAthletes);

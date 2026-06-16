@@ -11,15 +11,23 @@ if (!SECRET) {
 }
 const AUTH_FILE = 'data/auth.json';
 
-function readAuth() { return JSON.parse(fs.readFileSync(AUTH_FILE, 'utf8')); }
+function readAuth() {
+  try { return JSON.parse(fs.readFileSync(AUTH_FILE, 'utf8')); }
+  catch { throw new Error('Ошибка чтения данных авторизации'); }
+}
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ error: 'Заполните все поля' });
   const auth = readAuth();
-  if (auth.username !== username) return res.status(401).json({ error: 'Неверные данные' });
-  const ok = await bcrypt.compare(password, auth.password);
-  if (!ok) return res.status(401).json({ error: 'Неверный пароль' });
+  // Always run bcrypt.compare to prevent timing-based username enumeration.
+  // If username is wrong, compare against a dummy hash so timing is identical.
+  const usernameMatch = auth.username === username;
+  const hashToCompare = usernameMatch
+    ? auth.password
+    : '$2a$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ01234';
+  const ok = await bcrypt.compare(password, hashToCompare);
+  if (!usernameMatch || !ok) return res.status(401).json({ error: 'Неверные учётные данные' });
   const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '8h' });
   res.json({ token, username });
 });

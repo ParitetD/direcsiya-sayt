@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
@@ -30,21 +31,55 @@ app.use(helmet({
   },
   crossOriginEmbedderPolicy: false,
 }));
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// CORS: only open if CORS_ORIGIN is explicitly set; by default same-origin only.
+if (process.env.CORS_ORIGIN) {
+  app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+}
+app.use(morgan('combined'));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+
+/* ── Block direct access to source code and data files ── */
+// express.static(root) would serve server.js, api/*.js, data/*.json to any HTTP client.
+// Block these BEFORE static middleware. API routes (/api/news etc.) are NOT blocked here —
+// only file-extension requests into the /api/ directory are blocked.
+app.use((req, res, next) => {
+  const p = path.posix.normalize(decodeURIComponent(req.path)).toLowerCase();
+  const blocked = (
+    p.startsWith('/data/') ||                                   // data/*.json
+    (p.startsWith('/api/') && /\.[a-z]+$/.test(p)) ||          // api/*.js source files (not /api/news routes)
+    p.startsWith('/scripts/') ||
+    p.startsWith('/node_modules/') ||
+    p === '/server.js' ||
+    p === '/package.json' ||
+    p === '/package-lock.json' ||
+    p === '/ecosystem.config.js' ||
+    p.endsWith('.env')
+  );
+  if (blocked) return res.status(403).json({ error: 'Forbidden' });
+  next();
+});
 
 /* ── Page routes ── */
 app.get('/athletes', (req, res) => res.sendFile(path.join(__dirname, 'athletes.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 
 /* ── Static files (before admin SPA fallback) ── */
-app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// CSS/JS/fonts: 7-day cache (versioned via content hash in practice)
+// HTML pages: no-cache so updates are picked up immediately
+// Images in /uploads: 7-day cache
+app.use('/css',     express.static(path.join(__dirname, 'css'),     { maxAge: '7d' }));
+app.use('/js',      express.static(path.join(__dirname, 'js'),      { maxAge: '7d' }));
+app.use('/admin/css', express.static(path.join(__dirname, 'admin', 'css'), { maxAge: '7d' }));
+app.use('/admin/js',  express.static(path.join(__dirname, 'admin', 'js'),  { maxAge: '7d' }));
+app.use('/admin/lib', express.static(path.join(__dirname, 'admin', 'lib'), { maxAge: '30d' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
+// Remaining static (HTML pages, logo, robots.txt etc.) — no long-term cache
+app.use(express.static(path.join(__dirname), { extensions: ['html'], maxAge: 0 }));
 
 /* ── Admin SPA fallback: only for non-file paths (no extension) ── */
 app.get('/admin/*', (req, res) => {
@@ -58,7 +93,7 @@ app.get('/admin/*', (req, res) => {
 /* ── Rate limiting ── */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 5,
   message: { error: 'Слишком много попыток входа. Попробуйте позже.' },
   standardHeaders: true,
   legacyHeaders: false,

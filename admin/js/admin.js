@@ -23,7 +23,7 @@ const CFG = {
       {key:'status',label:'Статус',type:'badge'},
       {key:'createdAt',label:'Дата',type:'date'}
     ],
-    filterKey:'status', filterOpts:[{v:'',l:'Все статусы'},{v:'published',l:'Опубликовано'},{v:'draft',l:'Черновик'}],
+    filterKey:'status', filterOpts:[{v:'',l:'Все статусы'},{v:'published',l:'Опубликовано'},{v:'draft',l:'Черновик'},{v:'archived',l:'Архив'}],
     fields:[
       {key:'titleRu',label:'Заголовок',lang:'ru',type:'text',req:true,ph:'Заголовок новости на русском'},
       {key:'titleKy',label:'Аталышы',lang:'ky',type:'text',req:true,ph:'Кыргызча аталышы'},
@@ -409,7 +409,7 @@ function renderCell(col, item) {
   if (col.type === 'badge') {
     const sv = String(v);
     const l = col.map?.[sv] ?? col.map?.[v] ?? sv ?? '—';
-    const clsMap = {published:'b-pub', draft:'b-draft', athlete:'b-athlete', staff:'b-staff', coach:'b-coach', true:'b-pub', false:'b-draft', active:'b-pub', retired:'b-draft'};
+    const clsMap = {published:'b-pub', draft:'b-draft', archived:'b-archived', athlete:'b-athlete', staff:'b-staff', coach:'b-coach', true:'b-pub', false:'b-draft', active:'b-pub', retired:'b-draft'};
     const cls = clsMap[sv] || clsMap[v] || 'b-draft';
     return `<span class="badge ${cls}">${escapeHtml(l)}</span>`;
   }
@@ -494,12 +494,16 @@ async function openDrawer(section, id) {
   body += `</form>`;
 
   document.getElementById('drawer-body').innerHTML = body;
+  const autoSaveBar = section === 'news'
+    ? `<span id="autosave-bar" class="autosave-bar">Автосохранение каждые 15 сек</span>` : '';
   document.getElementById('drawer-foot').innerHTML = `
+    ${autoSaveBar}
     <button class="btn btn-outline" onclick="closeDrawer()">Отмена</button>
     <button class="btn btn-save" onclick="triggerDrawerSubmit()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       ${id ? 'Сохранить изменения' : 'Добавить запись'}
     </button>`;
+  if (section === 'news') startAutoSave(section);
 
   setupGridDragDrop();
   document.getElementById('drawer-bg').classList.add('open');
@@ -574,6 +578,7 @@ function renderField(f, item) {
 }
 
 function closeDrawer() {
+  stopAutoSave();
   document.getElementById('drawer-bg').classList.remove('open');
   document.getElementById('drawer').classList.remove('open');
   drawerSection = null; drawerItemId = null;
@@ -855,6 +860,32 @@ async function submitDrawer(e) {
   finally { btn.disabled=false; btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> '+(drawerItemId?'Сохранить изменения':'Добавить запись'); }
 }
 
+/* ── Auto-save Draft ── */
+let _autoSaveTimer = null;
+let _autoSaveSection = null;
+
+function startAutoSave(section) {
+  _autoSaveSection = section;
+  stopAutoSave();
+  _autoSaveTimer = setInterval(() => {
+    const form = document.getElementById('drawer-form');
+    if (!form || _autoSaveSection !== 'news') return;
+    form.querySelectorAll('.editor-area').forEach(syncEd);
+    const fd = new FormData(form);
+    const draft = {};
+    for (const [k, v] of fd.entries()) draft[k] = v;
+    draft._savedAt = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
+    draft._id = drawerItemId;
+    localStorage.setItem('news_autosave', JSON.stringify(draft));
+    const bar = document.getElementById('autosave-bar');
+    if (bar) bar.textContent = `Автосохранение: ${draft._savedAt}`;
+  }, 15000);
+}
+
+function stopAutoSave() {
+  if (_autoSaveTimer) { clearInterval(_autoSaveTimer); _autoSaveTimer = null; }
+}
+
 /* ── Delete ── */
 function confirmDel(section, id) {
   const wrap = document.getElementById('dialog-wrap');
@@ -1060,7 +1091,10 @@ function toast(msg, type='s') {
   const icons = {s:'✓',e:'✕',i:'ℹ'};
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
-  el.innerHTML = `<span>${icons[type]||'ℹ'}</span> ${msg}`;
+  const icon = document.createElement('span');
+  icon.textContent = icons[type] || 'ℹ';
+  el.appendChild(icon);
+  el.appendChild(document.createTextNode(' ' + String(msg)));
   document.getElementById('toasts').appendChild(el);
   setTimeout(() => { el.style.transition='.3s'; el.style.opacity='0'; el.style.transform='translateY(4px)'; setTimeout(()=>el.remove(),300); }, 2800);
 }
@@ -1072,6 +1106,11 @@ async function api(url, method='GET', body=null) {
   const opts = {method, headers:h};
   if (body && method!=='GET') opts.body = JSON.stringify(body);
   const res = await fetch(url, opts);
+  if (res.status === 401) {
+    toast('Сессия истекла. Перенаправление...', 'i');
+    setTimeout(() => { token = null; localStorage.removeItem('adminToken'); showLogin(); }, 1800);
+    throw new Error('Сессия истекла');
+  }
   const d = await res.json().catch(()=>({}));
   if (!res.ok) throw new Error(d.error||`HTTP ${res.status}`);
   return d;
