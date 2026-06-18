@@ -347,6 +347,11 @@ body { background-color: #F7FAFF; }
 .scroll-reveal:nth-child(2) { transition-delay: 0.1s; }
 .scroll-reveal:nth-child(3) { transition-delay: 0.2s; }
 .scroll-reveal:nth-child(4) { transition-delay: 0.3s; }
+.scroll-reveal:nth-child(5) { transition-delay: 0.4s; }
+.scroll-reveal:nth-child(6) { transition-delay: 0.45s; }
+.scroll-reveal:nth-child(7) { transition-delay: 0.5s; }
+.scroll-reveal:nth-child(8) { transition-delay: 0.55s; }
+.scroll-reveal:nth-child(n+9) { transition-delay: 0.6s; }
 
 /* ══════════════════════════════════════════════════════════════════════════
    9. NEWS CARDS — image-overlay style
@@ -454,16 +459,31 @@ body { background-color: #F7FAFF; }
     background: var(--color-primary) !important;
     border-color: var(--color-primary-light) !important;
     color: #fff;
+    cursor: pointer;
 }
 
 .sport-card::before {
     background: linear-gradient(90deg, #fff, var(--color-secondary)) !important;
 }
 
-.sport-card__icon  { color: var(--color-secondary) !important; }
+.sport-card__icon  {
+    color: #fff !important;
+    background: rgba(255,255,255,0.12) !important;
+    border-radius: 50% !important;
+    padding: 8px !important;
+    width: 96px !important;
+    height: 96px !important;
+    filter: drop-shadow(0 2px 10px rgba(255,255,255,0.15)) !important;
+}
+.sport-card:hover .sport-card__icon {
+    color: #fff !important;
+    background: rgba(255,255,255,0.2) !important;
+    filter: drop-shadow(0 6px 18px rgba(255,255,255,0.3)) !important;
+    transform: scale(1.15) rotate(-4deg) !important;
+}
 .sport-card__title { color: #fff !important; }
 .sport-card__text  { color: rgba(255,255,255,0.8) !important; }
-.sport-card__link  { color: var(--color-secondary) !important; }
+.sport-card__link  { color: rgba(255,255,255,0.65) !important; }
 .sport-card__link:hover { color: #fff !important; }
 .sport-card:hover { background: var(--color-primary-dark) !important; }
 
@@ -560,8 +580,10 @@ body { background-color: #F7FAFF; }
    16. SECTION TITLE DECORATION — blue line + diamond
    ══════════════════════════════════════════════════════════════════════════ */
 .section__title::after {
+    width: 120px !important;
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='10'%3E%3Cline x1='0' y1='5' x2='80' y2='5' stroke='%232952A3' stroke-width='1.2'/%3E%3Cpolygon points='40,0 47,5 40,10 33,5' fill='%231B3B7D'/%3E%3Cpolygon points='13,2 17,5 13,8 9,5' fill='%232952A3'/%3E%3Cpolygon points='67,2 71,5 67,8 63,5' fill='%232952A3'/%3E%3C/svg%3E") !important;
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cline x1='0' y1='5' x2='120' y2='5' stroke='%232952A3' stroke-width='1.2'/%3E%3Cpolygon points='60,0 67,5 60,10 53,5' fill='%231B3B7D'/%3E%3Cpolygon points='20,2 24,5 20,8 16,5' fill='%232952A3'/%3E%3Cpolygon points='100,2 104,5 100,8 96,5' fill='%232952A3'/%3E%3Ccircle cx='5' cy='5' r='2' fill='%232952A3'/%3E%3Ccircle cx='115' cy='5' r='2' fill='%232952A3'/%3E%3C/svg%3E") !important;
+    background-size: 120px 10px !important;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -593,7 +615,13 @@ body { background-color: #F7FAFF; }
    ══════════════════════════════════════════════════════════════════════════ */
 .news-card__link { color: var(--color-primary) !important; }
 .news-card__link:hover { color: var(--color-primary-dark) !important; }
-.news-card:hover { box-shadow: 0 8px 24px rgba(27,59,125,0.15) !important; }
+.news-card:hover {
+    box-shadow: 0 8px 24px rgba(27,59,125,0.15) !important;
+    border-color: var(--color-secondary-dark) !important;
+}
+.news-full-card:hover {
+    border-color: var(--color-secondary-dark) !important;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════
    20. DROPDOWN NAV LINKS
@@ -957,29 +985,60 @@ body { background-color: #F7FAFF; }
 .ticker-card {
     flex-shrink: 0;
     width: 160px;
-    background: #F0F4FA;
-    border: 2px solid transparent;
-    border-radius: 18px;
-    padding: 28px 16px 20px;
+    background: linear-gradient(145deg, #F4F7FF 0%, #EBF0FB 100%);
+    border: 2px solid rgba(27,59,125,0.1);
+    border-radius: 20px;
+    padding: 26px 16px 20px;
     text-align: center;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 14px;
-    transition: all 0.25s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ticker-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1B3B7D, #4A6FA5, #C8963E);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+}
+
+.ticker-card:hover::before {
+    transform: scaleX(1);
 }
 
 .ticker-card:hover {
     border-color: #1B3B7D;
     background: #fff;
-    transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(27,59,125,0.18);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 48px rgba(27,59,125,0.22), 0 4px 12px rgba(27,59,125,0.12);
 }
 
-.ticker-icon { width: 72px; height: 72px; }
+.ticker-icon {
+    width: 76px;
+    height: 76px;
+    color: #1B3B7D;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(27,59,125,0.15));
+}
+
 .ticker-icon svg { width: 100%; height: 100%; }
+
+.ticker-card:hover .ticker-icon {
+    transform: scale(1.18) rotate(-4deg);
+    filter: drop-shadow(0 4px 10px rgba(27,59,125,0.3));
+}
 
 .ticker-name {
     font-size: 0.82rem;
@@ -1049,8 +1108,20 @@ body { background-color: #F7FAFF; }
 
 .sport-modal-close:hover { background: #1B3B7D; color: #fff; }
 
-#modalIcon { width: 100px; height: 100px; margin: 0 auto 20px; }
+#modalIcon {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 20px;
+    color: #1B3B7D;
+    filter: drop-shadow(0 4px 12px rgba(27,59,125,0.25));
+    animation: iconPop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;
+}
 #modalIcon svg { width: 100%; height: 100%; }
+
+@keyframes iconPop {
+    from { transform: scale(0.6) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
 
 #modalTitle {
     font-size: 1.6rem;

@@ -41,7 +41,7 @@
     "athletesCount": 360,
     "status": "published",
     "order": 4,
-    "image": "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800&q=80"
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
   },
   {
     "id": "6",
@@ -63,7 +63,7 @@
     "athletesCount": 175,
     "status": "published",
     "order": 6,
-    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80"
+    "image": "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80"
   },
   {
     "id": "8",
@@ -81,7 +81,7 @@
     "nameRu": "Улак Тартыш",
     "nameKy": "Улак Тартыш",
     "descriptionRu": "Конная игра — борьба всадников за тушу козла, считается предшественником кок-бору. Один из древнейших видов конных состязаний Кыргызстана, корни которого уходят в глубокую древность кочевой цивилизации.",
-    "descriptionKy": "Ат оюну — атчандар эчки каниесин талашат, көк-борунун алдыңкы оюну катары саналат. Кочевой цивилизациянын байыркы маданиятына тамыры өтүп кеткен Кыргызстандагы эң байыркы ат оюндарынын бири.",
+    "descriptionKy": "Ат оюну — атчандар эчки каниесин талашат, көк-борунун алдыңкы оюну катары саналат. Көчмөн цивилизациясынын байыркы маданиятына тамыры өтүп кеткен Кыргызстандагы эң байыркы ат оюндарынын бири.",
     "athletesCount": 160,
     "status": "published",
     "order": 8,
@@ -96,7 +96,7 @@
     "athletesCount": 130,
     "status": "published",
     "order": 9,
-    "image": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&q=80"
+    "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
   },
   {
     "id": "11",
@@ -107,7 +107,7 @@
     "athletesCount": 95,
     "status": "published",
     "order": 10,
-    "image": "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800&q=80"
+    "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
   },
   {
     "id": "12",

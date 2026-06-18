@@ -159,12 +159,12 @@
 .section__title::after {
     content: '';
     display: block;
-    width: 80px;
+    width: 120px;
     height: 10px;
     margin: 14px auto 0;
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='10'%3E%3Cline x1='0' y1='5' x2='80' y2='5' stroke='%23C8963E' stroke-width='1.2'/%3E%3Cpolygon points='40,0 47,5 40,10 33,5' fill='%238B2500'/%3E%3Cpolygon points='13,2 17,5 13,8 9,5' fill='%23C8963E'/%3E%3Cpolygon points='67,2 71,5 67,8 63,5' fill='%23C8963E'/%3E%3C/svg%3E");
-    background-size: 80px 10px;
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cline x1='0' y1='5' x2='120' y2='5' stroke='%23C8963E' stroke-width='1.2'/%3E%3Cpolygon points='60,0 67,5 60,10 53,5' fill='%238B2500'/%3E%3Cpolygon points='20,2 24,5 20,8 16,5' fill='%23C8963E'/%3E%3Cpolygon points='100,2 104,5 100,8 96,5' fill='%23C8963E'/%3E%3Ccircle cx='5' cy='5' r='2' fill='%23C8963E'/%3E%3Ccircle cx='115' cy='5' r='2' fill='%23C8963E'/%3E%3C/svg%3E");
+    background-size: 120px 10px;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -286,6 +286,30 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='55' height='55'%3E%3Cpolygon points='27,3 52,27 27,52 2,27' fill='none' stroke='%238B2500' stroke-width='2'/%3E%3Cpolygon points='27,13 42,27 27,42 12,27' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Ccircle cx='27' cy='27' r='4' fill='%238B2500'/%3E%3C/svg%3E");
     background-size: 55px 55px;
 }
+
+/* ── LIGHT SECTION BACKGROUND — subtle shyrdak diamond pattern ─────────── */
+/*
+  Very faint Kyrgyz geometric tile on all light/white sections.
+  Outer diamond + inner diamond + gold centre dot — shyrdak felt-carpet motif.
+  Opacity 3.5%: visible only as a soft texture, never distracting.
+*/
+.section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpolygon points='40,2 78,40 40,78 2,40' fill='none' stroke='%238B2500' stroke-width='1.2'/%3E%3Cpolygon points='40,18 62,40 40,62 18,40' fill='none' stroke='%238B2500' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='3.5' fill='%23C8963E'/%3E%3Ccircle cx='40' cy='2' r='2' fill='%238B2500'/%3E%3Ccircle cx='78' cy='40' r='2' fill='%238B2500'/%3E%3Ccircle cx='40' cy='78' r='2' fill='%238B2500'/%3E%3Ccircle cx='2' cy='40' r='2' fill='%238B2500'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+}
+
+/* Dark stats section already has its own light-coloured pattern — skip */
+.section--stats::before { display: none; }
+
+/* Ensure section content sits above the pattern layer */
+.section > .container { position: relative; z-index: 1; }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {

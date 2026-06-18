@@ -7,7 +7,8 @@ const FILE = 'data/contacts.json';
 
 function read() {
   if (!fs.existsSync(FILE)) fs.writeFileSync(FILE, '[]');
-  return JSON.parse(fs.readFileSync(FILE, 'utf8'));
+  try { return JSON.parse(fs.readFileSync(FILE, 'utf8')); }
+  catch { return []; }
 }
 function write(d) { fs.writeFileSync(FILE, JSON.stringify(d, null, 2)); }
 

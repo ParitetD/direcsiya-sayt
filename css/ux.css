@@ -181,3 +181,138 @@
         width: 100%;
     }
 }
+
+/* ── Athletes Preview Grid ── */
+.athletes-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.athlete-preview-card {
+    background: var(--color-white, #fff);
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.athlete-preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+    border-color: var(--color-secondary, #C8963E);
+}
+.athlete-preview-card__img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+.athlete-preview-card__body {
+    padding: 1rem;
+}
+.athlete-preview-card__name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-dark, #1C1C1E);
+    margin-bottom: 0.25rem;
+}
+.athlete-preview-card__sport {
+    font-size: 0.75rem;
+    color: var(--color-primary, #8B2500);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+@media (max-width: 900px) { .athletes-preview-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .athletes-preview-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } }
+
+/* ── Partners Section ── */
+.partners-section {
+    padding: 2rem 0;
+    background: #f5f5f5;
+    border-top: 1px solid #e8e8e8;
+}
+.partners-section__title {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin: 0 0 1.25rem;
+}
+.partners-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.partner-item {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    letter-spacing: 0.3px;
+}
+@media (max-width: 600px) {
+    .partners-row { flex-direction: column; align-items: center; }
+    .partner-item { width: 100%; max-width: 280px; text-align: center; }
+}
+
+/* ── Clickable Sport Cards (home grid) ── */
+.sport-card--clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sport-card--clickable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(139,37,0,0.14);
+}
+.sport-card--clickable:focus-visible {
+    outline: 2px solid var(--color-primary, #8B2500);
+    outline-offset: 2px;
+}
+.sport-card__icon svg {
+    width: 56px;
+    height: 56px;
+    color: var(--color-primary, #8B2500);
+    display: block;
+    margin: 0 auto;
+}
+
+/* ── Sport Card Skeleton ── */
+.sport-card--skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    min-height: 220px;
+    border-radius: 10px;
+    pointer-events: none;
+}
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Sport Modal Bilingual Support ── */
+.sport-modal-inner .modal-names {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+.modal-name-ru { font-size: 1rem; color: var(--color-text-muted, #888); }
+.modal-name-ky { font-size: 1rem; color: var(--color-text-muted, #888); font-style: italic; }
+
+/* ── Scroll-to-top (activate JS) ── */
+.scroll-top.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}

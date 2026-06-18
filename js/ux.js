@@ -26,22 +26,22 @@
     }
 
     /* ── 3. Scroll to Top ── */
-    if (!document.getElementById('scrollTopBtn')) {
-        const btn = document.createElement('button');
-        btn.className = 'scroll-top';
-        btn.id = 'scrollTopBtn';
-        btn.setAttribute('aria-label', lang === 'ky' ? 'Жогору' : 'Наверх');
-        btn.title = lang === 'ky' ? 'Жогору' : 'Наверх';
-        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
-        document.body.appendChild(btn);
-
-        window.addEventListener('scroll', () => {
-            btn.classList.toggle('visible', window.scrollY > 400);
-        }, { passive: true });
-        btn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    let scrollBtn = document.getElementById('scrollTopBtn');
+    if (!scrollBtn) {
+        scrollBtn = document.createElement('button');
+        scrollBtn.className = 'scroll-top';
+        scrollBtn.id = 'scrollTopBtn';
+        scrollBtn.setAttribute('aria-label', lang === 'ky' ? 'Жогору' : 'Наверх');
+        scrollBtn.title = lang === 'ky' ? 'Жогору' : 'Наверх';
+        scrollBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+        document.body.appendChild(scrollBtn);
     }
+    window.addEventListener('scroll', () => {
+        scrollBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     /* ── 4. Cookie Banner ── */
     if (!document.getElementById('cookieBanner') && !localStorage.getItem('cookie-accepted')) {

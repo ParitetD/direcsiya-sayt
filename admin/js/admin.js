@@ -114,6 +114,7 @@ const CFG = {
     cols: [
       {key:'image', label:'Фото', type:'img'},
       {key:'nameRu', label:'Название', type:'name'},
+      {key:'order', label:'Порядок'},
       {key:'athletesCount', label:'Спортсменов'},
       {key:'status', label:'Статус', type:'badge'}
     ],
@@ -124,6 +125,8 @@ const CFG = {
       {key:'descriptionRu', label:'Описание', lang:'ru', type:'textarea', ph:'Описание вида спорта...'},
       {key:'descriptionKy', label:'Сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн сүрөттөмөсү...'},
       {key:'athletesCount', label:'Число спортсменов', type:'number', noLang:true},
+      {key:'order', label:'Порядок показа (1 = первый)', type:'number', noLang:true},
+      {key:'status', label:'Статус', type:'select', noLang:true, opts:[{v:'published',l:'Опубликован — виден на сайте'},{v:'draft',l:'Черновик — скрыт'}]},
       {key:'image', label:'Фотография', type:'upload'}
     ]
   }

@@ -99,7 +99,7 @@ html {
 }
 
 body {
-    font-family: var(--font-body);
+    font-family: var(--font-body), 'Trebuchet MS', 'Arial Unicode MS', Arial, sans-serif;
     font-weight: 400;
     line-height: 1.7;
     color: var(--color-text);
@@ -107,6 +107,7 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
 }
 
 a {
@@ -140,6 +141,16 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 var(--space-xl);
 }
 
+/* ---------- Global focus-visible ring ---------- */
+:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+}
+/* Remove default outline for mouse users */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
 /* ---------- Buttons ---------- */
 .btn {
     display: inline-flex;
@@ -155,6 +166,7 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     transition: all var(--transition-base);
     text-transform: uppercase;
+    min-height: 44px;
 }
 
 .btn--primary {
@@ -591,8 +603,9 @@ body.lang-ky ul.t-ky { display: block !important; }
 .section__subtitle {
     font-size: 1.1rem;
     color: var(--color-text-light);
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
+    line-height: 1.7;
 }
 
 .section__action {
@@ -621,6 +634,7 @@ body.lang-ky ul.t-ky { display: block !important; }
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .sport-card::before {
@@ -646,16 +660,18 @@ body.lang-ky ul.t-ky { display: block !important; }
 }
 
 .sport-card__icon {
-    width: 80px;
-    height: 80px;
+    width: 88px;
+    height: 88px;
     margin: 0 auto var(--space-lg);
     color: var(--color-primary);
-    transition: all var(--transition-base);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 3px 6px rgba(139,37,0,0.18));
 }
 
 .sport-card:hover .sport-card__icon {
     color: var(--color-secondary);
-    transform: scale(1.1);
+    transform: scale(1.18) rotate(-4deg);
+    filter: drop-shadow(0 6px 16px rgba(200,150,62,0.35));
 }
 
 .sport-card__icon svg {
@@ -708,6 +724,7 @@ body.lang-ky ul.t-ky { display: block !important; }
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     transition: all var(--transition-base);
+    cursor: pointer;
 }
 
 .event-card:hover {
@@ -778,7 +795,7 @@ body.lang-ky ul.t-ky { display: block !important; }
     color: var(--color-primary-dark);
     font-size: 0.78rem;
     font-weight: 600;
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
     text-transform: uppercase;
     letter-spacing: 0.8px;
     border-left: 3px solid var(--color-secondary);
@@ -840,11 +857,13 @@ body.lang-ky ul.t-ky { display: block !important; }
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: all var(--transition-base);
+    cursor: pointer;
 }
 
 .news-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
+    border-color: var(--color-secondary);
 }
 
 .news-card__image {
@@ -1432,6 +1451,11 @@ body.lang-ky ul.t-ky { display: block !important; }
     transition: all var(--transition-fast);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    min-height: 44px;
+}
+
+.filter-btn:active {
+    transform: scale(0.97);
 }
 
 .filter-btn:hover,
@@ -1689,11 +1713,13 @@ body.lang-ky ul.t-ky { display: block !important; }
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: all var(--transition-base);
+    cursor: pointer;
 }
 
 .news-full-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
+    border-color: var(--color-secondary);
 }
 
 .news-full-card__image {
@@ -1992,6 +2018,14 @@ body.lang-ky ul.t-ky { display: block !important; }
 
     .logo__title {
         font-size: 1rem;
+    }
+
+    .nav-brand-top {
+        display: none;
+    }
+
+    .nav-brand-bottom {
+        font-size: 0.82rem;
     }
 
     .hero__title-line {
@@ -2675,4 +2709,93 @@ body.lang-ky ul.t-ky { display: block !important; }
     .bio-header-info { padding-top:0; }
     .bio-body { padding: 16px 18px 22px; }
     .bio-header { padding: 20px 18px 16px; }
+}
+
+/* ── Visual polish ─────────────────────────────────────────────────────────── */
+
+/* Broken image graceful fallback */
+img:not([src]), img[src=""], img[src="undefined"] {
+    visibility: hidden;
+    min-height: 40px;
+}
+
+/* Prevent default blue link color on any missed links */
+a:not([class]) {
+    color: var(--color-primary);
+}
+
+/* Value-card cursor for about page */
+.value-card { cursor: default; }
+
+/* Consistent active state on all btn variants */
+.btn:active,
+.btn--primary:active,
+.btn--outline:active,
+.btn--secondary:active {
+    transform: scale(0.98) translateY(0) !important;
+    box-shadow: none;
+}
+
+/* Better touch-target height for lang switcher buttons */
+.lang-btn {
+    min-height: 36px;
+}
+
+/* Soften news-card border on hover via base — theme overrides this for blue */
+.news-card:hover {
+    border-color: var(--color-secondary);
+}
+
+/* Ensure social links have pointer */
+.social-link {
+    cursor: pointer;
+}
+
+/* Stat section inside page needs breathing room at tablet */
+@media (max-width: 1024px) {
+    .section--stats .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-xl);
+    }
+}
+
+/* Prevent hero from overflowing on small landscape phones */
+@media (max-width: 480px) and (orientation: landscape) {
+    .hero {
+        min-height: 480px;
+    }
+}
+
+/* Tight spacing fix for sport card grid on tablet */
+@media (max-width: 900px) {
+    .sports-grid {
+        gap: var(--space-lg);
+    }
+    .news-grid {
+        gap: var(--space-lg);
+    }
+}
+
+/* Section title responsive scaling */
+@media (max-width: 480px) {
+    .section__title {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+    .section__header {
+        margin-bottom: var(--space-2xl);
+    }
+    .event-card {
+        padding: var(--space-lg);
+        gap: var(--space-lg);
+    }
+    .news-card__content {
+        padding: var(--space-lg);
+    }
+    .cta-block {
+        padding: var(--space-2xl) var(--space-lg);
+    }
+    .contact-form {
+        padding: var(--space-lg);
+    }
 }

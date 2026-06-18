@@ -57,7 +57,27 @@
       "Bash(curl -s -o /dev/null -w \"Главная: %{http_code}\\\\n\" http://localhost:3000/)",
       "Bash(curl -s -o /dev/null -w \"Админка: %{http_code}\\\\n\" http://localhost:3000/admin)",
       "Bash(grep -vE '\\\\.\\(html|css|js|json|md|png|pdf|mp4|txt|conf|example|lock|yml|yaml\\)$')",
-      "Bash(grep -vE '^\\(node_modules|data|api|css|js|admin|uploads|qa-shots|scripts|\\\\.agents|\\\\.vscode|\\\\.git|\\\\.claude|\\\\.env|\\\\.gitignore|\\\\.dockerignore|Dockerfile|robots\\\\.txt|sitemap\\\\.xml|nginx\\\\.conf|LICENSE\\)$')"
+      "Bash(grep -vE '^\\(node_modules|data|api|css|js|admin|uploads|qa-shots|scripts|\\\\.agents|\\\\.vscode|\\\\.git|\\\\.claude|\\\\.env|\\\\.gitignore|\\\\.dockerignore|Dockerfile|robots\\\\.txt|sitemap\\\\.xml|nginx\\\\.conf|LICENSE\\)$')",
+      "Bash(dir /s /b \"C:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -Recurse -File | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"C:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\\\\\", \"\"\\) } | Where-Object { $_ -notmatch \"node_modules|\\\\.git\" } | Sort-Object)",
+      "Bash(npm audit *)",
+      "Bash(curl -s -I http://localhost:3000/)",
+      "Bash(grep -v \"//.*\")",
+      "Bash(curl -s -o /dev/null -w \"server: %{http_code}\" http://localhost:3000/)",
+      "PowerShell(taskkill /F /FI \"IMAGENAME eq node.exe\" 2>$null)",
+      "PowerShell(Start-Process -FilePath \"node\" -ArgumentList \"server.js\" -WorkingDirectory \"c:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -WindowStyle Hidden)",
+      "PowerShell(taskkill /F /FI \"IMAGENAME eq node.exe\" 2>$null; Start-Sleep -Milliseconds 500; Start-Process -FilePath \"node\" -ArgumentList \"server.js\" -WorkingDirectory \"c:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -WindowStyle Hidden; Start-Sleep -Seconds 2; $r = Invoke-WebRequest \"http://localhost:3000/api/news\" -UseBasicParsing; Write-Host \"API /api/news: $\\($r.StatusCode\\)\"; $r2 = Invoke-WebRequest \"http://localhost:3000/\" -UseBasicParsing; Write-Host \"Homepage: $\\($r2.StatusCode\\)\")",
+      "PowerShell(taskkill /F /FI \"IMAGENAME eq node.exe\" 2>$null; Start-Sleep -Milliseconds 800; Start-Process -FilePath \"node\" -ArgumentList \"server.js\" -WorkingDirectory \"c:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -WindowStyle Hidden; Start-Sleep -Seconds 2; $r = Invoke-WebRequest \"http://localhost:3000/\" -UseBasicParsing; Write-Host \"Server: $\\($r.StatusCode\\)\")",
+      "PowerShell(taskkill /F /FI \"IMAGENAME eq node.exe\" 2>$null; Start-Sleep -Milliseconds 500; Start-Process -FilePath \"node\" -ArgumentList \"server.js\" -WorkingDirectory \"c:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -WindowStyle Hidden; Start-Sleep -Seconds 2; $r = Invoke-WebRequest \"http://localhost:3000/js/main.js\" -UseBasicParsing; Write-Host \"Cache-Control: $\\($r.Headers['Cache-Control']\\)\"; Write-Host \"Status: $\\($r.StatusCode\\)\")",
+      "Skill(run)",
+      "Bash(curl -s http://localhost:3000)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "Bash(rm /c/Users/user/Desktop/aurora-main/fix-icons.js)",
+      "PowerShell(taskkill /F /IM node.exe 2>$null)",
+      "PowerShell(Start-Process -FilePath \"node\" -ArgumentList \"server.js\" -WorkingDirectory \"C:\\\\Users\\\\user\\\\Desktop\\\\aurora-main\" -NoNewWindow -PassThru)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"http://localhost:3000/js/main.js\" -UseBasicParsing; if \\($r.Content -match 'Kyrgyz national ornamental frame'\\) { \"OK: new icons found in served file\" } else { \"FAIL: old icons still served\" })"
     ],
     "additionalDirectories": [
       "C:\\Users\\user\\Desktop\\aurora-main"
@@ -65,5 +85,6 @@
   },
   "enabledMcpjsonServers": [
     "ruflo"
-  ]
+  ],
+  "enabledPlugins": {}
 }

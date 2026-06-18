@@ -69,15 +69,15 @@ app.get('/athletes', (req, res) => res.sendFile(path.join(__dirname, 'athletes.h
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 
 /* ── Static files (before admin SPA fallback) ── */
-// CSS/JS/fonts: 7-day cache (versioned via content hash in practice)
-// HTML pages: no-cache so updates are picked up immediately
-// Images in /uploads: 7-day cache
-app.use('/css',     express.static(path.join(__dirname, 'css'),     { maxAge: '7d' }));
-app.use('/js',      express.static(path.join(__dirname, 'js'),      { maxAge: '7d' }));
-app.use('/admin/css', express.static(path.join(__dirname, 'admin', 'css'), { maxAge: '7d' }));
-app.use('/admin/js',  express.static(path.join(__dirname, 'admin', 'js'),  { maxAge: '7d' }));
+// JS/CSS: no-cache so code changes are always picked up immediately
+// Library files (CropperJS etc): 30-day cache — these never change
+// Uploads: 1-day cache — images rarely change
+app.use('/css',     express.static(path.join(__dirname, 'css'),     { maxAge: 0 }));
+app.use('/js',      express.static(path.join(__dirname, 'js'),      { maxAge: 0 }));
+app.use('/admin/css', express.static(path.join(__dirname, 'admin', 'css'), { maxAge: 0 }));
+app.use('/admin/js',  express.static(path.join(__dirname, 'admin', 'js'),  { maxAge: 0 }));
 app.use('/admin/lib', express.static(path.join(__dirname, 'admin', 'lib'), { maxAge: '30d' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '1d' }));
 // Remaining static (HTML pages, logo, robots.txt etc.) — no long-term cache
 app.use(express.static(path.join(__dirname), { extensions: ['html'], maxAge: 0 }));
 

@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Виды спорта — Дирекция национальных видов спорта</title>
-    <meta name="description" content="Борьба курэш, стрельба из лука, конные скачки, мас-рестлинг, тогуз коргоол, хапсагай — традиционные виды спорта народов Кыргызстана.">
+    <meta name="description" content="Кыргыз күрөш, Тогуз коргоол, Көк-Бөрү, Ат чабыш, Алыш, Жамбы атуу и другие национальные виды спорта Кыргызстана.">
     <meta property="og:title" content="Виды спорта — Дирекция национальных видов спорта">
-    <meta property="og:description" content="Борьба курэш, стрельба из лука, конные скачки, мас-рестлинг, тогуз коргоол, хапсагай — традиционные виды спорта народов Кыргызстана.">
+    <meta property="og:description" content="Кыргыз күрөш, Тогуз коргоол, Көк-Бөрү, Ат чабыш — традиционные национальные виды спорта кыргызского народа.">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="ky_KY">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Виды спорта — Дирекция национальных видов спорта">
+    <meta name="twitter:description" content="Кыргыз күрөш, Тогуз коргоол, Көк-Бөрү, Ат чабыш и другие национальные виды спорта Кыргызстана">
   <meta property="og:image" content="https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1200&q=80">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,11 +39,11 @@
                         <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
                         <div class="nav-brand-text">
                             <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
-                            <span class="nav-brand-bottom">Дирекция спорта</span>
+                            <span class="nav-brand-bottom"><span class="t-ru">Дирекция спорта</span><span class="t-ky">Спорт дирекциясы</span></span>
                         </div>
                     </div>
                 </a>
-                <button class="burger" id="burger" aria-label="Открыть меню">
+                <button class="burger" id="burger" aria-label="Открыть меню / Менюну ачуу">
                     <span></span><span></span><span></span>
                 </button>
                 <nav class="nav" id="nav">
@@ -47,12 +52,11 @@
                         <li class="nav__item">
                             <a href="sports.html" class="nav__link nav__link--active"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span> <span class="nav__arrow">▾</span></a>
                             <ul class="nav__dropdown">
-                                <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
-                                <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
-                                <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
-                                <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
-                                <li><a href="sports.html#toguz"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
-                                <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                                <li><a href="sports.html"><span class="t-ru">Кыргыз күрөш</span><span class="t-ky">Кыргыз күрөш</span></a></li>
+                                <li><a href="sports.html"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                                <li><a href="sports.html"><span class="t-ru">Көк-Бөрү</span><span class="t-ky">Көк-Бөрү</span></a></li>
+                                <li><a href="sports.html"><span class="t-ru">Ат чабыш</span><span class="t-ky">Ат чабыш</span></a></li>
+                                <li><a href="sports.html"><span class="t-ru">Все виды спорта</span><span class="t-ky">Бардык спорт түрлөрү</span></a></li>
                             </ul>
                         </li>
                         <li class="nav__item">
@@ -114,7 +118,7 @@
     </section>
 
     <!-- Sports Overview from API -->
-    <section class="section" style="padding-top:var(--space-3xl);padding-bottom:var(--space-xl)">
+    <section id="main-content" class="section" style="padding-top:var(--space-3xl);padding-bottom:var(--space-xl)">
         <div class="container">
             <div class="section__header" style="text-align:center;margin-bottom:var(--space-2xl)">
                 <h2 class="section__title"><span class="t-ru">Виды спорта Кыргызстана</span><span class="t-ky">Кыргызстандын спорт түрлөрү</span></h2>
@@ -128,134 +132,6 @@
         </div>
     </section>
 
-    <!-- Sports Details -->
-    <main id="main-content">
-        <section class="sport-detail" id="kuresh">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/wrestling,nomad?lock=12" alt="Борьба курэш" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></h3>
-                        <p><span class="t-ru">Курэш (корэш) — один из древнейших видов национальной борьбы тюркских народов. Борьба ведётся на поясах, которые повязываются вокруг пояса соперника. Задача — бросить соперника на спину.</span><span class="t-ky">Күрөш — түрк элдеринин улуттук күрөшүнүн байыркы түрлөрүнүн бири. Күрөш жоон курак аркылуу жүргүзүлөт. Максат — бою жарды аударып, жерге таштоо.</span></p>
-                        <p><span class="t-ru">Курэш является обязательной частью национального праздника и имеет глубокие культурные корни, уходящие в историю кочевых народов.</span><span class="t-ky">Күрөш элдик майрамдардын ажырагыс бөлүгү болуп саналат жана Евразиянын көчмөн элдеринин тарыхына тамыр артат.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Признан международным видом спорта</span><span class="t-ky">Эл аралык спорт түрү катары таанылган</span></li>
-                            <li><span class="t-ru">Проводятся чемпионаты мира и Европы</span><span class="t-ky">Дүйнө жана Европа чемпионаттары өткөрүлөт</span></li>
-                            <li><span class="t-ru">Более 100 стран-участниц</span><span class="t-ky">100дөн ашык катышуучу мамлекет</span></li>
-                            <li><span class="t-ru">Традиция насчитывает более 3000 лет</span><span class="t-ky">Салт 3000 жылдан ашык тарыхка ээ</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="sport-detail" id="archery">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/archery,traditional?lock=9" alt="Стрельба из лука" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></h3>
-                        <p><span class="t-ru">Традиционная стрельба из лука — древнее искусство, сохранившееся в культуре многих народов. Используются луки и стрелы из натуральных материалов.</span><span class="t-ky">Жаа атуу — байыркы өнөр, ал көп элдердин маданиятында сакталып калган. Табигый материалдардан жасалган жаа жана жебелер колдонулат.</span></p>
-                        <p><span class="t-ru">Стрельба из национального лука отличается от олимпийской дисциплины техникой и правилами соревнований. Этот вид спорта играет особую роль в кыргызской культуре.</span><span class="t-ky">Улуттук жаадан атуу олимпиялык тартиптен техникасы жана эрежелери менен айырмаланат. Бул спорт кыргыз маданиятында өзгөчө орун ээлейт.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Часть программы традиционных праздников Центральной Азии</span><span class="t-ky">Борбор Азиянын салттуу майрамдарынын программасынын бөлүгү</span></li>
-                            <li><span class="t-ru">Стрельба на дальность и на точность</span><span class="t-ky">Аралыкка жана так атуу</span></li>
-                            <li><span class="t-ru">Использование традиционных композитных луков</span><span class="t-ky">Салттуу композит жаалар колдонулат</span></li>
-                            <li><span class="t-ru">Развитие меткости и концентрации</span><span class="t-ky">Тактыкты жана топтонуштукту өнүктүрөт</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="sport-detail" id="horse">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/horse,racing,nomad?lock=15" alt="Конные скачки байга" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></h3>
-                        <p><span class="t-ru">Байга — традиционные конные скачки на длинные дистанции. Дистанция составляет от 5 до 50 километров по пересечённой местности.</span><span class="t-ky">Байга — узун аралыкка жасалган салттуу ат чабыш. Аралык тоолуу жерлер аркылуу 5тен 50 чакырымга чейин болот.</span></p>
-                        <p><span class="t-ru">Конный спорт занимает центральное место в культуре кыргызского народа. Помимо байги, существуют: кыз-куу, кок-бору, аударыспак.</span><span class="t-ky">Ат спорту кыргыз элинин маданиятында борбордук орун ээлейт. Байгадан тышкары: кыз куумай, кок-бору, аударыспак да бар.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Байга — скачки на длинные дистанции</span><span class="t-ky">Байга — узун аралыкка ат чабыш</span></li>
-                            <li><span class="t-ru">Кок-бору — командная конная игра</span><span class="t-ky">Кок-бору — командалык ат оюну</span></li>
-                            <li><span class="t-ru">Аударыспак — борьба верхом</span><span class="t-ky">Аударыспак — атта күрөшүү</span></li>
-                            <li><span class="t-ru">Кыз куумай — традиционная конная игра</span><span class="t-ky">Кыз куумай — салттуу ат оюну</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="sport-detail" id="mas">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/sport,athlete,strength?lock=6" alt="Мас-рестлинг" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></h3>
-                        <p><span class="t-ru">Мас-рестлинг — национальный вид спорта, заключающийся в перетягивании палки. Два спортсмена тянут палку каждый на себя.</span><span class="t-ky">Мас-рестлинг — таяк тартуу боюнча улуттук спорт түрү. Эки спортчу таякты ар бири өз жагына тартат.</span></p>
-                        <p><span class="t-ru">Этот вид спорта развивает силу хвата, выносливость и тактическое мышление. Мас-рестлинг получил широкое международное признание.</span><span class="t-ky">Бул спорт түрү кармоо күчүн, чыдамкайлыкты жана тактикалык ой жүгүртүүнү өнүктүрөт. Мас-рестлинг эл аралык деңгээлде таанылган.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Международная федерация мас-рестлинга (IMWF)</span><span class="t-ky">Мас-рестлингдин эл аралык федерациясы (IMWF)</span></li>
-                            <li><span class="t-ru">Проводятся чемпионаты мира</span><span class="t-ky">Дүйнө чемпионаттары өткөрүлөт</span></li>
-                            <li><span class="t-ru">Более 70 стран-участниц</span><span class="t-ky">70тен ашык катышуучу мамлекет</span></li>
-                            <li><span class="t-ru">Развивает силу и выносливость</span><span class="t-ky">Күч жана чыдамкайлыкты өнүктүрөт</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="sport-detail" id="toguz">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/board,game,strategy?lock=4" alt="Тогуз коргоол" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></h3>
-                        <p><span class="t-ru">Тогуз коргоол — древняя настольная игра кыргызского народа. Игра ведётся на доске с 18 лунками (по 9 на каждого) с использованием шариков.</span><span class="t-ky">Тогуз коргоол — кыргыз элинин байыркы үстөл оюну. Оюн 18 ойдонго ээ тактайда (ар бирине 9тан) шарлар менен жүргүзүлөт.</span></p>
-                        <p><span class="t-ru">Эта интеллектуальная игра развивает логическое мышление и математические способности. Признана интеллектуальным видом спорта с международными чемпионатами.</span><span class="t-ky">Бул интеллектуалдуу оюн логикалык ой жүгүртүүнү жана математикалык жөндөмдүлүктү өнүктүрөт. Эл аралык чемпионаттар өткөрүлөт.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Возраст игры — более 4000 лет</span><span class="t-ky">Оюндун жашы — 4000 жылдан ашык</span></li>
-                            <li><span class="t-ru">Развивает стратегическое мышление</span><span class="t-ky">Стратегиялык ой жүгүртүүнү өнүктүрөт</span></li>
-                            <li><span class="t-ru">Международные соревнования</span><span class="t-ky">Эл аралык мелдештер</span></li>
-                            <li><span class="t-ru">Популярна в Кыргызстане, Казахстане, Турции</span><span class="t-ky">Кыргызстан, Казакстан жана Түркияда популярдуу</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="sport-detail" id="hapsagai">
-            <div class="container">
-                <div class="sport-detail__inner">
-                    <div class="sport-detail__image">
-                        <img src="https://loremflickr.com/800/500/wrestling,martial,sport?lock=11" alt="Хапсагай" loading="lazy">
-                    </div>
-                    <div class="sport-detail__content">
-                        <h3><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></h3>
-                        <p><span class="t-ru">Хапсагай — быстрая и динамичная национальная борьба. Запрещены захваты за одежду; проигрывает тот, кто первым коснётся земли, кроме стоп.</span><span class="t-ky">Хапсагай — тез жана динамикалуу улуттук күрөш. Кийимден кармоо тыюу салынган; алгач жерге тийген жеңилет.</span></p>
-                        <p><span class="t-ru">«Хапсагай» — «ловкий, проворный». Требует отличной координации, быстрой реакции и физической подготовки.</span><span class="t-ky">«Хапсагай» — «ловкий, ептүү» дегенди билдирет. Жакшы координация, тез реакция жана физикалык даярдык талап кылат.</span></p>
-                        <ul class="sport-detail__features">
-                            <li><span class="t-ru">Быстрые и динамичные поединки</span><span class="t-ky">Тез жана динамикалуу беттешүүлөр</span></li>
-                            <li><span class="t-ru">Запрещены захваты за одежду</span><span class="t-ky">Кийимден кармоо тыюу салынган</span></li>
-                            <li><span class="t-ru">Развивает ловкость и реакцию</span><span class="t-ky">Ептүүлүк жана реакцияны өнүктүрөт</span></li>
-                            <li><span class="t-ru">Традиция народов Центральной Азии</span><span class="t-ky">Борбор Азия элдеринин салты</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -305,11 +181,11 @@
                 <div class="footer__col">
                     <h4 class="footer__heading"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></h4>
                     <ul class="footer__links">
-                        <li><a href="sports.html#kuresh"><span class="t-ru">Борьба курэш</span><span class="t-ky">Күрөш</span></a></li>
-                        <li><a href="sports.html#archery"><span class="t-ru">Стрельба из лука</span><span class="t-ky">Жаа атуу</span></a></li>
-                        <li><a href="sports.html#horse"><span class="t-ru">Конные скачки</span><span class="t-ky">Ат чабыш</span></a></li>
-                        <li><a href="sports.html#mas"><span class="t-ru">Мас-рестлинг</span><span class="t-ky">Мас-рестлинг</span></a></li>
-                        <li><a href="sports.html#hapsagai"><span class="t-ru">Хапсагай</span><span class="t-ky">Хапсагай</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Кыргыз күрөш</span><span class="t-ky">Кыргыз күрөш</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Көк-Бөрү</span><span class="t-ky">Көк-Бөрү</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Ат чабыш</span><span class="t-ky">Ат чабыш</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Алыш</span><span class="t-ky">Алыш</span></a></li>
                     </ul>
                 </div>
                 <div class="footer__col">
