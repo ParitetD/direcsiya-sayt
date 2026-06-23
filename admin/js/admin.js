@@ -134,6 +134,29 @@ const CFG = {
       {key:'image', label:'Фотография', type:'upload'},
       {key:'icon',  label:'Иконка вида спорта', type:'icon-upload', noLang:true}
     ]
+  },
+  'about-values': {
+    title:'Ценность', api:'/api/about/values',
+    cols:[{key:'titleRu',label:'Название',type:'name'},{key:'textRu',label:'Текст'}],
+    fields:[
+      {key:'titleRu',label:'Название (RU)',lang:'ru',type:'text',req:true,ph:'Название ценности'},
+      {key:'titleKy',label:'Аталышы (KY)',lang:'ky',type:'text',ph:'Баалуулуктун аталышы'},
+      {key:'textRu',label:'Текст (RU)',lang:'ru',type:'textarea',ph:'Описание ценности...'},
+      {key:'textKy',label:'Тексти (KY)',lang:'ky',type:'textarea',ph:'Баалуулуктун сүрөттөмөсү...'},
+      {key:'order',label:'Порядок (1 = первый)',type:'number',noLang:true}
+    ]
+  },
+  'about-timeline': {
+    title:'Ключевая дата', api:'/api/about/timeline',
+    cols:[{key:'year',label:'Год'},{key:'titleRu',label:'Событие',type:'name'}],
+    fields:[
+      {key:'year',label:'Год',type:'text',noLang:true,req:true,ph:'2015'},
+      {key:'titleRu',label:'Название (RU)',lang:'ru',type:'text',req:true,ph:'Название события'},
+      {key:'titleKy',label:'Аталышы (KY)',lang:'ky',type:'text',ph:'Окуянын аталышы'},
+      {key:'descRu',label:'Описание (RU)',lang:'ru',type:'textarea',ph:'Краткое описание...'},
+      {key:'descKy',label:'Сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Кыскача сүрөттөмө...'},
+      {key:'order',label:'Порядок (1 = первый)',type:'number',noLang:true}
+    ]
   }
 };
 
@@ -195,13 +218,14 @@ async function loadBadges() {
 /* ── Navigation ── */
 function navigate(section) {
   document.querySelectorAll('.sb-item').forEach(n => n.classList.toggle('active', n.dataset.section === section));
-  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения',homepage:'Главная страница',help:'Инструкция'};
+  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения',homepage:'Главная страница',help:'Инструкция',about:'О нас'};
   document.getElementById('topbar-section').textContent = labels[section] || section;
   if (section === 'dashboard') renderDashboard();
   else if (section === 'settings') renderSettings();
   else if (section === 'homepage') renderHomePage();
   else if (section === 'contacts') renderContacts();
   else if (section === 'help') renderHelp();
+  else if (section === 'about') renderAbout();
   else if (CFG[section]) renderSection(section);
 }
 
@@ -882,11 +906,16 @@ async function submitDrawer(e) {
   attachCroppedBlobs(fd);
   const url = drawerItemId ? `${cfg.api}/${drawerItemId}` : cfg.api;
   const method = drawerItemId ? 'PUT' : 'POST';
+  const hasUpload = cfg.fields && cfg.fields.some(f => f.type === 'upload');
   try {
-    await apiFd(url, method, fd);
+    if (hasUpload) {
+      await apiFd(url, method, fd);
+    } else {
+      await api(url, method, Object.fromEntries(fd.entries()));
+    }
     closeDrawer();
     toast(drawerItemId ? 'Изменения сохранены' : 'Запись добавлена');
-    renderSection(drawerSection);
+    drawerSection.startsWith('about-') ? navigate('about') : renderSection(drawerSection);
     loadBadges();
   } catch(ex) { toast(ex.message||'Ошибка сохранения','e'); }
   finally { btn.disabled=false; btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> '+(drawerItemId?'Сохранить изменения':'Добавить запись'); }
@@ -936,7 +965,7 @@ async function doDelete(section, id) {
   try {
     await api(`${CFG[section].api}/${id}`, 'DELETE');
     closeConfirm(); toast('Запись удалена');
-    renderSection(section); loadBadges();
+    section.startsWith('about-') ? navigate('about') : renderSection(section); loadBadges();
   } catch { toast('Ошибка удаления','e'); }
 }
 
@@ -1376,6 +1405,102 @@ function renderHelp() {
       💡 <strong>Совет:</strong> все изменения сохраняются кнопкой <em>«Сохранить»</em> и сразу отображаются на сайте. Черновики скрыты от посетителей — это безопасный способ подготовить материал заранее.
     </div>
     <div class="help-grid">${cards}</div>`;
+}
+
+/* ── О нас ── */
+async function renderAbout() {
+  const c = document.getElementById('content');
+  c.innerHTML = `
+    <div class="page-head"><div class="page-head-txt">
+      <h2>О нас — страница «О Дирекции»</h2>
+      <p>Редактирование истории, ценностей и ключевых дат</p>
+    </div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px;align-items:center">
+      <button class="btn abt-tab" onclick="showAboutTab('history',this)">📝 История</button>
+      <button class="btn btn-outline abt-tab" onclick="showAboutTab('values',this)">⭐ Ценности</button>
+      <button class="btn btn-outline abt-tab" onclick="showAboutTab('timeline',this)">📅 Ключевые даты</button>
+      <span style="margin-left:auto;font-size:.8rem;color:var(--t2)">Раздел «Руководство» → <a href="#people" onclick="navigate('people')">Спортсмены / роль Сотрудник</a></span>
+    </div>
+    <div id="abt-history"></div>
+    <div id="abt-values" style="display:none"></div>
+    <div id="abt-timeline" style="display:none"></div>`;
+  loadAboutHistory();
+  loadAboutList('about-values','abt-values');
+  loadAboutList('about-timeline','abt-timeline');
+}
+
+function showAboutTab(tab, btn) {
+  document.getElementById('abt-history').style.display = tab==='history' ? '' : 'none';
+  document.getElementById('abt-values').style.display  = tab==='values'  ? '' : 'none';
+  document.getElementById('abt-timeline').style.display= tab==='timeline'? '' : 'none';
+  document.querySelectorAll('.abt-tab').forEach(function(b) {
+    b.classList.toggle('btn-outline', b !== btn);
+  });
+}
+
+async function loadAboutHistory() {
+  const div = document.getElementById('abt-history');
+  try {
+    const h = await api('/api/about/history');
+    div.innerHTML = `
+      <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.875rem">
+        ℹ️ Три абзаца об истории Дирекции, которые отображаются в разделе «О нас» на сайте
+      </div>
+      <form onsubmit="saveAboutHistory(event)">
+        <div class="lang-tabs">
+          <button type="button" class="lang-tab active" onclick="abtHistLang('ru',this)">🇷🇺 Русский</button>
+          <button type="button" class="lang-tab" onclick="abtHistLang('ky',this)">🇰🇬 Кыргызча</button>
+        </div>
+        <div class="abt-hp" data-al="ru">
+          <div class="form-field"><label class="form-lbl">Абзац 1 (RU)</label><textarea class="form-input" name="historyPara1Ru" rows="4">${escapeHtml(h.historyPara1Ru||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Абзац 2 (RU)</label><textarea class="form-input" name="historyPara2Ru" rows="4">${escapeHtml(h.historyPara2Ru||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Абзац 3 (RU)</label><textarea class="form-input" name="historyPara3Ru" rows="4">${escapeHtml(h.historyPara3Ru||'')}</textarea></div>
+        </div>
+        <div class="abt-hp" data-al="ky" style="display:none">
+          <div class="form-field"><label class="form-lbl">Абзац 1 (KY)</label><textarea class="form-input" name="historyPara1Ky" rows="4">${escapeHtml(h.historyPara1Ky||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Абзац 2 (KY)</label><textarea class="form-input" name="historyPara2Ky" rows="4">${escapeHtml(h.historyPara2Ky||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Абзац 3 (KY)</label><textarea class="form-input" name="historyPara3Ky" rows="4">${escapeHtml(h.historyPara3Ky||'')}</textarea></div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px">💾 Сохранить историю</button>
+      </form>`;
+  } catch { div.innerHTML = '<p style="color:red">Ошибка загрузки</p>'; }
+}
+
+function abtHistLang(lang, btn) {
+  document.querySelectorAll('.abt-hp').forEach(function(p){ p.style.display = p.dataset.al===lang ? '' : 'none'; });
+  btn.closest('.lang-tabs').querySelectorAll('.lang-tab').forEach(function(b){ b.classList.toggle('active', b===btn); });
+}
+
+async function saveAboutHistory(e) {
+  e.preventDefault();
+  try {
+    await api('/api/about/history','PUT',Object.fromEntries(new FormData(e.target).entries()));
+    toast('История сохранена — изменения сразу видны на сайте');
+  } catch { toast('Ошибка сохранения','e'); }
+}
+
+async function loadAboutList(section, targetId) {
+  const cfg = CFG[section];
+  const div = document.getElementById(targetId);
+  if (!div) return;
+  const isTl = section === 'about-timeline';
+  try {
+    const data = await api(cfg.api+'?limit=100');
+    const items = (data.data||[]);
+    div.innerHTML = `<div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-primary" onclick="openDrawer('${section}',null)">+ Добавить</button></div>`
+      + (!items.length ? '<p style="text-align:center;opacity:.5;padding:40px">Ничего нет — нажмите «Добавить»</p>'
+        : '<div class="table-wrap"><table class="data-table"><tbody>'
+          + items.map(function(it){
+            var icon = `<button class="icon-btn" onclick="openDrawer('${section}','${it.id}')" title="Редактировать"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`
+                      + `<button class="icon-btn danger" onclick="confirmDel('${section}','${it.id}')" title="Удалить"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>`;
+            return '<tr>'+(isTl?`<td style="font-weight:700;width:60px">${escapeHtml(it.year||'')}</td>`:'')
+              +`<td><strong>${escapeHtml(it.titleRu||'')}</strong></td>`
+              +`<td style="color:var(--t2);max-width:280px">${escapeHtml(((isTl?it.descRu:it.textRu)||'').slice(0,80))}…</td>`
+              +`<td style="white-space:nowrap">${icon}</td></tr>`;
+          }).join('')
+          + '</tbody></table></div>');
+  } catch { div.innerHTML = '<p style="color:red">Ошибка загрузки</p>'; }
 }
 
 function previewLogo(input) {

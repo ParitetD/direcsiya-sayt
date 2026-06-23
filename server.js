@@ -166,6 +166,7 @@ app.use('/api/settings', require('./api/settings'));
 app.use('/api/sports', require('./api/sports'));
 app.use('/api/slides', require('./api/slides'));
 app.use('/api/contact', require('./api/contact'));
+app.use('/api/about', require('./api/about'));
 
 /* ── Page routes moved before static middleware ── */
 

@@ -176,7 +176,18 @@
             .catch(function() {});
     })();
 
-    /* ── 10. Add canonical + theme-color if missing ── */
+    /* ── 10. Replace SVG placeholder logo in footer with real logo.png ── */
+    var footerSvgLogo = document.querySelector('.footer__col--about .logo__icon');
+    if (footerSvgLogo) {
+        var realLogo = document.createElement('img');
+        realLogo.src = '/logo.png';
+        realLogo.alt = 'ДНВС';
+        realLogo.className = 'footer-logo-img';
+        realLogo.addEventListener('error', function() { this.style.display = 'none'; });
+        footerSvgLogo.parentNode.replaceChild(realLogo, footerSvgLogo);
+    }
+
+    /* ── 11. Add canonical + theme-color if missing ── */
     if (!document.querySelector('link[rel="canonical"]')) {
         var canon = document.createElement('link');
         canon.rel = 'canonical';

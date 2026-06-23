@@ -356,6 +356,54 @@
 
     <script src="js/main.js"></script>
     <script>
+/* Load О нас content from API */
+(function() {
+  var esc=function(s){return(s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var lang=localStorage.getItem('site-lang')||'ru';
+  var ICONS=[
+    '<svg width="60" height="60" viewBox="0 0 60 60"><path d="M30 5 L35 20 L50 20 L38 30 L42 45 L30 36 L18 45 L22 30 L10 20 L25 20 Z" fill="#C8963E" opacity="0.7"/></svg>',
+    '<svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="20" fill="none" stroke="#8B2500" stroke-width="2.5"/><circle cx="30" cy="30" r="10" fill="none" stroke="#8B2500" stroke-width="2"/><circle cx="30" cy="30" r="3" fill="#8B2500"/><path d="M30 10 L30 5 M30 50 L30 55 M10 30 L5 30 M50 30 L55 30" stroke="#8B2500" stroke-width="2"/></svg>',
+    '<svg width="60" height="60" viewBox="0 0 60 60"><path d="M15 45 L30 15 L45 45" fill="none" stroke="#1B4332" stroke-width="2.5"/><path d="M10 50 L50 50" stroke="#1B4332" stroke-width="2"/><path d="M25 45 L30 15 L35 45" fill="#1B4332" opacity="0.15"/></svg>'
+  ];
+
+  fetch('/api/about/history').then(function(r){return r.json();}).then(function(h){
+    var el=document.querySelector('.about-content__text');
+    if(!el) return;
+    var paras=['historyPara1','historyPara2','historyPara3'].map(function(k){
+      var ru=h[k+'Ru'], ky=h[k+'Ky'];
+      return (ru||ky)?'<p><span class="t-ru">'+esc(ru||'')+'</span><span class="t-ky">'+esc(ky||'')+'</span></p>':'';
+    }).join('');
+    if(paras) { el.innerHTML='<h3><span class="t-ru">Наша история</span><span class="t-ky">Биздин тарых</span></h3>'+paras; if(typeof applyLang==='function') applyLang(lang,false); }
+  }).catch(function(){});
+
+  fetch('/api/about/values?limit=20').then(function(r){return r.json();}).then(function(json){
+    var items=json.data||[];
+    if(!items.length) return;
+    var grid=document.querySelector('.values-grid');
+    if(!grid) return;
+    grid.innerHTML=items.map(function(v,i){
+      return '<div class="value-card"><div class="value-card__icon">'+(ICONS[i]||ICONS[0])+'</div>'
+        +'<h3 class="value-card__title"><span class="t-ru">'+esc(v.titleRu||'')+'</span><span class="t-ky">'+esc(v.titleKy||v.titleRu||'')+'</span></h3>'
+        +'<p class="value-card__text"><span class="t-ru">'+esc(v.textRu||'')+'</span><span class="t-ky">'+esc(v.textKy||v.textRu||'')+'</span></p></div>';
+    }).join('');
+    if(typeof applyLang==='function') applyLang(lang,false);
+  }).catch(function(){});
+
+  fetch('/api/about/timeline?limit=30').then(function(r){return r.json();}).then(function(json){
+    var items=json.data||[];
+    if(!items.length) return;
+    var list=document.querySelector('.events-list');
+    if(!list) return;
+    list.innerHTML=items.map(function(t){
+      return '<article class="event-card"><div class="event-card__date"><span class="event-card__day" style="font-size:1.5rem">'+esc(t.year||'')+'</span><span class="event-card__month">год</span></div>'
+        +'<div class="event-card__content"><h3 class="event-card__title"><span class="t-ru">'+esc(t.titleRu||'')+'</span><span class="t-ky">'+esc(t.titleKy||t.titleRu||'')+'</span></h3>'
+        +'<p class="event-card__desc"><span class="t-ru">'+esc(t.descRu||'')+'</span><span class="t-ky">'+esc(t.descKy||t.descRu||'')+'</span></p></div></article>';
+    }).join('');
+    if(typeof applyLang==='function') applyLang(lang,false);
+  }).catch(function(){});
+})();
+</script>
+    <script>
 (function() {
   var AVATAR_SVG='<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="22" r="12" fill="currentColor"/><path d="M12 55 Q12 38 30 38 Q48 38 48 55" fill="currentColor"/></svg>';
   function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
