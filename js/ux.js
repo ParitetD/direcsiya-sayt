@@ -122,11 +122,56 @@
         }
     });
 
-    /* ── 8. Fix dead social links — prevent default without altering href ── */
-    document.querySelectorAll('.social-link[href="#"]').forEach(a => {
-        a.addEventListener('click', function(e) { e.preventDefault(); });
+    /* ── 8. Fix dead social links — prevent click only while href is still "#" ── */
+    document.querySelectorAll('.social-link').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            if (a.getAttribute('href') === '#') e.preventDefault();
+        });
     });
-    // html lang is managed by applyLang() in main.js — no override needed here
+
+    /* ── 9. Load social links & contacts from API ── */
+    (function() {
+        function setContactLi(li, svgNode, text) {
+            while (li.firstChild) li.removeChild(li.firstChild);
+            if (svgNode) li.appendChild(svgNode);
+            li.appendChild(document.createTextNode(' ' + text));
+        }
+        fetch('/api/settings')
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(s) {
+                if (!s) return;
+                // Update social link hrefs
+                ['Telegram', 'Instagram', 'YouTube'].forEach(function(name) {
+                    var url = s['social' + name];
+                    if (url) {
+                        document.querySelectorAll('.social-link[aria-label="' + name + '"]').forEach(function(a) {
+                            a.href = url;
+                            a.target = '_blank';
+                            a.rel = 'noopener noreferrer';
+                        });
+                    }
+                });
+                // Update footer contacts — preserve SVG icon, set text via DOM
+                var lis = document.querySelectorAll('.footer__contacts li');
+                if (lis[0] && s.address) {
+                    var svg0 = lis[0].querySelector('svg');
+                    while (lis[0].firstChild) lis[0].removeChild(lis[0].firstChild);
+                    if (svg0) lis[0].appendChild(svg0);
+                    lis[0].appendChild(document.createTextNode(' '));
+                    var spRu = document.createElement('span'); spRu.className = 't-ru'; spRu.textContent = s.address.ru || '';
+                    var spKy = document.createElement('span'); spKy.className = 't-ky'; spKy.textContent = s.address.ky || '';
+                    lis[0].appendChild(spRu);
+                    lis[0].appendChild(spKy);
+                }
+                if (lis[1] && s.phone) {
+                    setContactLi(lis[1], lis[1].querySelector('svg'), s.phone);
+                }
+                if (lis[2] && s.email) {
+                    setContactLi(lis[2], lis[2].querySelector('svg'), s.email);
+                }
+            })
+            .catch(function() {});
+    })();
 
     /* ── 10. Add canonical + theme-color if missing ── */
     if (!document.querySelector('link[rel="canonical"]')) {
