@@ -59,28 +59,36 @@ async function initHeroSlider() {
 function renderHeroSlides() {
     const container = document.getElementById('heroSlides');
     const dotsEl    = document.getElementById('heroDots');
+    const heroEl    = document.getElementById('hero');
     if (!container || !heroSlides.length) return;
 
-    const lang     = localStorage.getItem('site-lang') || 'ru';
-    const btnSport = lang === 'ky' ? 'Спорт түрлөрү' : 'Виды спорта';
-    const btnNews  = lang === 'ky' ? 'Жаңылыктар'    : 'Новости';
+    const lang    = localStorage.getItem('site-lang') || 'ru';
+    const btnNews = lang === 'ky' ? 'Жаңылыктар' : 'Новости';
 
+    // Background slides only — no content inside
     container.innerHTML = heroSlides.map((s, i) => `
         <div class="hero-slide${i === currentSlide ? ' active' : ''}"
              style="background-image:url('${escapeHtml(s.image)}')">
             <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <img src="/logo.png" class="hero-logo"
-                     onerror="this.style.display='none'" alt="ДНВС">
-                <h1 class="hero-title">${escapeHtml(lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || ''))}</h1>
-                <p class="hero-sub">${escapeHtml(lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || ''))}</p>
-                <div class="hero-btns">
-                    <a href="sports.html" class="btn-hero-primary">${btnSport}</a>
-                    <a href="news.html" class="btn-hero-outline">${btnNews}</a>
-                </div>
-            </div>
         </div>
     `).join('');
+
+    // Single static content layer — rendered once, stays visible always
+    var staticEl = document.getElementById('heroStaticContent');
+    if (!staticEl) {
+        staticEl = document.createElement('div');
+        staticEl.id = 'heroStaticContent';
+        staticEl.className = 'hero-content';
+        heroEl.insertBefore(staticEl, dotsEl);
+    }
+    var s0 = heroSlides[currentSlide];
+    var t0 = lang === 'ky' ? (s0.titleKy || s0.titleRu || '') : (s0.titleRu || s0.titleKy || '');
+    var u0 = lang === 'ky' ? (s0.subtitleKy || s0.subtitleRu || '') : (s0.subtitleRu || s0.subtitleKy || '');
+    staticEl.innerHTML =
+        '<img src="/logo.png" class="hero-logo" onerror="this.style.display=\'none\'" alt="ДНВС">' +
+        '<h1 class="hero-title" id="heroTitle">' + escapeHtml(t0) + '</h1>' +
+        '<p class="hero-sub" id="heroSub">' + escapeHtml(u0) + '</p>' +
+        '<div class="hero-btns"><a href="news.html" class="btn-hero-outline">' + btnNews + '</a></div>';
 
     if (dotsEl) {
         dotsEl.innerHTML = heroSlides.map((_, i) =>
@@ -105,6 +113,22 @@ function goSlide(n) {
 
     allSlides[currentSlide]?.classList.add('active');
     allDots[currentSlide]?.classList.add('active');
+
+    // Fade-update only the text — logo and button stay visible
+    var titleEl = document.getElementById('heroTitle');
+    var subEl   = document.getElementById('heroSub');
+    if (titleEl && subEl && heroSlides[currentSlide]) {
+        var lang = localStorage.getItem('site-lang') || 'ru';
+        var s    = heroSlides[currentSlide];
+        titleEl.style.opacity = '0';
+        subEl.style.opacity   = '0';
+        setTimeout(function() {
+            titleEl.textContent = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '');
+            subEl.textContent   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '');
+            titleEl.style.opacity = '1';
+            subEl.style.opacity   = '1';
+        }, 350);
+    }
 }
 window.goSlide = goSlide;
 
@@ -163,12 +187,14 @@ const sportRegistry = new Map();
 
     function makeCard(s, idx) {
         const name = lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu;
-        const icon = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
+        const iconHtml = s.icon
+            ? `<img src="${escapeHtml(s.icon)}" alt="${escapeHtml(name)}" style="width:100%;height:100%;object-fit:contain">`
+            : (SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default']);
         // data-sport-idx carries only a numeric index — no user data in HTML attributes
         return `<div class="ticker-card" data-sport-idx="${idx}"
             onmouseenter="document.getElementById('tickerTrack').style.animationPlayState='paused'"
             onmouseleave="document.getElementById('tickerTrack').style.animationPlayState='running'">
-            <div class="ticker-icon">${icon}</div>
+            <div class="ticker-icon">${iconHtml}</div>
             <span class="ticker-name">${escapeHtml(name)}</span>
         </div>`;
     }
@@ -190,7 +216,12 @@ window.openSportModal = function (s) {
     const lang = localStorage.getItem('site-lang') || 'ru';
     const name = lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu;
     const desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu) : s.descriptionRu;
-    document.getElementById('modalIcon').innerHTML = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
+    const modalIconEl = document.getElementById('modalIcon');
+    if (s.icon) {
+        modalIconEl.innerHTML = `<img src="${escapeHtml(s.icon)}" alt="${escapeHtml(name)}" style="width:80px;height:80px;object-fit:contain">`;
+    } else {
+        modalIconEl.innerHTML = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
+    }
     document.getElementById('modalTitle').textContent = name;
     document.getElementById('modalDesc').textContent = desc || '';
     const extra = document.getElementById('modalExtra');
@@ -767,7 +798,7 @@ function renderAthletes() {
             : `<div class="athlete-initials">${initials}</div>`;
 
         return `
-        <article class="athlete-card" onclick="openAthleteBio('${escapeHtml(String(a.id))}')">
+        <article class="athlete-card" onclick="location.href='athletes.html?id=${escapeHtml(String(a.id))}'">
             <div class="athlete-photo-wrap">
                 ${photoHtml}
                 <span class="athlete-role-badge athlete-role-badge--${a.role || 'athlete'}">${roleLabel}</span>
@@ -786,56 +817,100 @@ function renderAthletes() {
     }).join('');
 }
 
-function openAthleteBio(id) {
-    const a = allAthletes.find(x => String(x.id) === String(id));
-    if (!a) return;
+function _safeUrl(u) {
+    if (!u) return '';
+    try { const p = new URL(u); return (p.protocol === 'http:' || p.protocol === 'https:') ? p.href : ''; }
+    catch { return ''; }
+}
+
+function _athleteSocialLinks(a) {
+    const TG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`;
+    const IG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+    const YT = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+    const FB = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`;
+    const links = [];
+    const tg = _safeUrl(a.socialTelegram);
+    const ig = _safeUrl(a.socialInstagram);
+    const yt = _safeUrl(a.socialYoutube);
+    const fb = _safeUrl(a.socialFacebook);
+    if (tg) links.push(`<a href="${escapeHtml(tg)}" target="_blank" rel="noopener noreferrer" class="athlete-social-link" aria-label="Telegram">${TG}</a>`);
+    if (ig) links.push(`<a href="${escapeHtml(ig)}" target="_blank" rel="noopener noreferrer" class="athlete-social-link" aria-label="Instagram">${IG}</a>`);
+    if (yt) links.push(`<a href="${escapeHtml(yt)}" target="_blank" rel="noopener noreferrer" class="athlete-social-link" aria-label="YouTube">${YT}</a>`);
+    if (fb) links.push(`<a href="${escapeHtml(fb)}" target="_blank" rel="noopener noreferrer" class="athlete-social-link" aria-label="Facebook">${FB}</a>`);
+    return links.length ? `<div class="athlete-detail__socials">${links.join('')}</div>` : '';
+}
+
+function showAthleteDetailPage(id) {
+    const toolbar = document.querySelector('.athletes-toolbar');
+    if (toolbar) toolbar.hidden = true;
+    const tabs = document.getElementById('athleteTabs');
+    if (tabs) tabs.hidden = true;
+    const grid = document.getElementById('athletesGrid');
+    if (grid) grid.innerHTML = '<div class="athlete-skeleton" style="grid-column:1/-1;height:300px"></div>';
+
     const lang = localStorage.getItem('site-lang') || 'ru';
-    const name  = escapeHtml(lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || ''));
-    const sport = escapeHtml(lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || ''));
-    const title = escapeHtml(lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || ''));
+    fetch('/api/people/' + encodeURIComponent(id))
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(a => renderAthleteDetail(a))
+        .catch(() => {
+            const backLabel = lang === 'ky' ? '← Артка' : '← Назад к спортсменам';
+            const notFound  = lang === 'ky' ? 'Спортчу табылган жок' : 'Спортсмен не найден';
+            if (grid) grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 0">
+                <p style="opacity:.6;margin-bottom:1.5rem">${notFound}</p>
+                <a href="athletes.html" class="news-back-btn">${backLabel}</a></div>`;
+        });
+}
+
+function renderAthleteDetail(a) {
+    const lang = localStorage.getItem('site-lang') || 'ru';
+    const name  = lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '');
+    const sport = lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '');
+    const title = lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || '');
     const bio   = lang === 'ky' ? (a.bioKy || a.bioRu || '') : (a.bioRu || a.bioKy || '');
     const isRetired = a.careerStatus === 'retired';
-    const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
-    const photoHtml = a.photo
-        ? `<img class="bio-photo" src="${escapeHtml(a.photo)}" alt="${name}"
-               onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
-           <div class="bio-initials" style="display:none">${initials}</div>`
-        : `<div class="bio-initials">${initials}</div>`;
     const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
     const achArr = Array.isArray(achievements) ? achievements : [];
     const statusLabel = lang === 'ky'
         ? (isRetired ? 'Зейнеткерде' : 'Активдүү')
-        : (isRetired ? 'В отставке'  : 'Действующий');
+        : (isRetired ? 'В отставке' : 'Действующий');
+    const initials = escapeHtml(name).split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+    const photoHtml = a.photo
+        ? `<img src="${escapeHtml(a.photo)}" alt="${escapeHtml(name)}"
+               onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div class="athlete-initials" style="display:none">${initials}</div>`
+        : `<div class="athlete-initials">${initials}</div>`;
 
-    document.getElementById('athleteBioContent').innerHTML = `
-        <div class="bio-header">
-            ${photoHtml}
-            <div class="bio-header-info">
-                <div class="bio-name">${name}</div>
-                ${sport ? `<div class="bio-sport">${sport}</div>` : ''}
-                ${title ? `<div class="bio-title-txt">${title}</div>` : ''}
-                <span class="bio-badge${isRetired ? ' bio-badge--retired' : ''}">${statusLabel}</span>
+    document.title = (name ? name + ' — ' : '') + 'Спортсмены — Дирекция национальных видов спорта';
+    const backLabel = lang === 'ky' ? '← Спортчуларга кайтуу' : '← Назад к спортсменам';
+    const phEl = document.querySelector('.page-header__title');
+    if (phEl) phEl.innerHTML = `<a href="athletes.html" class="news-back-btn">${backLabel}</a>`;
+    const phSub = document.querySelector('.page-header__subtitle');
+    if (phSub) phSub.hidden = true;
+
+    const grid = document.getElementById('athletesGrid');
+    if (!grid) return;
+    grid.innerHTML = `<div class="athlete-detail-page" style="grid-column:1/-1">
+        <div class="athlete-detail__header">
+            <div class="athlete-detail__photo-wrap">${photoHtml}</div>
+            <div class="athlete-detail__info">
+                <h1 class="athlete-detail__name">${escapeHtml(name)}</h1>
+                ${sport ? `<p class="athlete-detail__sport">${escapeHtml(sport)}</p>` : ''}
+                ${title ? `<p class="athlete-detail__title">${escapeHtml(title)}</p>` : ''}
+                <span class="athlete-detail__status${isRetired ? ' athlete-detail__status--retired' : ''}">${statusLabel}</span>
+                ${_athleteSocialLinks(a)}
             </div>
         </div>
-        <div class="bio-body">
-            ${bio ? `<div class="bio-section"><div class="bio-section-title">${lang === 'ky' ? 'Өмүр баяны' : 'Биография'}</div><p class="bio-text">${escapeHtml(bio)}</p></div>` : ''}
-            ${achArr.length ? `<div class="bio-section"><div class="bio-section-title">${lang === 'ky' ? 'Жетишкендиктер' : 'Достижения'}</div><ul class="bio-achievements">${achArr.map(ach => `<li>${escapeHtml(ach)}</li>`).join('')}</ul></div>` : ''}
-            ${!bio && !achArr.length ? `<p class="bio-text" style="color:#999;text-align:center;padding:12px 0">${lang === 'ky' ? 'Маалымат жок' : 'Информация не добавлена'}</p>` : ''}
-        </div>`;
-    const modal = document.getElementById('athleteBioModal');
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+        ${bio ? `<div class="athlete-detail__section">
+            <div class="athlete-detail__section-title">${lang === 'ky' ? 'Өмүр баяны' : 'Биография'}</div>
+            <p class="athlete-detail__bio">${escapeHtml(bio)}</p>
+        </div>` : ''}
+        ${achArr.length ? `<div class="athlete-detail__section">
+            <div class="athlete-detail__section-title">${lang === 'ky' ? 'Жетишкендиктер' : 'Достижения'}</div>
+            <ul class="athlete-detail__achievements">${achArr.map(ach => `<li>${escapeHtml(ach)}</li>`).join('')}</ul>
+        </div>` : ''}
+        ${!bio && !achArr.length ? `<p style="opacity:.5;text-align:center;padding:40px 0">${lang === 'ky' ? 'Маалымат жок' : 'Информация не добавлена'}</p>` : ''}
+    </div>`;
 }
-
-function closeAthleteBio(e) {
-    if (e && e.target !== document.getElementById('athleteBioModal')) return;
-    document.getElementById('athleteBioModal').classList.add('hidden');
-    document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeAthleteBio();
-});
 
 /* Minimal HTML sanitizer for user-generated rich text (news content).
    Allows only safe formatting tags and strips all attributes. */
@@ -857,8 +932,34 @@ function sanitizeHtml(html) {
 window.sanitizeHtml = sanitizeHtml;
 
 if (window.location.pathname === '/athletes' || window.location.pathname.endsWith('/athletes.html')) {
-    document.addEventListener('DOMContentLoaded', loadAthletesPage);
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlId = new URLSearchParams(window.location.search).get('id');
+        if (urlId) { showAthleteDetailPage(urlId); } else { loadAthletesPage(); }
+    });
 }
+
+/* ── Athlete placeholder SVG — Kyrgyz ornamental frame with detailed figure ── */
+const ATHLETE_PLACEHOLDER_SVG = `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect width="80" height="80" fill="#F5EDD8"/>
+  <path d="M0,0L80,0L80,13L76,18L72,13L68,18L64,13L60,18L56,13L52,18L48,13L44,18L40,13L36,18L32,13L28,18L24,13L20,18L16,13L12,18L8,13L4,18L0,13Z" fill="#2D6B18"/>
+  <path d="M0,80L80,80L80,67L76,62L72,67L68,62L64,67L60,62L56,67L52,62L48,67L44,62L40,67L36,62L32,67L28,62L24,67L20,62L16,67L12,62L8,67L4,62L0,67Z" fill="#2D6B18"/>
+  <circle cx="40" cy="27" r="8.5" fill="none" stroke="#C8963E" stroke-width="1.3" opacity="0.75"/>
+  <circle cx="40" cy="27" r="5.8" fill="#2D6B18"/>
+  <path d="M33,33 Q29,36 29,42 L30,47 Q34,51 40,51 Q46,51 50,47 L51,42 Q51,36 47,33 Q44,31.5 40,31.5 Q36,31.5 33,33Z" fill="#2D6B18"/>
+  <line x1="29" y1="36" x2="17" y2="31" stroke="#2D6B18" stroke-width="3.8" stroke-linecap="round"/>
+  <line x1="17" y1="31" x2="14" y2="39" stroke="#2D6B18" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="14" y1="39" x2="12" y2="45" stroke="#2D6B18" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="51" y1="36" x2="63" y2="31" stroke="#2D6B18" stroke-width="3.8" stroke-linecap="round"/>
+  <line x1="63" y1="31" x2="66" y2="39" stroke="#2D6B18" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="66" y1="39" x2="68" y2="45" stroke="#2D6B18" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="36" y1="51" x2="31" y2="62" stroke="#2D6B18" stroke-width="3.8" stroke-linecap="round"/>
+  <line x1="31" y1="62" x2="27" y2="65" stroke="#2D6B18" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="44" y1="51" x2="49" y2="62" stroke="#2D6B18" stroke-width="3.8" stroke-linecap="round"/>
+  <line x1="49" y1="62" x2="53" y2="65" stroke="#2D6B18" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M30,43 Q40,48 50,43" stroke="#C8963E" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+  <circle cx="40" cy="25.5" r="2.2" fill="#C8963E" opacity="0.85"/>
+  <polygon points="36,18.5 40,15 44,18.5 40,22" fill="#C8963E" opacity="0.6"/>
+</svg>`;
 
 /* ── Home Athletes Preview ── */
 async function loadHomeAthletes() {
@@ -876,10 +977,13 @@ async function loadHomeAthletes() {
         grid.innerHTML = athletes.map(a => {
             const name  = lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '');
             const sport = lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '');
-            const photo = a.photo || 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80';
+            const imgHtml = a.photo
+                ? `<img class="athlete-preview-card__img" src="${escapeHtml(a.photo)}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+                : '';
+            const placeholderStyle = a.photo ? 'display:none' : 'display:flex';
             return `<div class="athlete-preview-card">
-                <img class="athlete-preview-card__img" src="${escapeHtml(photo)}" alt="${escapeHtml(name)}" loading="lazy"
-                     onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80'">
+                ${imgHtml}
+                <div class="athlete-preview-card__svg-wrap" style="${placeholderStyle}">${ATHLETE_PLACEHOLDER_SVG}</div>
                 <div class="athlete-preview-card__body">
                     <div class="athlete-preview-card__name">${escapeHtml(name)}</div>
                     <div class="athlete-preview-card__sport">${escapeHtml(sport)}</div>
@@ -910,9 +1014,12 @@ async function loadHomeSports() {
             const nameKy = escapeHtml(s.nameKy || s.nameRu || '');
             const descRu = escapeHtml((s.descriptionRu || '').slice(0, 120));
             const descKy = escapeHtml((s.descriptionKy || s.descriptionRu || '').slice(0, 120));
-            const icon   = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
+            const svgFallback = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
+            const iconHtml = s.icon
+                ? `<img src="${escapeHtml(s.icon)}" alt="" style="width:80px;height:80px;object-fit:contain">`
+                : svgFallback;
             return `<article class="sport-card sport-card--clickable" data-sport-home-idx="${i}" style="cursor:pointer">
-                <div class="sport-card__icon" aria-hidden="true">${icon}</div>
+                <div class="sport-card__icon" aria-hidden="true">${iconHtml}</div>
                 <h3 class="sport-card__title"><span class="t-ru">${nameRu}</span><span class="t-ky">${nameKy}</span></h3>
                 <p class="sport-card__text"><span class="t-ru">${descRu}…</span><span class="t-ky">${descKy}…</span></p>
                 <span class="sport-card__link"><span class="t-ru">Подробнее →</span><span class="t-ky">Толугураак →</span></span>

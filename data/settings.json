@@ -15,5 +15,18 @@
   },
   "socialTelegram": "https://t.me/natsport_kg",
   "socialInstagram": "https://www.instagram.com/natsport_kg/",
-  "socialYoutube": "https://www.youtube.com/@natsport_kg"
+  "socialYoutube": "https://www.youtube.com/@natsport_kg",
+  "countdownTitleRu": "VI Всемирные игры кочевников",
+  "countdownTitleKy": "VI Дүйнөлүк көчмөндөр оюндары",
+  "countdownDate": "2028-09-01",
+  "countdownTime": "09:00",
+  "countdownLocationRu": "Чолпон-Ата, Иссык-Куль",
+  "countdownLocationKy": "Чолпон-Ата, Ысык-Көл",
+  "countdownDescRu": "",
+  "countdownDescKy": "",
+  "countdownEventId": "",
+  "stat1Value": "18",   "stat1LabelRu": "Видов спорта",      "stat1LabelKy": "Спорт түрлөрү",
+  "stat2Value": "7",    "stat2LabelRu": "Областей КР",       "stat2LabelKy": "КР облустары",
+  "stat3Value": "80",   "stat3LabelRu": "Мероприятий в год", "stat3LabelKy": "Жылдык иш-чаралар",
+  "stat4Value": "5000", "stat4LabelRu": "Спортсменов",       "stat4LabelKy": "Спортчулар"
 }

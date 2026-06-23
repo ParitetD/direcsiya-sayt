@@ -1017,8 +1017,24 @@ body.lang-ky ul.t-ky { display: block !important; }
 
 .footer__desc {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+}
+
+.footer-logo-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.nomad-countdown__emblem {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
 }
 
 .footer__heading {
@@ -1036,7 +1052,7 @@ body.lang-ky ul.t-ky { display: block !important; }
 
 .footer__links a {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.82);
     transition: color var(--transition-fast);
 }
 
@@ -1046,7 +1062,7 @@ body.lang-ky ul.t-ky { display: block !important; }
 
 .footer__contacts li {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.82);
     margin-bottom: var(--space-sm);
 }
 
@@ -1062,9 +1078,10 @@ body.lang-ky ul.t-ky { display: block !important; }
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.82);
     transition: all var(--transition-base);
 }
 
@@ -1202,42 +1219,64 @@ body.lang-ky ul.t-ky { display: block !important; }
 
 .team-card {
     text-align: center;
-    padding: var(--space-xl);
+    padding: var(--space-2xl);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+}
+
+.team-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-secondary);
 }
 
 .team-card__avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-sand), var(--color-sand-light));
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
     margin: 0 auto var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     border: 3px solid var(--color-border);
-    transition: border-color var(--transition-base);
+    transition: all var(--transition-base);
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(139, 37, 0, 0.2);
 }
 
 .team-card:hover .team-card__avatar {
     border-color: var(--color-secondary);
+    box-shadow: 0 6px 24px rgba(200, 150, 62, 0.3);
 }
 
 .team-card__avatar svg {
-    width: 50%;
-    height: 50%;
-    color: var(--color-primary);
-    opacity: 0.5;
+    width: 60px;
+    height: 60px;
+    color: var(--color-white);
+}
+
+.team-card__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .team-card__name {
     font-size: 1.05rem;
     margin-bottom: var(--space-xs);
     color: var(--color-dark);
+    font-weight: 700;
+    font-family: var(--font-heading);
 }
 
 .team-card__role {
     font-size: 0.85rem;
-    color: var(--color-text-muted);
+    color: var(--color-primary);
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 /* ---------- Contact Page ---------- */
@@ -1848,7 +1887,7 @@ body.lang-ky ul.t-ky { display: block !important; }
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-sm);
     }
-
+    
     .lightbox__prev { left: 8px; }
     .lightbox__next { right: 8px; }
 }
@@ -1858,7 +1897,7 @@ body.lang-ky ul.t-ky { display: block !important; }
         grid-template-columns: 1fr;
     }
 }
-
+    
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
     .sports-grid {
@@ -2797,5 +2836,187 @@ a:not([class]) {
     }
     .contact-form {
         padding: var(--space-lg);
+    }
+}
+
+/* ==========================================================================
+   Person Icon Styles — Beautiful human icons for athletes & contacts
+   ========================================================================== */
+
+/* Person icon base */
+.person-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.person-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Large person icon for hero/sections */
+.person-icon--lg {
+    width: 48px;
+    height: 48px;
+}
+
+/* Person icon in gradient circle */
+.person-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    color: var(--color-white);
+    box-shadow: 0 4px 12px rgba(139, 37, 0, 0.3);
+}
+
+.person-icon-wrapper .person-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--color-white);
+}
+
+/* Contact info with person icon */
+.contact-info__item--person {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--color-sand-light);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary);
+}
+
+.contact-info__item--person .contact-info__icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.contact-info__item--person .contact-info__icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Footer contact with person icon */
+.footer__contacts li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--space-sm);
+}
+
+.footer__contacts li:last-child {
+    margin-bottom: 0;
+}
+
+/* Social links refined */
+.footer__social {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-white);
+    transition: all var(--transition-base);
+}
+
+.social-link:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-3px);
+}
+
+.social-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Athlete card person avatar placeholder */
+.athlete-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-sand), var(--color-sand-light));
+    color: var(--color-primary);
+}
+
+.athlete-avatar-placeholder svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.6;
+}
+
+/* Profile card person icon */
+.profile-card__avatar-person {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border: 3px solid var(--color-secondary);
+}
+
+.profile-card__avatar-person svg {
+    width: 40px;
+    height: 40px;
+    color: var(--color-white);
+}
+
+/* Contact page person icon styling */
+.contact-person-icon {
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    border-radius: var(--radius-md);
+    color: var(--color-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(139, 37, 0, 0.25);
+}
+
+.contact-person-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsive person icon adjustments */
+@media (max-width: 768px) {
+    .person-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .person-icon-wrapper .person-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .contact-person-icon {
+        width: 40px;
+        height: 40px;
+        padding: 10px;
     }
 }

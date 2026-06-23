@@ -9,9 +9,10 @@
     "location": "Чолпон-Ата, Ысык-Көл",
     "category": "championship",
     "status": "published",
-    "image": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&q=80",
+    "image": "/uploads/events/1782197250954-pvzi9.jpg",
     "createdAt": "2026-05-01T10:00:00.000Z",
-    "updatedAt": "2026-05-01T10:00:00.000Z"
+    "updatedAt": "2026-06-23T06:47:30.957Z",
+    "images": []
   },
   {
     "id": "2002",

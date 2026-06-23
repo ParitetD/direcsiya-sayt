@@ -159,6 +159,7 @@ body { background-color: #F7FAFF; }
     background: var(--color-primary-dark);
 }
 
+
 .hero__slides {
     position: absolute;
     inset: 0;
@@ -179,9 +180,11 @@ body { background-color: #F7FAFF; }
 .hero__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(13,36,84,0.85) 0%, rgba(27,59,125,0.75) 60%, rgba(13,36,84,0.8) 100%);
+    background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.5) 100%);
     z-index: 1;
 }
+
+
 
 /* slide dot indicators */
 .hero__dots {
@@ -687,9 +690,6 @@ body { background-color: #F7FAFF; }
     background-position: center;
     opacity: 0;
     transition: opacity 1.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .hero-slide.active { opacity: 1; }
@@ -699,33 +699,27 @@ body { background-color: #F7FAFF; }
     inset: 0;
     background: linear-gradient(
         160deg,
-        rgba(11,31,80,0.82) 0%,
-        rgba(27,59,125,0.65) 50%,
-        rgba(11,31,80,0.80) 100%
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.50) 100%
     );
 }
 
-/* Content sits inside each slide — no more shared panel */
+/* Static content layer — always visible, above all slides */
 .hero-content {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 0 24px;
-    max-width: 860px;
-    width: 100%;
-    /* Hidden by default, animates in when slide is active */
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.85s ease 0.45s, transform 0.85s ease 0.45s;
+    pointer-events: none;
 }
 
-.hero-slide.active .hero-content {
-    opacity: 1;
-    transform: translateY(0);
-}
+.hero-content > * { pointer-events: auto; }
 
 .hero-logo {
     width: 100px;
@@ -745,6 +739,11 @@ body { background-color: #F7FAFF; }
     margin-bottom: 18px;
     text-shadow: 0 2px 32px rgba(0,0,0,0.4);
     letter-spacing: -0.5px;
+    transition: opacity 0.35s ease;
+}
+
+.hero-sub {
+    transition: opacity 0.35s ease;
 }
 
 .hero-accent { color: #A8C4E8; }
@@ -1159,9 +1158,12 @@ body { background-color: #F7FAFF; }
    NOMAD GAMES COUNTDOWN WIDGET
    ══════════════════════════════════════════════════════════════════════════ */
 .nomad-countdown {
-    background: linear-gradient(135deg, #0b1f50 0%, #1b3b7d 45%, #0f2860 100%);
+    background: linear-gradient(to bottom, transparent 0%, #0b1f50 45%, #1b3b7d 75%, #0f2860 100%);
     padding: 36px 0;
+    padding-top: 130px;
+    margin-top: -110px;
     position: relative;
+    z-index: 20;
     overflow: hidden;
 }
 
@@ -1175,11 +1177,11 @@ body { background-color: #F7FAFF; }
     pointer-events: none;
 }
 
-/* gold top/bottom accent lines */
+/* gold bottom accent line only (top removed for seamless hero blend) */
 .nomad-countdown::after {
     content: '';
     position: absolute;
-    left: 0; right: 0; top: 0;
+    left: 0; right: 0; bottom: 0;
     height: 3px;
     background: linear-gradient(90deg, transparent, #C8963E 20%, #e8b84d 50%, #C8963E 80%, transparent);
 }

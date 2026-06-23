@@ -5,9 +5,11 @@
     "titleKy": "Кыргызстандын улуттук спорт түрлөрү боюнча дирекциясы",
     "subtitleRu": "Сохраняем и развиваем национальные спортивные традиции кыргызского народа",
     "subtitleKy": "Кыргыз элинин улуттук спорт салттарын сактап жана өнүктүрөбүз",
-    "image": "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=1600&q=80",
-    "order": 1,
-    "active": true
+    "image": "/uploads/slides/1782198036393-ayqhz.jpg",
+    "order": "1",
+    "active": true,
+    "updatedAt": "2026-06-23T07:00:36.397Z",
+    "images": []
   },
   {
     "id": "2",

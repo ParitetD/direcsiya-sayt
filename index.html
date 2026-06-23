@@ -15,7 +15,7 @@
     <meta name="twitter:description" content="Сохраняем и развиваем национальные спортивные традиции кыргызского народа">
     <meta property="og:image" content="/logo.png">
     <meta name="theme-color" content="#8B2500">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='30' r='28' fill='none' stroke='%238B2500' stroke-width='3'/><circle cx='30' cy='30' r='12' fill='none' stroke='%238B2500' stroke-width='2'/><circle cx='30' cy='30' r='5' fill='%238B2500'/></svg>">
+    <link rel="icon" href="/logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/theme-blue.css">
     <link rel="stylesheet" href="css/ux.css">
+    <link rel="stylesheet" href="css/effects.css">
 </head>
 <body>
     <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span></p></div></div></noscript>
@@ -124,31 +125,19 @@
     <section class="nomad-countdown" id="nomadCountdown">
         <div class="container">
             <div class="nomad-countdown__inner">
-                <svg class="nomad-countdown__emblem" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(200,150,62,0.4)" stroke-width="1.5"/>
-                    <circle cx="40" cy="40" r="24" fill="none" stroke="rgba(200,150,62,0.6)" stroke-width="1.5"/>
-                    <circle cx="40" cy="40" r="6" fill="#C8963E"/>
-                    <line x1="40" y1="4" x2="40" y2="76" stroke="rgba(200,150,62,0.35)" stroke-width="1"/>
-                    <line x1="4" y1="40" x2="76" y2="40" stroke="rgba(200,150,62,0.35)" stroke-width="1"/>
-                    <line x1="14.9" y1="14.9" x2="65.1" y2="65.1" stroke="rgba(200,150,62,0.25)" stroke-width="1"/>
-                    <line x1="65.1" y1="14.9" x2="14.9" y2="65.1" stroke="rgba(200,150,62,0.25)" stroke-width="1"/>
-                    <circle cx="40" cy="4"  r="3" fill="rgba(200,150,62,0.7)"/>
-                    <circle cx="40" cy="76" r="3" fill="rgba(200,150,62,0.7)"/>
-                    <circle cx="4"  cy="40" r="3" fill="rgba(200,150,62,0.7)"/>
-                    <circle cx="76" cy="40" r="3" fill="rgba(200,150,62,0.7)"/>
-                </svg>
+                <img src="/logo.png" class="nomad-countdown__emblem" alt="ДНВС" onerror="this.style.display='none'">
                 <div class="nomad-countdown__text">
                     <p class="nomad-countdown__label">
                         <span class="t-ru">Обратный отсчёт</span>
                         <span class="t-ky">Кайра эсептөө</span>
                     </p>
-                    <p class="nomad-countdown__title">
+                    <p class="nomad-countdown__title" id="cdTitle">
                         <span class="t-ru">IV Всемирные игры кочевников</span>
                         <span class="t-ky">IV Дүйнөлүк көчмөндөр оюндары</span>
                     </p>
-                    <p class="nomad-countdown__date">
-                        <span class="t-ru">Чолпон-Ата, Иссык-Куль · 1 сентября 2028</span>
-                        <span class="t-ky">Чолпон-Ата, Ысык-Көл · 2028-жылдын 1-сентябры</span>
+                    <p class="nomad-countdown__date" id="cdLocation">
+                        <span class="t-ru">Чолпон-Ата, Иссык-Куль</span>
+                        <span class="t-ky">Чолпон-Ата, Ысык-Көл</span>
                     </p>
                 </div>
                 <div class="nomad-countdown__timer" id="cdTimer">
@@ -184,7 +173,7 @@
                         </span>
                     </div>
                 </div>
-                <a href="events.html" class="nomad-countdown__link">
+                <a href="events.html" class="nomad-countdown__link" id="cdMoreLink">
                     <span class="t-ru">Подробнее →</span>
                     <span class="t-ky">Толугураак →</span>
                 </a>
@@ -193,35 +182,96 @@
     </section>
     <script>
     (function() {
-        var target = new Date('2028-09-01T09:00:00+06:00').getTime();
+        var timer = null;
         var pad = function(n) { return String(n).padStart(2, '0'); };
-        function tick() {
-            var diff = target - Date.now();
-            if (diff <= 0) {
-                document.getElementById('nomadCountdown').style.display = 'none';
-                return;
-            }
-            var days  = Math.floor(diff / 86400000);
-            var hours = Math.floor((diff % 86400000) / 3600000);
-            var mins  = Math.floor((diff % 3600000)  / 60000);
-            var secs  = Math.floor((diff % 60000)    / 1000);
-            var update = function(id, val) {
-                var el = document.getElementById(id);
-                if (el && el.textContent !== val) {
-                    el.textContent = val;
-                    el.classList.remove('tick');
-                    void el.offsetWidth;
-                    el.classList.add('tick');
-                    setTimeout(function() { el.classList.remove('tick'); }, 150);
+
+        function startCountdown(dateStr, timeStr) {
+            var t = timeStr && /^\d{2}:\d{2}/.test(timeStr) ? timeStr : '09:00';
+            var target = new Date(dateStr + 'T' + t + ':00').getTime();
+            function tick() {
+                var diff = target - Date.now();
+                if (diff <= 0) {
+                    document.getElementById('nomadCountdown').style.display = 'none';
+                    return;
                 }
-            };
-            update('cdDays',  String(days));
-            update('cdHours', pad(hours));
-            update('cdMins',  pad(mins));
-            update('cdSecs',  pad(secs));
+                var days  = Math.floor(diff / 86400000);
+                var hours = Math.floor((diff % 86400000) / 3600000);
+                var mins  = Math.floor((diff % 3600000)  / 60000);
+                var secs  = Math.floor((diff % 60000)    / 1000);
+                var update = function(id, val) {
+                    var el = document.getElementById(id);
+                    if (el && el.textContent !== val) {
+                        el.textContent = val;
+                        el.classList.remove('tick');
+                        void el.offsetWidth;
+                        el.classList.add('tick');
+                        setTimeout(function() { el.classList.remove('tick'); }, 150);
+                    }
+                };
+                update('cdDays',  String(days));
+                update('cdHours', pad(hours));
+                update('cdMins',  pad(mins));
+                update('cdSecs',  pad(secs));
+            }
+            tick();
+            if (timer) clearInterval(timer);
+            timer = setInterval(tick, 1000);
         }
-        tick();
-        setInterval(tick, 1000);
+
+        function setText(el, selector, val) {
+            var span = el.querySelector(selector);
+            if (span) span.textContent = val || '';
+        }
+        function applySettings(s) {
+            var titleEl = document.getElementById('cdTitle');
+            if (titleEl && (s.countdownTitleRu || s.countdownTitleKy)) {
+                setText(titleEl, '.t-ru', s.countdownTitleRu);
+                setText(titleEl, '.t-ky', s.countdownTitleKy);
+            }
+            var locEl = document.getElementById('cdLocation');
+            if (locEl && (s.countdownLocationRu || s.countdownLocationKy)) {
+                setText(locEl, '.t-ru', s.countdownLocationRu);
+                setText(locEl, '.t-ky', s.countdownLocationKy);
+            }
+            var linkEl = document.getElementById('cdMoreLink');
+            if (linkEl && s.countdownEventId) {
+                linkEl.href = 'events.html?id=' + encodeURIComponent(s.countdownEventId);
+            }
+            if (s.countdownDate) startCountdown(s.countdownDate, s.countdownTime);
+        }
+
+        fetch('/api/settings', { cache: 'no-store' })
+            .then(function(r) { return r.json(); })
+            .then(function(s) { applySettings(s); })
+            .catch(function() { startCountdown('2028-09-01', '09:00'); });
+    })();
+    </script>
+
+    <script>
+    (function() {
+        var lang = localStorage.getItem('site-lang') || 'ru';
+        fetch('/api/settings', { cache: 'no-store' })
+            .then(function(r) { return r.json(); })
+            .then(function(s) {
+                for (var i = 1; i <= 4; i++) {
+                    var val = s['stat' + i + 'Value'];
+                    var labelRu = s['stat' + i + 'LabelRu'];
+                    var labelKy = s['stat' + i + 'LabelKy'];
+                    var numEl = document.getElementById('statNum' + i);
+                    var lblEl = document.getElementById('statLbl' + i);
+                    if (numEl && val !== undefined) {
+                        var n = parseInt(val, 10);
+                        if (!isNaN(n)) numEl.setAttribute('data-target', n);
+                    }
+                    if (lblEl) {
+                        var ru = lblEl.querySelector('.t-ru');
+                        var ky = lblEl.querySelector('.t-ky');
+                        if (ru && labelRu) ru.textContent = labelRu;
+                        if (ky && labelKy) ky.textContent = labelKy;
+                    }
+                }
+            })
+            .catch(function() {});
     })();
     </script>
 
@@ -249,25 +299,31 @@
         </div>
     </div>
 
-    <!-- National Sports Section — dynamic from API -->
-    <section class="section section--sports" id="main-content">
-        <div class="container">
-            <div class="section__header">
-                <div class="ethno-corner ethno-corner--left" aria-hidden="true"></div>
-                <h2 class="section__title"><span class="t-ru">Национальные виды спорта</span><span class="t-ky">Улуттук спорт түрлөрү</span></h2>
-                <p class="section__subtitle"><span class="t-ru">Богатое наследие спортивных традиций народов Кыргызстана</span><span class="t-ky">Кыргызстан элдеринин спорттук салттарынын бай мурасы</span></p>
-                <div class="ethno-corner ethno-corner--right" aria-hidden="true"></div>
-            </div>
-            <div class="sports-grid" id="homeSportsGrid">
-                <div class="sport-card sport-card--skeleton"></div>
-                <div class="sport-card sport-card--skeleton"></div>
-                <div class="sport-card sport-card--skeleton"></div>
-            </div>
-            <div class="section__action">
-                <a href="sports.html" class="btn btn--primary"><span class="t-ru">Все виды спорта</span><span class="t-ky">Бардык спорт түрлөрү</span></a>
-            </div>
+    <!-- Marquee sports names divider -->
+    <div class="sports-marquee-divider" aria-hidden="true">
+        <div class="sports-marquee-track">
+            <span>Көк-Бөрү</span><span>•</span>
+            <span>Алыш</span><span>•</span>
+            <span>Салбуурун</span><span>•</span>
+            <span>Тогуз коргоол</span><span>•</span>
+            <span>Кыргыз күрөш</span><span>•</span>
+            <span>Ат чабыш</span><span>•</span>
+            <span>Жамбы ату</span><span>•</span>
+            <span>Эр эниш</span><span>•</span>
+            <span>Оодарыш</span><span>•</span>
+            <span>Кок бору</span><span>•</span>
+            <span>Көк-Бөрү</span><span>•</span>
+            <span>Алыш</span><span>•</span>
+            <span>Салбуурун</span><span>•</span>
+            <span>Тогуз коргоол</span><span>•</span>
+            <span>Кыргыз күрөш</span><span>•</span>
+            <span>Ат чабыш</span><span>•</span>
+            <span>Жамбы ату</span><span>•</span>
+            <span>Эр эниш</span><span>•</span>
+            <span>Оодарыш</span><span>•</span>
+            <span>Кок бору</span><span>•</span>
         </div>
-    </section>
+    </div>
 
     <!-- Events Section -->
     <section class="section section--events" id="events">
@@ -334,21 +390,25 @@
         <div class="ethno-pattern-bg" aria-hidden="true"></div>
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-item__number" data-target="18">0</span>
-                    <span class="stat-item__label"><span class="t-ru">Видов спорта</span><span class="t-ky">Спорт түрлөрү</span></span>
+                <div class="stat-item" id="statItem1">
+                    <svg class="stat-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span class="stat-item__number" id="statNum1" data-target="18">0</span>
+                    <span class="stat-item__label" id="statLbl1"><span class="t-ru">Видов спорта</span><span class="t-ky">Спорт түрлөрү</span></span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-item__number" data-target="7">0</span>
-                    <span class="stat-item__label"><span class="t-ru">Областей КР</span><span class="t-ky">КР облустары</span></span>
+                <div class="stat-item" id="statItem2">
+                    <svg class="stat-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span class="stat-item__number" id="statNum2" data-target="7">0</span>
+                    <span class="stat-item__label" id="statLbl2"><span class="t-ru">Областей КР</span><span class="t-ky">КР облустары</span></span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-item__number" data-target="80">0</span>
-                    <span class="stat-item__label"><span class="t-ru">Мероприятий в год</span><span class="t-ky">Жылдык иш-чаралар</span></span>
+                <div class="stat-item" id="statItem3">
+                    <svg class="stat-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                    <span class="stat-item__number" id="statNum3" data-target="80">0</span>
+                    <span class="stat-item__label" id="statLbl3"><span class="t-ru">Мероприятий в год</span><span class="t-ky">Жылдык иш-чаралар</span></span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-item__number" data-target="5000">0</span>
-                    <span class="stat-item__label"><span class="t-ru">Спортсменов</span><span class="t-ky">Спортчулар</span></span>
+                <div class="stat-item" id="statItem4">
+                    <svg class="stat-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span class="stat-item__number" id="statNum4" data-target="5000">0</span>
+                    <span class="stat-item__label" id="statLbl4"><span class="t-ru">Спортсменов</span><span class="t-ky">Спортчулар</span></span>
                 </div>
             </div>
         </div>
@@ -370,7 +430,7 @@
                         <time class="news-card__date"><span class="t-ru">20 мая 2026</span><span class="t-ky">2026-жылдын 20-майы</span></time>
                         <h3 class="news-card__title"><span class="t-ru">Кыргызстан примет Международный фестиваль национальных видов спорта</span><span class="t-ky">Кыргызстан Эл аралык улуттук спорт фестивалын өткөрөт</span></h3>
                         <p class="news-card__text"><span class="t-ru">В этом году Кыргызстан станет площадкой для проведения крупнейшего международного фестиваля...</span><span class="t-ky">Быйыл Кыргызстан эң ири эл аралык фестивалдын аянтчасына айланат...</span></p>
-                        <a href="news.html#news1" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
+                        <a href="news.html" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
                     </div>
                 </article>
                 <article class="news-card">
@@ -381,7 +441,7 @@
                         <time class="news-card__date"><span class="t-ru">15 мая 2026</span><span class="t-ky">2026-жылдын 15-майы</span></time>
                         <h3 class="news-card__title"><span class="t-ru">Открытие нового центра подготовки спортсменов в Бишкеке</span><span class="t-ky">Бишкекте жаңы спортчуларды даярдоо борбору ачылды</span></h3>
                         <p class="news-card__text"><span class="t-ru">В Бишкеке торжественно открыт современный центр подготовки атлетов национальных видов спорта...</span><span class="t-ky">Бишкекте улуттук спорт атлеттерин даярдоонун заманбап борбору салтанаттуу ачылды...</span></p>
-                        <a href="news.html#news2" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
+                        <a href="news.html" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
                     </div>
                 </article>
                 <article class="news-card">
@@ -392,7 +452,7 @@
                         <time class="news-card__date"><span class="t-ru">10 мая 2026</span><span class="t-ky">2026-жылдын 10-майы</span></time>
                         <h3 class="news-card__title"><span class="t-ru">Мас-рестлинг включён в программу Всемирных игр</span><span class="t-ky">Мас-рестлинг Дүйнөлүк оюндардын программасына кирди</span></h3>
                         <p class="news-card__text"><span class="t-ru">Историческое решение — мас-рестлинг официально включён в программу Всемирных игр...</span><span class="t-ky">Тарыхый чечим — мас-рестлинг расмий түрдө Дүйнөлүк оюндардын программасына кирди...</span></p>
-                        <a href="news.html#news3" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
+                        <a href="news.html" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
                     </div>
                 </article>
             </div>
@@ -451,29 +511,19 @@
             <div class="footer__grid">
                 <div class="footer__col footer__col--about">
                     <a href="index.html" class="footer__logo">
-                        <div class="logo__icon">
-                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M30 5 L30 55 M5 30 L55 30 M12 12 L48 48 M48 12 L12 48" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
-                            </svg>
-                        </div>
+                        <img src="/logo.png" alt="ДНВС" class="footer-logo-img" onerror="this.style.display='none'">
                         <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span></span>
                     </a>
                     <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
                     <div class="footer__social">
-                        <a href="#" class="social-link" aria-label="Instagram">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <a href="#" class="social-link" aria-label="Telegram" title="Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <a href="#" class="social-link" aria-label="Instagram" title="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="Telegram">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="YouTube">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                        <a href="#" class="social-link" aria-label="YouTube" title="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -506,14 +556,6 @@
                         <li><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +996 (312) 65-88-00</li>
                         <li><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> info@natsport.kg</li>
                     </ul>
-                    <div class="footer__social">
-                        <a href="#" class="social-link" aria-label="Instagram">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Telegram">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="footer__bottom">
@@ -587,29 +629,43 @@
                 .catch(() => { evBox.innerHTML = ''; });
         }
 
-        // Load home news
+        // Load home news — featured layout (1 main + side list)
         const newsBox = document.getElementById('home-news');
         if (newsBox) {
             newsBox.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Загрузка...</span><span class="t-ky">Жүктөлүүдө...</span></div>';
-            fetch('/api/news?status=published&limit=3')
+            fetch('/api/news?status=published&limit=4')
                 .then(r => r.json())
                 .then(({ data }) => {
                     if (!data || !data.length) { newsBox.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Нет новостей</span><span class="t-ky">Жаңылык жок</span></p>'; return; }
-                    newsBox.innerHTML = data.map(n => {
+                    const _e = (s) => typeof s==='string' ? s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])) : '';
+                    const fmtRu = d => `${d.getDate()} ${['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][d.getMonth()]} ${d.getFullYear()}`;
+                    const fmtKy = d => `${d.getFullYear()}-жылдын ${d.getDate()}-${['январы','февралы','марты','апрели','майы','июню','июлу','августу','сентябры','октябры','ноябры','декабры'][d.getMonth()]}`;
+
+                    const [main, ...rest] = data;
+                    const mainD = new Date(main.createdAt);
+                    const featuredHtml = `<article class="news-card news-card--featured reveal-on-scroll">
+                        ${main.image ? `<div class="news-card__image"><img src="${_e(main.image)}" alt="${_e(main.titleRu||'')}" loading="lazy"></div>` : ''}
+                        <div class="news-card__content">
+                            <time class="news-card__date"><span class="t-ru">${fmtRu(mainD)}</span><span class="t-ky">${fmtKy(mainD)}</span></time>
+                            <h3 class="news-card__title"><span class="t-ru">${_e(main.titleRu||'')}</span><span class="t-ky">${_e(main.titleKy||'')}</span></h3>
+                            <p class="news-card__text"><span class="t-ru">${_e((main.contentRu||'').slice(0,200))}…</span><span class="t-ky">${_e((main.contentKy||'').slice(0,200))}…</span></p>
+                            <a href="news.html?id=${_e(main.id||'')}" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
+                        </div>
+                    </article>`;
+
+                    const listHtml = rest.length ? `<div class="news-cards-list">${rest.map(n => {
                         const d = new Date(n.createdAt);
-                        const dateRu = `${d.getDate()} ${['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][d.getMonth()]} ${d.getFullYear()}`;
-                        const dateKy = `${d.getFullYear()}-жылдын ${d.getDate()}-${['январы','февралы','марты','апрели','майы','июню','июлу','августу','сентябры','октябры','ноябры','декабры'][d.getMonth()]}`;
-                        const _e = (s) => typeof s==='string' ? s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])) : '';
-                        return `<article class="news-card reveal-on-scroll">
-                            ${n.image ? `<div class="news-card__image"><img src="${_e(n.image)}" alt="${_e(n.titleRu||'')}" loading="lazy"></div>` : '<div class="news-card__image news-card__image--placeholder" style="background:var(--color-sand);display:flex;align-items:center;justify-content:center;min-height:180px;font-size:3rem">📰</div>'}
+                        return `<article class="news-card news-card--compact reveal-on-scroll">
+                            ${n.image ? `<div class="news-card__image"><img src="${_e(n.image)}" alt="${_e(n.titleRu||'')}" loading="lazy"></div>` : ''}
                             <div class="news-card__content">
-                                <time class="news-card__date"><span class="t-ru">${dateRu}</span><span class="t-ky">${dateKy}</span></time>
-                                <h3 class="news-card__title"><span class="t-ru">${_e(n.titleRu||'')}</span><span class="t-ky">${_e(n.titleKy||'')}</span></h3>
-                                <p class="news-card__text"><span class="t-ru">${_e((n.contentRu||'').slice(0,140))}…</span><span class="t-ky">${_e((n.contentKy||'').slice(0,140))}…</span></p>
-                                <a href="news.html" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span></a>
+                                <time class="news-card__date"><span class="t-ru">${fmtRu(d)}</span><span class="t-ky">${fmtKy(d)}</span></time>
+                                <h3 class="news-card__title"><a href="news.html?id=${_e(n.id||'')}"><span class="t-ru">${_e(n.titleRu||'')}</span><span class="t-ky">${_e(n.titleKy||'')}</span></a></h3>
                             </div>
                         </article>`;
-                    }).join('');
+                    }).join('')}</div>` : '';
+
+                    newsBox.className = 'news-grid news-grid--featured';
+                    newsBox.innerHTML = featuredHtml + listHtml;
                     if (window.initRevealAnimations) initRevealAnimations();
                 })
                 .catch(() => { newsBox.innerHTML = ''; });

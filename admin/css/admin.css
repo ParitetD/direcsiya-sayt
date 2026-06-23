@@ -376,6 +376,15 @@ textarea.form-input{resize:vertical;min-height:110px;line-height:1.6}
   .dialog{padding:24px 20px}
   .login-card{padding:36px 28px 32px}
 }
+/* Help page */
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.help-card{background:var(--card);border-radius:var(--r12);box-shadow:var(--sm);overflow:hidden}
+.help-card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);gap:12px}
+.help-steps{margin:0;padding:16px 18px 16px 34px;display:flex;flex-direction:column;gap:8px}
+.help-steps li{font-size:.84rem;color:var(--t1);line-height:1.5}
+.help-steps li strong{color:var(--t1)}
+.help-steps li em{font-style:normal;font-weight:600;color:var(--color-primary,#1a4a8a)}
+@media(max-width:900px){.help-grid{grid-template-columns:1fr}}
 
 /* ── Image grid upload ── */
 .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:12px}

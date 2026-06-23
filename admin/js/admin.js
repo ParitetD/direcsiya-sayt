@@ -87,7 +87,11 @@ const CFG = {
       {key:'bioKy',label:'Өмүр баяны',lang:'ky',type:'textarea',ph:'Кыскача өмүр баяны...'},
       {key:'achievementsRu',label:'Достижения',lang:'ru',type:'textarea',ph:'Медали, титулы — по одному на строку'},
       {key:'achievementsKy',label:'Жетишкендиктер',lang:'ky',type:'textarea',ph:'Медалдар, наамдар — ар бири жаңы сапта'},
-      {key:'photo',label:'Фотография',type:'upload'}
+      {key:'photo',label:'Фотография',type:'upload'},
+      {key:'socialInstagram',label:'Instagram',type:'text',noLang:true,ph:'https://instagram.com/...'},
+      {key:'socialTelegram', label:'Telegram', type:'text',noLang:true,ph:'https://t.me/...'},
+      {key:'socialYoutube',  label:'YouTube',  type:'text',noLang:true,ph:'https://youtube.com/@...'},
+      {key:'socialFacebook', label:'Facebook', type:'text',noLang:true,ph:'https://facebook.com/...'}
     ]
   },
   slides: {
@@ -127,7 +131,8 @@ const CFG = {
       {key:'athletesCount', label:'Число спортсменов', type:'number', noLang:true},
       {key:'order', label:'Порядок показа (1 = первый)', type:'number', noLang:true},
       {key:'status', label:'Статус', type:'select', noLang:true, opts:[{v:'published',l:'Опубликован — виден на сайте'},{v:'draft',l:'Черновик — скрыт'}]},
-      {key:'image', label:'Фотография', type:'upload'}
+      {key:'image', label:'Фотография', type:'upload'},
+      {key:'icon',  label:'Иконка вида спорта', type:'icon-upload', noLang:true}
     ]
   }
 };
@@ -190,11 +195,13 @@ async function loadBadges() {
 /* ── Navigation ── */
 function navigate(section) {
   document.querySelectorAll('.sb-item').forEach(n => n.classList.toggle('active', n.dataset.section === section));
-  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения'};
+  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения',homepage:'Главная страница',help:'Инструкция'};
   document.getElementById('topbar-section').textContent = labels[section] || section;
   if (section === 'dashboard') renderDashboard();
   else if (section === 'settings') renderSettings();
+  else if (section === 'homepage') renderHomePage();
   else if (section === 'contacts') renderContacts();
+  else if (section === 'help') renderHelp();
   else if (CFG[section]) renderSection(section);
 }
 
@@ -538,6 +545,28 @@ function renderField(f, item) {
   if (f.type === 'select') return `<div class="form-field"><label class="form-lbl">${f.label}</label><select class="form-input form-select" name="${f.key}">${(f.opts||[]).map(o=>`<option value="${o.v}"${String(v)===String(o.v)?' selected':''}>${o.l}</option>`).join('')}</select></div>`;
   if (f.type === 'date') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="date" class="form-input" name="${f.key}" value="${escapeHtml(v)}"></div>`;
   if (f.type === 'number') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="number" class="form-input" name="${f.key}" value="${escapeHtml(v)}" min="1"></div>`;
+  if (f.type === 'icon-upload') {
+    const previewHtml = v
+      ? `<img src="${escapeHtml(v)}" style="max-width:56px;max-height:56px;object-fit:contain;display:block">`
+      : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc"/><polyline points="21 15 16 10 5 21"/></svg>`;
+    return `<div class="form-field">
+      <label class="form-lbl">${escapeHtml(f.label)}</label>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px">
+        <div id="icon-preview-${f.key}" style="width:64px;height:64px;border:1.5px solid var(--border,#e5e7eb);border-radius:10px;overflow:hidden;background:#f8f8f8;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          ${previewHtml}
+        </div>
+        <div>
+          <label class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Загрузить иконку
+            <input type="file" id="iconFile-${f.key}" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" onchange="uploadSportIcon('${escapeHtml(f.key)}',this)">
+          </label>
+          <input type="hidden" name="${f.key}" id="iconVal-${f.key}" value="${escapeHtml(v)}">
+          <p style="margin-top:6px;font-size:.75rem;color:#9ca3af">PNG, JPG, WebP — до 2 МБ.<br>Нажмите «Сохранить» после загрузки иконки.</p>
+        </div>
+      </div>
+    </div>`;
+  }
   if (f.type === 'upload') {
     const existingImages = item
       ? [item.image, ...(item.images || [])].filter(Boolean)
@@ -1026,9 +1055,37 @@ async function renderSettings() {
   let s;
   try { s = await api('/api/settings'); } catch { toast('Ошибка загрузки','e'); return; }
 
+  const logoSrc = s.logoPath || '/logo.png';
+
   c.innerHTML = `
-    <div class="page-head"><div class="page-head-txt"><h2>Настройки</h2><p>Контактная информация и данные сайта</p></div></div>
+    <div class="page-head"><div class="page-head-txt"><h2>Настройки</h2><p>Логотип, контакты, социальные сети и безопасность</p></div></div>
+    <div style="margin-bottom:12px;padding:12px 16px;background:#f0f7ff;border:1px solid #c3dafe;border-radius:10px;font-size:.875rem;color:#3b5fc0">
+      💡 Чтобы изменить <strong>обратный отсчёт</strong> и <strong>статистику</strong> на главной — перейдите в раздел <a href="#homepage" onclick="navigate('homepage')" style="color:#3b5fc0;font-weight:600">🏠 Главная страница</a>
+    </div>
     <div class="settings-grid">
+
+      <!-- Логотип -->
+      <div class="settings-card" style="grid-column:1/-1">
+        <div class="settings-card-head"><h3>Логотип сайта</h3><p>Загрузите свой логотип (PNG, JPG, WebP, SVG — до 3 МБ)</p></div>
+        <div class="settings-card-body">
+          <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+            <div id="logo-preview-wrap" style="width:90px;height:90px;border:2px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;overflow:hidden;flex-shrink:0">
+              <img id="logo-preview-img" src="${escapeHtml(logoSrc)}" alt="Логотип" style="max-width:80px;max-height:80px;object-fit:contain" onerror="this.style.display='none'">
+            </div>
+            <div>
+              <label class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Выбрать файл
+                <input type="file" id="logo-file-input" accept="image/*" style="display:none" onchange="previewLogo(this)">
+              </label>
+              <button class="btn btn-primary btn-sm" style="margin-left:8px" onclick="uploadLogo()">Загрузить</button>
+              <p style="margin-top:8px;font-size:.8rem;color:#888">После загрузки логотип появится в шапке и футере сайта</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контакты -->
       <div class="settings-card">
         <div class="settings-card-head"><h3>Контактная информация</h3><p>Адрес, телефон и почта</p></div>
         <div class="settings-card-body">
@@ -1041,18 +1098,44 @@ async function renderSettings() {
           </form>
         </div>
       </div>
+
       <div style="display:flex;flex-direction:column;gap:20px">
+        <!-- Социальные сети -->
         <div class="settings-card">
-          <div class="settings-card-head"><h3>Социальные сети</h3></div>
+          <div class="settings-card-head"><h3>Социальные сети</h3><p>Ссылки отображаются в подвале сайта</p></div>
           <div class="settings-card-body">
             <form onsubmit="saveSettings(event)">
-              <div class="form-field"><label class="form-lbl">ВКонтакте</label><input class="form-input" name="socialVk" value="${escapeHtml(s.socialVk||'')}" placeholder="https://vk.com/..."></div>
-              <div class="form-field"><label class="form-lbl">Telegram</label><input class="form-input" name="socialTelegram" value="${escapeHtml(s.socialTelegram||'')}" placeholder="@channel"></div>
-              <div class="form-field"><label class="form-lbl">Instagram</label><input class="form-input" name="socialInstagram" value="${escapeHtml(s.socialInstagram||'')}" placeholder="@account"></div>
+              <div class="form-field">
+                <label class="form-lbl" style="display:flex;align-items:center;gap:6px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                  Telegram
+                </label>
+                <input class="form-input" name="socialTelegram" value="${escapeHtml(s.socialTelegram||'')}" placeholder="https://t.me/channel">
+              </div>
+              <div class="form-field">
+                <label class="form-lbl" style="display:flex;align-items:center;gap:6px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  Instagram
+                </label>
+                <input class="form-input" name="socialInstagram" value="${escapeHtml(s.socialInstagram||'')}" placeholder="https://instagram.com/account">
+              </div>
+              <div class="form-field">
+                <label class="form-lbl" style="display:flex;align-items:center;gap:6px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  YouTube
+                </label>
+                <input class="form-input" name="socialYoutube" value="${escapeHtml(s.socialYoutube||'')}" placeholder="https://youtube.com/@channel">
+              </div>
+              <div class="form-field">
+                <label class="form-lbl">ВКонтакте</label>
+                <input class="form-input" name="socialVk" value="${escapeHtml(s.socialVk||'')}" placeholder="https://vk.com/...">
+              </div>
               <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
             </form>
           </div>
         </div>
+
+        <!-- Безопасность -->
         <div class="settings-card">
           <div class="settings-card-head"><h3>Безопасность</h3><p>Изменить пароль администратора</p></div>
           <div class="settings-card-body">
@@ -1065,14 +1148,268 @@ async function renderSettings() {
         </div>
       </div>
     </div>`;
+
+}
+
+/* ── Homepage editor ── */
+async function renderHomePage() {
+  const c = document.getElementById('content');
+  c.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div></div>';
+  let s;
+  try { s = await api('/api/settings'); } catch { toast('Ошибка загрузки','e'); return; }
+
+  c.innerHTML = `
+    <div class="page-head"><div class="page-head-txt"><h2>Главная страница</h2><p>Обратный отсчёт и статистика на главной</p></div></div>
+    <div class="settings-grid">
+
+      <!-- Обратный отсчёт -->
+      <div class="settings-card" style="grid-column:1/-1">
+        <div class="settings-card-head"><h3>⏳ Обратный отсчёт</h3><p>Заголовок, дата, время и место мероприятия</p></div>
+        <div class="settings-card-body">
+          <form onsubmit="saveHomePage(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="form-field"><label class="form-lbl">Название (RU)</label><input class="form-input" name="countdownTitleRu" value="${escapeHtml(s.countdownTitleRu||'')}" placeholder="VI Всемирные игры кочевников"></div>
+              <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="countdownTitleKy" value="${escapeHtml(s.countdownTitleKy||'')}" placeholder="VI Дүйнөлүк көчмөндөр оюндары"></div>
+              <div class="form-field"><label class="form-lbl">Место (RU)</label><input class="form-input" name="countdownLocationRu" value="${escapeHtml(s.countdownLocationRu||'')}" placeholder="Чолпон-Ата, Иссык-Куль"></div>
+              <div class="form-field"><label class="form-lbl">Место (KY)</label><input class="form-input" name="countdownLocationKy" value="${escapeHtml(s.countdownLocationKy||'')}" placeholder="Чолпон-Ата, Ысык-Көл"></div>
+              <div class="form-field"><label class="form-lbl">Дата начала</label><input class="form-input" type="date" name="countdownDate" value="${escapeHtml(s.countdownDate||'')}"></div>
+              <div class="form-field"><label class="form-lbl">Время начала</label><input class="form-input" type="time" name="countdownTime" value="${escapeHtml(s.countdownTime||'09:00')}"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Описание (RU)</label><textarea class="form-input" name="countdownDescRu" rows="2" placeholder="Краткое описание мероприятия">${escapeHtml(s.countdownDescRu||'')}</textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Сүрөттөмө (KY)</label><textarea class="form-input" name="countdownDescKy" rows="2" placeholder="Иш-чаранын кыскача сүрөттөмөсү">${escapeHtml(s.countdownDescKy||'')}</textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Мероприятие (кнопка «Подробнее»)</label><select class="form-input" name="countdownEventId" id="cdEventSelect"><option value="">— Не привязывать —</option></select></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px">Сохранить</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Статистика -->
+      <div class="settings-card" style="grid-column:1/-1">
+        <div class="settings-card-head"><h3>📊 Статистика</h3><p>Цифры в блоке «18 видов спорта, 7 областей...»</p></div>
+        <div class="settings-card-body">
+          <form onsubmit="saveHomePage(event)">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end">
+              ${[1,2,3,4].map(i => `
+              <div>
+                <div class="form-field"><label class="form-lbl">Цифра ${i}</label><input class="form-input" name="stat${i}Value" value="${escapeHtml(s['stat'+i+'Value']||'')}" placeholder="18" style="font-size:1.2rem;font-weight:700;text-align:center"></div>
+                <div class="form-field"><label class="form-lbl">Подпись (RU)</label><input class="form-input" name="stat${i}LabelRu" value="${escapeHtml(s['stat'+i+'LabelRu']||'')}"></div>
+                <div class="form-field"><label class="form-lbl">Подпись (KY)</label><input class="form-input" name="stat${i}LabelKy" value="${escapeHtml(s['stat'+i+'LabelKy']||'')}"></div>
+              </div>`).join('')}
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px">Сохранить</button>
+          </form>
+        </div>
+      </div>
+
+    </div>`;
+
+  const sel = document.getElementById('cdEventSelect');
+  if (sel) {
+    api('/api/events?status=published&limit=200').then(function(j) {
+      const events = j.data || [];
+      const lang = localStorage.getItem('site-lang') || 'ru';
+      events.forEach(function(ev) {
+        const opt = document.createElement('option');
+        opt.value = ev.id;
+        const title = lang === 'ky' ? (ev.titleKy || ev.titleRu || '') : (ev.titleRu || ev.titleKy || '');
+        const date  = ev.date ? (' (' + ev.date.slice(0,10) + ')') : '';
+        opt.textContent = title + date;
+        if (ev.id === s.countdownEventId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }).catch(function() {});
+  }
+}
+
+async function saveHomePage(e) {
+  e.preventDefault();
+  try {
+    await api('/api/settings', 'PUT', Object.fromEntries(new FormData(e.target).entries()));
+    toast('Сохранено — изменения сразу видны на сайте');
+    renderHomePage();
+  } catch { toast('Ошибка сохранения', 'e'); }
+}
+
+/* ── Help / Instructions ── */
+function renderHelp() {
+  const c = document.getElementById('content');
+  const sections = [
+    {
+      icon: '🏠',
+      title: 'Главная страница',
+      nav: 'homepage',
+      color: '#3b5fc0',
+      steps: [
+        '<strong>Обратный отсчёт</strong> — введите название мероприятия на русском и кыргызском, укажите место, дату и время начала. Нажмите <em>Сохранить</em>. Таймер на сайте обновится сразу.',
+        'В поле <strong>«Мероприятие»</strong> можно выбрать из списка — тогда кнопка «Подробнее» будет вести на страницу этого мероприятия.',
+        '<strong>Статистика</strong> — четыре блока с цифрами («18 Видов спорта», «7 Областей» и т.д.). Измените цифру и подпись, нажмите <em>Сохранить</em>.',
+      ]
+    },
+    {
+      icon: '📰',
+      title: 'Новости',
+      nav: 'news',
+      color: '#8B2500',
+      steps: [
+        'Нажмите <strong>«Добавить»</strong> в правом верхнем углу — откроется панель справа.',
+        'Заполните заголовок и текст новости на <strong>русском</strong>, затем переключитесь на вкладку <strong>Кыргызча</strong> и введите перевод.',
+        'Выберите <strong>категорию</strong>: Новость, Анонс или Результат.',
+        'Загрузите <strong>фото обложки</strong> — перетащите файл или нажмите «Добавить фото». Можно обрезать.',
+        'Переключите статус на <strong>«Опубликовано»</strong>, чтобы новость появилась на сайте. <em>Черновик</em> — скрыт от посетителей.',
+        'Нажмите <strong>«Добавить запись»</strong> — новость сохранена.',
+        'Для редактирования нажмите иконку <strong>карандаша</strong> рядом с новостью. Для удаления — иконку <strong>корзины</strong>.',
+      ]
+    },
+    {
+      icon: '📅',
+      title: 'Мероприятия',
+      nav: 'events',
+      color: '#C8963E',
+      steps: [
+        'Нажмите <strong>«Добавить»</strong> и заполните название на двух языках.',
+        'Укажите <strong>дату проведения</strong> и <strong>место</strong> (город, адрес).',
+        'Добавьте описание — на вкладке RU и KY.',
+        'Загрузите <strong>фото мероприятия</strong>.',
+        'Опубликуйте — мероприятие появится в разделе «Мероприятия» на сайте и в выпадающем списке обратного отсчёта.',
+      ]
+    },
+    {
+      icon: '🖼',
+      title: 'Галерея',
+      nav: 'gallery',
+      color: '#2D6B18',
+      steps: [
+        'Нажмите <strong>«Загрузить фото»</strong>.',
+        'Добавьте подпись к фото на русском и кыргызском.',
+        'Выберите <strong>категорию</strong>: Борьба, Стрельба из лука, Конные игры, Праздники или Спортсмены.',
+        'Загрузите изображение. После кадрирования нажмите <em>Применить обрезку</em>, затем <em>Добавить запись</em>.',
+      ]
+    },
+    {
+      icon: '👤',
+      title: 'Спортсмены',
+      nav: 'people',
+      color: '#1a56a0',
+      steps: [
+        'Нажмите <strong>«Добавить»</strong> и заполните ФИО на двух языках.',
+        'Выберите <strong>роль</strong>: Спортсмен, Тренер или Сотрудник.',
+        'Укажите вид спорта, должность, статус карьеры.',
+        'Введите краткую <strong>биографию</strong> и <strong>достижения</strong> (каждое с новой строки).',
+        'Загрузите <strong>фото</strong> (портрет, формат 3:4).',
+        'При желании добавьте ссылки на <strong>Instagram, Telegram, YouTube, Facebook</strong> — иконки появятся на карточке спортсмена.',
+      ]
+    },
+    {
+      icon: '🎞',
+      title: 'Слайдер',
+      nav: 'slides',
+      color: '#5b21b6',
+      steps: [
+        'Управляет фотографиями на главном баннере сайта.',
+        'Нажмите <strong>«Добавить»</strong>, введите заголовок и подзаголовок.',
+        'Укажите <strong>порядок</strong> показа (1 — первый).',
+        'Загрузите фото <strong>16:9</strong> или вставьте URL.',
+        'Переключите на <strong>«Активен»</strong>, чтобы слайд показывался. Скрытые слайды не видны на сайте.',
+      ]
+    },
+    {
+      icon: '🏅',
+      title: 'Виды спорта',
+      nav: 'sports',
+      color: '#0f766e',
+      steps: [
+        'Добавьте вид спорта с названием на двух языках.',
+        'Укажите <strong>описание</strong> и количество спортсменов.',
+        'Загрузите <strong>фотографию</strong> и отдельно <strong>иконку</strong> (небольшой значок для карточки).',
+        'Поле <strong>«Порядок»</strong> определяет, в каком порядке виды спорта отображаются на сайте (1 — первый).',
+        'Опубликуйте, чтобы вид спорта стал виден посетителям.',
+      ]
+    },
+    {
+      icon: '✉️',
+      title: 'Обращения',
+      nav: 'contacts',
+      color: '#c53030',
+      steps: [
+        'Здесь хранятся все сообщения, отправленные через форму обратной связи на сайте.',
+        '<strong>Красная точка</strong> — непрочитанное. Нажмите галочку, чтобы отметить как прочитанное.',
+        'Щёлкните по email-адресу, чтобы ответить письмом.',
+        'Удалите ненужные обращения кнопкой с иконкой корзины.',
+      ]
+    },
+    {
+      icon: '⚙️',
+      title: 'Настройки',
+      nav: 'settings',
+      color: '#374151',
+      steps: [
+        '<strong>Логотип</strong> — выберите файл PNG/JPG и нажмите «Загрузить». Логотип появится в шапке и футере сайта.',
+        '<strong>Контакты</strong> — email, телефон и адрес организации. Отображаются в разделе «Контакты» на сайте.',
+        '<strong>Социальные сети</strong> — ссылки на Telegram, Instagram, YouTube, ВКонтакте. Иконки в подвале сайта.',
+        '<strong>Безопасность</strong> — смена пароля администратора. Введите текущий пароль, затем новый (минимум 6 символов).',
+      ]
+    },
+  ];
+
+  const cards = sections.map(sec => `
+    <div class="help-card">
+      <div class="help-card-head" style="border-left:4px solid ${sec.color}">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:1.4rem">${sec.icon}</span>
+          <h3 style="margin:0;font-size:1rem;font-weight:700">${sec.title}</h3>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="location.hash='${sec.nav}';navigate('${sec.nav}')">Перейти →</button>
+      </div>
+      <ol class="help-steps">
+        ${sec.steps.map(s => `<li>${s}</li>`).join('')}
+      </ol>
+    </div>`).join('');
+
+  c.innerHTML = `
+    <div class="page-head">
+      <div class="page-head-txt">
+        <h2>Инструкция по работе с сайтом</h2>
+        <p>Как редактировать каждый раздел — пошаговые подсказки</p>
+      </div>
+    </div>
+    <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.875rem;color:#78350f">
+      💡 <strong>Совет:</strong> все изменения сохраняются кнопкой <em>«Сохранить»</em> и сразу отображаются на сайте. Черновики скрыты от посетителей — это безопасный способ подготовить материал заранее.
+    </div>
+    <div class="help-grid">${cards}</div>`;
+}
+
+function previewLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = document.getElementById('logo-preview-img');
+    if (img) { img.style.display = 'block'; img.src = e.target.result; }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadLogo() {
+  const input = document.getElementById('logo-file-input');
+  if (!input || !input.files[0]) { toast('Выберите файл изображения', 'i'); return; }
+  const fd = new FormData();
+  fd.append('logo', input.files[0]);
+  try {
+    const r = await apiFd('/api/settings/logo', 'POST', fd);
+    toast('Логотип обновлён — обновите страницу чтобы увидеть изменения');
+    const img = document.getElementById('logo-preview-img');
+    if (img) img.src = (r.path || '/logo.png') + '?t=' + Date.now();
+    input.value = '';
+  } catch(ex) { toast(ex.message || 'Ошибка загрузки', 'e'); }
 }
 
 async function saveSettings(e) {
   e.preventDefault();
   try {
-    await api('/api/settings','PUT',Object.fromEntries(new FormData(e.target).entries()));
-    toast('Настройки сохранены');
-  } catch { toast('Ошибка сохранения','e'); }
+    await api('/api/settings', 'PUT', Object.fromEntries(new FormData(e.target).entries()));
+    toast('Настройки сохранены — изменения сразу видны на сайте');
+    renderSettings();
+  } catch { toast('Ошибка сохранения', 'e'); }
 }
 
 async function changePw(e) {
@@ -1100,6 +1437,24 @@ function toast(msg, type='s') {
   el.appendChild(document.createTextNode(' ' + String(msg)));
   document.getElementById('toasts').appendChild(el);
   setTimeout(() => { el.style.transition='.3s'; el.style.opacity='0'; el.style.transform='translateY(4px)'; setTimeout(()=>el.remove(),300); }, 2800);
+}
+
+/* ── Sport icon upload helper ── */
+async function uploadSportIcon(fieldKey, input) {
+  if (!input || !input.files[0]) return;
+  const fd = new FormData();
+  fd.append('icon', input.files[0]);
+  try {
+    const r = await apiFd('/api/sports/upload-icon', 'POST', fd);
+    const valEl     = document.getElementById(`iconVal-${fieldKey}`);
+    const previewEl = document.getElementById(`icon-preview-${fieldKey}`);
+    if (valEl) valEl.value = r.url;
+    if (previewEl) previewEl.innerHTML = `<img src="${escapeHtml(r.url)}" style="max-width:56px;max-height:56px;object-fit:contain;display:block">`;
+    input.value = '';
+    toast('Иконка загружена — нажмите «Сохранить» для применения', 'i');
+  } catch (ex) {
+    toast(ex.message || 'Ошибка загрузки иконки', 'e');
+  }
 }
 
 /* ── API ── */

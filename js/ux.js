@@ -143,3 +143,81 @@
     }
 
 })();
+
+/* --------------------------------------
+   11. 3D Card Tilt Effect
+   -------------------------------------- */
+function init3dCardEffect() {
+    const cards = document.querySelectorAll('.sport-card, .news-card, .event-card, .athlete-preview-card');
+
+    cards.forEach(card => {
+        const intensity = 8; // How much the card tilts. Higher is more.
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -intensity;
+            const rotateY = ((x - centerX) / centerX) * intensity;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        });
+
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'transform 0.1s ease-out, box-shadow 0.3s ease-in-out';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease-in-out';
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', init3dCardEffect);
+
+/* --------------------------------------
+   12. Scroll Reveal (IntersectionObserver)
+   -------------------------------------- */
+(function () {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.scroll-reveal').forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    const selectors = [
+        '.news-card', '.sport-card', '.event-card', '.athlete-preview-card',
+        '.cta-block', '.stat-item', '.footer__col'
+    ];
+    document.querySelectorAll(selectors.join(',')).forEach(function (el) {
+        el.classList.add('scroll-reveal');
+        revealObserver.observe(el);
+    });
+
+    /* Stat counter pop */
+    const statObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                statObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.stat-number').forEach(function (el) {
+        statObserver.observe(el);
+    });
+})();
