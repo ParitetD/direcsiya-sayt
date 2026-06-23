@@ -140,16 +140,19 @@
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(s) {
                 if (!s) return;
-                // Update social link hrefs
+                // Update social link hrefs — only allow http/https schemes
                 ['Telegram', 'Instagram', 'YouTube'].forEach(function(name) {
                     var url = s['social' + name];
-                    if (url) {
+                    if (!url) return;
+                    try {
+                        var u = new URL(url);
+                        if (u.protocol !== 'https:' && u.protocol !== 'http:') return;
                         document.querySelectorAll('.social-link[aria-label="' + name + '"]').forEach(function(a) {
-                            a.href = url;
+                            a.href = u.href;
                             a.target = '_blank';
                             a.rel = 'noopener noreferrer';
                         });
-                    }
+                    } catch (e) {}
                 });
                 // Update footer contacts — preserve SVG icon, set text via DOM
                 var lis = document.querySelectorAll('.footer__contacts li');
