@@ -118,8 +118,15 @@
         </div>
     </section>
 
-    <!-- Sports Overview from API -->
-    <section id="main-content" class="section" style="padding-top:var(--space-3xl);padding-bottom:var(--space-xl)">
+    <!-- Detail view (hidden by default, shown when ?id= present) -->
+    <section id="sport-detail-section" style="display:none;padding:var(--space-3xl) 0 var(--space-2xl)">
+        <div class="container">
+            <div id="sport-detail-wrap"></div>
+        </div>
+    </section>
+
+    <!-- Sports grid (default list) -->
+    <section id="sports-list-section" class="section" style="padding-top:var(--space-3xl);padding-bottom:var(--space-xl)">
         <div class="container">
             <div class="section__header" style="text-align:center;margin-bottom:var(--space-2xl)">
                 <h2 class="section__title"><span class="t-ru">Виды спорта Кыргызстана</span><span class="t-ky">Кыргызстандын спорт түрлөрү</span></h2>
@@ -204,31 +211,127 @@
     <script src="js/main.js"></script>
     <script>
     (function() {
-        const grid = document.getElementById('sports-api-grid');
-        const isKy = document.body.classList.contains('lang-ky');
         function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-        fetch('/api/sports?status=published&limit=20')
-            .then(r => r.json())
-            .then(({ data }) => {
-                if (!data || !data.length) {
-                    grid.innerHTML = '<p style="text-align:center;padding:3rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Нет данных</span><span class="t-ky">Маалымат жок</span></p>';
-                    return;
-                }
-                grid.innerHTML = data.map(s => `
-                    <div class="sport-api-card reveal-on-scroll">
-                        ${s.image ? `<div class="sport-api-card__img"><img src="${esc(s.image)}" alt="${esc(s.nameRu)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=60'"></div>` : '<div class="sport-api-card__img sport-api-card__img--placeholder"><svg viewBox="0 0 60 60" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><circle cx="30" cy="30" r="27"/><circle cx="30" cy="30" r="12"/><circle cx="30" cy="30" r="4" fill="currentColor" stroke="none"/></svg></div>'}
-                        <div class="sport-api-card__body">
-                            <h3 class="sport-api-card__name"><span class="t-ru">${esc(s.nameRu||'')}</span><span class="t-ky">${esc(s.nameKy||'')}</span></h3>
-                            ${s.athletesCount ? `<div class="sport-api-card__count"><span class="t-ru">${esc(s.athletesCount)} спортсменов</span><span class="t-ky">${esc(s.athletesCount)} спортсмен</span></div>` : ''}
-                            <p class="sport-api-card__desc"><span class="t-ru">${esc((s.descriptionRu||'').slice(0,140))}${(s.descriptionRu||'').length>140?'…':''}</span><span class="t-ky">${esc((s.descriptionKy||'').slice(0,140))}${(s.descriptionKy||'').length>140?'…':''}</span></p>
-                        </div>
+        function getLang(){return localStorage.getItem('site-lang')||'ru';}
+
+        /* ── Detail page ── */
+        function showDetail(id) {
+            document.getElementById('sports-list-section').style.display = 'none';
+            document.getElementById('sport-detail-section').style.display = '';
+            document.querySelector('.page-header').style.display = 'none';
+            const wrap = document.getElementById('sport-detail-wrap');
+            wrap.innerHTML = '<div style="text-align:center;padding:3rem;opacity:.5"><span class="t-ru">Загрузка...</span><span class="t-ky">Жүктөлүүдө...</span></div>';
+
+            fetch('/api/sports/' + encodeURIComponent(id))
+                .then(function(r){ if(!r.ok) throw new Error(); return r.json(); })
+                .then(function(s){ renderDetail(s); })
+                .catch(function(){
+                    const lang = getLang();
+                    wrap.innerHTML = '<div style="text-align:center;padding:60px 0">'
+                        + '<p style="opacity:.6;margin-bottom:1.5rem">' + (lang==='ky'?'Маалымат табылган жок':'Вид спорта не найден') + '</p>'
+                        + '<a href="sports.html" style="color:var(--color-primary,#8B2500);font-weight:600">'+(lang==='ky'?'← Артка':'← Назад к видам спорта')+'</a>'
+                        + '</div>';
+                });
+        }
+
+        function renderDetail(s) {
+            const lang = getLang();
+            const name = lang==='ky' ? (s.nameKy||s.nameRu||'') : (s.nameRu||s.nameKy||'');
+            const desc = lang==='ky' ? (s.descriptionKy||s.descriptionRu||'') : (s.descriptionRu||s.descriptionKy||'');
+            const backLabel = lang==='ky' ? '← Бардык спорт түрлөрү' : '← Все виды спорта';
+            const athletesLabel = lang==='ky' ? 'спортсмен' : 'спортсменов';
+            const img = s.image || 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80';
+
+            document.title = name + ' — Дирекция спорта';
+
+            document.getElementById('sport-detail-wrap').innerHTML = `
+              <a href="sports.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--color-primary,#8B2500);font-weight:600;margin-bottom:2rem;text-decoration:none;font-size:.95rem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                ${esc(backLabel)}
+              </a>
+              <div class="sport-detail">
+                <div class="sport-detail__hero">
+                  <img src="${esc(img)}" alt="${esc(name)}" class="sport-detail__img"
+                       onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80'">
+                  <div class="sport-detail__hero-overlay">
+                    <h1 class="sport-detail__title">${esc(name)}</h1>
+                    ${s.athletesCount ? `<div class="sport-detail__badge">👤 ${esc(s.athletesCount)} ${esc(athletesLabel)}</div>` : ''}
+                  </div>
+                </div>
+                <div class="sport-detail__body">
+                  <div class="sport-detail__meta">
+                    ${s.icon ? `<img src="${esc(s.icon)}" class="sport-detail__icon" alt="${esc(name)} иконка" onerror="this.style.display='none'">` : ''}
+                    <div>
+                      <div class="sport-detail__ru-ky">
+                        <span class="t-ru">${esc(s.nameRu||'')}</span>
+                        <span class="t-ky">${esc(s.nameKy||'')}</span>
+                        ${s.nameRu && s.nameKy && s.nameRu !== s.nameKy ? `<span class="sport-detail__alt-name">${esc(lang==='ky'?s.nameRu:s.nameKy)}</span>` : ''}
+                      </div>
                     </div>
-                `).join('');
-                if (window.initRevealAnimations) initRevealAnimations();
-            })
-            .catch(() => {
-                grid.innerHTML = '<p style="text-align:center;padding:3rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Ошибка загрузки</span><span class="t-ky">Жүктөө катасы</span></p>';
-            });
+                  </div>
+                  <div class="sport-detail__desc">
+                    <div class="t-ru">${esc(s.descriptionRu||'')}</div>
+                    <div class="t-ky">${esc(s.descriptionKy||'')}</div>
+                  </div>
+                  ${s.athletesCount ? `
+                  <div class="sport-detail__stats">
+                    <div class="sport-detail__stat">
+                      <span class="sport-detail__stat-num">${esc(s.athletesCount)}</span>
+                      <span class="sport-detail__stat-lbl t-ru">Спортсменов</span>
+                      <span class="sport-detail__stat-lbl t-ky">Спортсмен</span>
+                    </div>
+                  </div>` : ''}
+                  <div class="sport-detail__actions">
+                    <a href="events.html" class="btn-primary-link">
+                      <span class="t-ru">Ближайшие мероприятия</span>
+                      <span class="t-ky">Алдыдагы иш-чаралар</span>
+                    </a>
+                    <a href="athletes.html" class="btn-outline-link">
+                      <span class="t-ru">Спортсмены</span>
+                      <span class="t-ky">Спортчулар</span>
+                    </a>
+                  </div>
+                </div>
+              </div>`;
+        }
+
+        /* ── Grid (list) ── */
+        function loadGrid() {
+            const grid = document.getElementById('sports-api-grid');
+            fetch('/api/sports?status=published&limit=50')
+                .then(function(r){ return r.json(); })
+                .then(function(res){
+                    const data = res.data || [];
+                    if (!data.length) {
+                        grid.innerHTML = '<p style="text-align:center;padding:3rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Нет данных</span><span class="t-ky">Маалымат жок</span></p>';
+                        return;
+                    }
+                    grid.innerHTML = data.map(function(s){
+                        const img = s.image || '';
+                        return '<a href="sports.html?id=' + encodeURIComponent(s.id) + '" class="sport-api-card sport-api-card--link reveal-on-scroll">'
+                            + (img ? '<div class="sport-api-card__img"><img src="'+esc(img)+'" alt="'+esc(s.nameRu)+'" loading="lazy" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=60\'"></div>'
+                                   : '<div class="sport-api-card__img sport-api-card__img--placeholder"><svg viewBox="0 0 60 60" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><circle cx="30" cy="30" r="27"/><circle cx="30" cy="30" r="12"/><circle cx="30" cy="30" r="4" fill="currentColor" stroke="none"/></svg></div>')
+                            + '<div class="sport-api-card__body">'
+                            + '<h3 class="sport-api-card__name"><span class="t-ru">'+esc(s.nameRu||'')+'</span><span class="t-ky">'+esc(s.nameKy||'')+'</span></h3>'
+                            + (s.athletesCount ? '<div class="sport-api-card__count"><span class="t-ru">'+esc(s.athletesCount)+' спортсменов</span><span class="t-ky">'+esc(s.athletesCount)+' спортсмен</span></div>' : '')
+                            + '<p class="sport-api-card__desc"><span class="t-ru">'+esc((s.descriptionRu||'').slice(0,130))+(s.descriptionRu&&s.descriptionRu.length>130?'…':'')+'</span><span class="t-ky">'+esc((s.descriptionKy||'').slice(0,130))+(s.descriptionKy&&s.descriptionKy.length>130?'…':'')+'</span></p>'
+                            + '<span class="sport-api-card__more"><span class="t-ru">Подробнее →</span><span class="t-ky">Толугураак →</span></span>'
+                            + '</div></a>';
+                    }).join('');
+                    if (window.initRevealAnimations) initRevealAnimations();
+                })
+                .catch(function(){
+                    grid.innerHTML = '<p style="text-align:center;padding:3rem;color:var(--color-text-muted);grid-column:1/-1"><span class="t-ru">Ошибка загрузки</span><span class="t-ky">Жүктөө катасы</span></p>';
+                });
+        }
+
+        /* ── Init ── */
+        var urlId = new URLSearchParams(window.location.search).get('id');
+        if (urlId) {
+            showDetail(urlId);
+        } else {
+            loadGrid();
+        }
     })();
     </script>
     <script src="js/ux.js"></script>

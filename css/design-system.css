@@ -496,6 +496,201 @@
     flex: 1;
 }
 
+/* Card as link */
+.sport-api-card--link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.sport-api-card__more {
+    display: inline-block;
+    margin-top: var(--space-md);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--color-primary);
+    text-transform: uppercase;
+}
+
+/* ── Sport detail page ── */
+.sport-detail {
+    background: var(--surface-raised);
+    border-radius: var(--radius-xl, 16px);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.sport-detail__hero {
+    position: relative;
+    aspect-ratio: 21/9;
+    overflow: hidden;
+    min-height: 280px;
+}
+
+.sport-detail__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.sport-detail__hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-2xl, 3rem) var(--space-3xl, 4rem);
+    gap: 12px;
+}
+
+.sport-detail__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,.5);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sport-detail__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(200,150,62,.9);
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.sport-detail__body {
+    padding: var(--space-2xl, 3rem) var(--space-3xl, 4rem);
+}
+
+.sport-detail__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: var(--space-xl, 2rem);
+    padding-bottom: var(--space-xl, 2rem);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.sport-detail__icon {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    background: #f8f8f0;
+    padding: 6px;
+    flex-shrink: 0;
+}
+
+.sport-detail__ru-ky {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sport-detail__alt-name {
+    font-size: .85rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.sport-detail__desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: var(--space-2xl, 3rem);
+    white-space: pre-line;
+}
+
+.sport-detail__stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: var(--space-2xl, 3rem);
+    padding: var(--space-xl, 2rem);
+    background: var(--surface-tinted, #f8f7f0);
+    border-radius: var(--radius-lg, 12px);
+    flex-wrap: wrap;
+}
+
+.sport-detail__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 100px;
+}
+
+.sport-detail__stat-num {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.sport-detail__stat-lbl {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.sport-detail__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    background: var(--color-primary, #8B2500);
+    color: #fff;
+    border-radius: var(--radius-full, 50px);
+    font-weight: 700;
+    font-size: .9rem;
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+}
+
+.btn-primary-link:hover { background: var(--color-primary-dark, #6d1d00); transform: translateY(-2px); }
+
+.btn-outline-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    border: 2px solid var(--color-primary, #8B2500);
+    color: var(--color-primary, #8B2500);
+    border-radius: var(--radius-full, 50px);
+    font-weight: 700;
+    font-size: .9rem;
+    text-decoration: none;
+    transition: background .2s, color .2s, transform .2s;
+}
+
+.btn-outline-link:hover { background: var(--color-primary, #8B2500); color: #fff; transform: translateY(-2px); }
+
+@media (max-width: 768px) {
+    .sport-detail__hero { aspect-ratio: 4/3; }
+    .sport-detail__hero-overlay { padding: 1.5rem; }
+    .sport-detail__body { padding: 1.5rem; }
+    .sport-detail__title { font-size: 1.6rem; }
+}
+
 /* ══════════════════════════════════════════════════════════════════════════
    8. FORM COMPONENTS
    ══════════════════════════════════════════════════════════════════════════ */

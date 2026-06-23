@@ -483,11 +483,11 @@ async function openDrawer(section, id) {
     body += genFields.map(f=>renderField(f,item)).join('');
   }
 
-  // Status toggle — only for sections that use a 'status' field (not 'active' or no status)
-  const hasStatusField = cfg.fields.some(f => f.key === 'status') ||
-    (cfg.cols && cfg.cols.some(c => c.key === 'status'));
+  // Status toggle — only when no <select name="status"> already exists in the form
+  const statusInSelect = genFields.some(f => f.key === 'status');
+  const hasStatusCol = cfg.cols && cfg.cols.some(c => c.key === 'status');
   const usesActiveField = cfg.fields.some(f => f.key === 'active');
-  if (hasStatusField && !usesActiveField) {
+  if (!statusInSelect && hasStatusCol && !usesActiveField) {
     const isPublished = item?.status === 'published';
     body += `
     <div class="form-field">

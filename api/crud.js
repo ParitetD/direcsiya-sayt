@@ -27,7 +27,9 @@ function pickFields(source, fields) {
   const result = Object.create(null);
   for (const key of fields) {
     if (Object.prototype.hasOwnProperty.call(source, key)) {
-      result[key] = source[key];
+      const v = source[key];
+      // Arrays from duplicate form fields (e.g. two <input name="status">) — take last value
+      result[key] = Array.isArray(v) ? v[v.length - 1] : v;
     }
   }
   return result;
