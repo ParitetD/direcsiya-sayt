@@ -10,6 +10,7 @@ function safeUrl(v) {
 
 function sanitizeSocials(item) {
   SOCIAL_FIELDS.forEach(f => { if (f in item) item[f] = safeUrl(item[f]); });
+  if (!item.status) item.status = 'published';
 }
 
 module.exports = createCRUD({

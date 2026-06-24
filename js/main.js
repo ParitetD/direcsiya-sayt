@@ -970,7 +970,7 @@ async function loadHomeAthletes() {
         const r = await fetch('/api/people');
         const d = await r.json();
         const athletes = (Array.isArray(d) ? d : (d.data || []))
-            .filter(a => a.status === 'published' && a.role === 'athlete')
+            .filter(a => (!a.status || a.status === 'published') && a.role === 'athlete')
             .sort((a, b) => (parseInt(a.order) || 99) - (parseInt(b.order) || 99))
             .slice(0, 4);
         if (!athletes.length) { grid.closest('section')?.remove(); return; }
