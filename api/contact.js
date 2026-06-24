@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const { verifyToken } = require('./auth');
+const { sendContactNotification } = require('./mailer');
 
 const FILE = 'data/contacts.json';
 
@@ -36,6 +37,13 @@ router.post('/', (req, res) => {
   if (items.length > MAX_CONTACTS) items = items.slice(0, MAX_CONTACTS);
   write(items);
   res.json({ success: true });
+  // Send email notification asynchronously — don't block the response
+  sendContactNotification({
+    name: items[0].name,
+    email: items[0].email,
+    subject: items[0].subject,
+    message: items[0].message,
+  }).catch(err => console.error('[mailer] sendContactNotification failed:', err.message));
 });
 
 router.get('/', verifyToken, (req, res) => {
