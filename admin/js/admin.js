@@ -1442,9 +1442,23 @@ async function loadAboutHistory() {
   const div = document.getElementById('abt-history');
   try {
     const h = await api('/api/about/history');
+    const imgPreview = h.historyImageUrl
+      ? `<img src="${escapeHtml(h.historyImageUrl)}" style="display:block;width:220px;height:148px;object-fit:cover;border-radius:8px;margin-bottom:10px;border:1px solid #e2e8f0">`
+      : `<div style="width:220px;height:148px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;margin-bottom:10px;font-size:.8rem">Фото не добавлено</div>`;
+    const delBtn = h.historyImageUrl
+      ? `<button type="button" class="btn btn-outline" style="color:#dc2626;margin-left:8px" onclick="clearHistoryImage()">✕ Удалить</button>` : '';
     div.innerHTML = `
       <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.875rem">
-        ℹ️ Три абзаца об истории Дирекции, которые отображаются в разделе «О нас» на сайте
+        ℹ️ Фото и три абзаца об истории Дирекции, которые отображаются в разделе «О нас» на сайте
+      </div>
+      <div class="form-field" style="margin-bottom:20px">
+        <label class="form-lbl">Фото раздела «История»</label>
+        ${imgPreview}
+        <div style="display:flex;align-items:center">
+          <input type="file" id="hist-img-input" accept="image/*" style="display:none" onchange="uploadHistoryImage(this)">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('hist-img-input').click()">📷 ${h.historyImageUrl ? 'Заменить фото' : 'Загрузить фото'}</button>
+          ${delBtn}
+        </div>
       </div>
       <form onsubmit="saveAboutHistory(event)">
         <div class="lang-tabs">
@@ -1477,6 +1491,25 @@ async function saveAboutHistory(e) {
     await api('/api/about/history','PUT',Object.fromEntries(new FormData(e.target).entries()));
     toast('История сохранена — изменения сразу видны на сайте');
   } catch { toast('Ошибка сохранения','e'); }
+}
+
+async function uploadHistoryImage(input) {
+  if (!input || !input.files[0]) return;
+  const fd = new FormData();
+  fd.append('image', input.files[0]);
+  try {
+    await apiFd('/api/about/image', 'POST', fd);
+    toast('Фото сохранено');
+    loadAboutHistory();
+  } catch(ex) { toast(ex.message || 'Ошибка загрузки', 'e'); }
+}
+
+async function clearHistoryImage() {
+  try {
+    await api('/api/about/history', 'PUT', { historyImageUrl: '' });
+    toast('Фото удалено');
+    loadAboutHistory();
+  } catch { toast('Ошибка', 'e'); }
 }
 
 async function loadAboutList(section, targetId) {

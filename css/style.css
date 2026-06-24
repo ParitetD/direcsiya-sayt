@@ -1165,6 +1165,14 @@ body.lang-ky ul.t-ky { display: block !important; }
     border: 2px solid var(--color-border);
 }
 
+.about-image__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+}
+
 .about-image svg {
     width: 60%;
     height: 60%;

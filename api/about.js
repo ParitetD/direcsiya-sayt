@@ -1,8 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const { verifyToken } = require('./auth');
 const createCRUD = require('./crud');
+
+const UPLOAD_DIR = 'uploads/about/';
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: UPLOAD_DIR,
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      cb(null, `history-${Date.now()}${ext}`);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, /^image\//.test(file.mimetype) && ['.jpg','.jpeg','.png','.webp','.gif'].includes(ext));
+  },
+});
 
 const HISTORY_FILE = 'data/about.json';
 function readHistory() {
@@ -24,8 +44,19 @@ router.put('/history', verifyToken, (req, res) => {
     const v = str(req.body[k], 2000);
     if (v !== undefined) updated[k] = v;
   });
+  if (req.body.historyImageUrl !== undefined) {
+    updated.historyImageUrl = String(req.body.historyImageUrl || '').slice(0, 500);
+  }
   writeHistory(updated);
   res.json(updated);
+});
+
+router.post('/image', verifyToken, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'Файл не загружен' });
+  const url = `/uploads/about/${req.file.filename}`;
+  const current = readHistory();
+  writeHistory({ ...current, historyImageUrl: url });
+  res.json({ url });
 });
 
 router.use('/values', createCRUD({

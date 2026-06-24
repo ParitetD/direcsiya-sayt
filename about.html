@@ -368,12 +368,24 @@
 
   fetch('/api/about/history').then(function(r){return r.json();}).then(function(h){
     var el=document.querySelector('.about-content__text');
-    if(!el) return;
-    var paras=['historyPara1','historyPara2','historyPara3'].map(function(k){
-      var ru=h[k+'Ru'], ky=h[k+'Ky'];
-      return (ru||ky)?'<p><span class="t-ru">'+esc(ru||'')+'</span><span class="t-ky">'+esc(ky||'')+'</span></p>':'';
-    }).join('');
-    if(paras) { el.innerHTML='<h3><span class="t-ru">Наша история</span><span class="t-ky">Биздин тарых</span></h3>'+paras; if(typeof applyLang==='function') applyLang(lang,false); }
+    if(el) {
+      var paras=['historyPara1','historyPara2','historyPara3'].map(function(k){
+        var ru=h[k+'Ru'], ky=h[k+'Ky'];
+        return (ru||ky)?'<p><span class="t-ru">'+esc(ru||'')+'</span><span class="t-ky">'+esc(ky||'')+'</span></p>':'';
+      }).join('');
+      if(paras) { el.innerHTML='<h3><span class="t-ru">Наша история</span><span class="t-ky">Биздин тарых</span></h3>'+paras; if(typeof applyLang==='function') applyLang(lang,false); }
+    }
+    if(h.historyImageUrl && /^\/uploads\//.test(h.historyImageUrl)) {
+      var imgBox=document.querySelector('.about-image');
+      if(imgBox) {
+        var img=document.createElement('img');
+        img.src=h.historyImageUrl;
+        img.alt='История ДНВС';
+        img.className='about-image__photo';
+        imgBox.innerHTML='';
+        imgBox.appendChild(img);
+      }
+    }
   }).catch(function(){});
 
   fetch('/api/about/values?limit=20').then(function(r){return r.json();}).then(function(json){
