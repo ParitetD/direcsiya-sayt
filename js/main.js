@@ -9,6 +9,14 @@ function escapeHtml(str) {
     return str.replace(/[&<>"']/g, c => map[c]);
 }
 
+/* ── Localization helper ── */
+function t(ru, ky, en) {
+    const l = localStorage.getItem('site-lang') || 'ru';
+    if (l === 'ky') return ky || ru || '';
+    if (l === 'en') return en || ru || '';
+    return ru || '';
+}
+
 /* ── Hero Slideshow ── */
 var heroSlides   = [];
 var currentSlide = 0;
@@ -63,7 +71,7 @@ function renderHeroSlides() {
     if (!container || !heroSlides.length) return;
 
     const lang    = localStorage.getItem('site-lang') || 'ru';
-    const btnNews = lang === 'ky' ? 'Жаңылыктар' : 'Новости';
+    const btnNews = t('Новости', 'Жаңылыктар', 'News');
 
     // Background slides only — no content inside
     container.innerHTML = heroSlides.map((s, i) => `
@@ -82,8 +90,8 @@ function renderHeroSlides() {
         heroEl.insertBefore(staticEl, dotsEl);
     }
     var s0 = heroSlides[currentSlide];
-    var t0 = lang === 'ky' ? (s0.titleKy || s0.titleRu || '') : (s0.titleRu || s0.titleKy || '');
-    var u0 = lang === 'ky' ? (s0.subtitleKy || s0.subtitleRu || '') : (s0.subtitleRu || s0.subtitleKy || '');
+    var t0 = lang === 'ky' ? (s0.titleKy || s0.titleRu || '') : (s0.titleEn || s0.titleRu || s0.titleKy || '');
+    var u0 = lang === 'ky' ? (s0.subtitleKy || s0.subtitleRu || '') : (s0.subtitleEn || s0.subtitleRu || s0.subtitleKy || '');
     staticEl.innerHTML =
         '<img src="/logo.png" class="hero-logo" onerror="this.style.display=\'none\'" alt="ДНВС">' +
         '<h1 class="hero-title" id="heroTitle">' + escapeHtml(t0) + '</h1>' +
@@ -123,8 +131,8 @@ function goSlide(n) {
         titleEl.style.opacity = '0';
         subEl.style.opacity   = '0';
         setTimeout(function() {
-            titleEl.textContent = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '');
-            subEl.textContent   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleRu || s.subtitleKy || '');
+            titleEl.textContent = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleEn || s.titleRu || s.titleKy || '');
+            subEl.textContent   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleEn || s.subtitleRu || s.subtitleKy || '');
             titleEl.style.opacity = '1';
             subEl.style.opacity   = '1';
         }, 350);
@@ -227,7 +235,7 @@ window.openSportModal = function (s) {
     const extra = document.getElementById('modalExtra');
     const count = s.athletesCount || s.athleteCount;
     extra.innerHTML = count
-        ? `<div class="modal-stat"><strong>${Number(count)}</strong><span>${lang === 'ky' ? 'спортчу' : 'спортсменов'}</span></div>`
+        ? `<div class="modal-stat"><strong>${Number(count)}</strong><span>${t('спортсменов','спортчу','athletes')}</span></div>`
         : '';
     document.getElementById('sportModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -255,7 +263,7 @@ window.closeSportModal = function () {
 
     if (!items.length) {
         grid.innerHTML = `<p style="color:#666;text-align:center;grid-column:1/-1;padding:40px">
-            ${lang === 'ky' ? 'Жаңылыктар жок' : 'Новостей пока нет'}
+            ${t('Новостей пока нет','Жаңылыктар жок','No news yet')}
         </p>`;
         return;
     }
@@ -264,7 +272,11 @@ window.closeSportModal = function () {
         const title = escapeHtml(lang === 'ky' ? (n.titleKy || n.titleRu) : (n.titleRu || n.titleKy));
         const img = escapeHtml(n.image || fallbackImg);
         const date = n.createdAt ? new Date(n.createdAt).toLocaleDateString('ru-RU') : '';
-        const catMap = { news: lang === 'ky' ? 'Жаңылык' : 'Новость', announcement: lang === 'ky' ? 'Билдирүү' : 'Объявление', result: lang === 'ky' ? 'Натыйжа' : 'Результат' };
+        const catMap = {
+            news:         t('Новость','Жаңылык','News'),
+            announcement: t('Объявление','Билдирүү','Announcement'),
+            result:       t('Результат','Натыйжа','Result')
+        };
         const cat = catMap[n.category] || '';
         return `
             <div class="news-card scroll-reveal">
@@ -275,7 +287,7 @@ window.closeSportModal = function () {
                 <div class="news-card-body">
                     <h3 class="news-card-title">${title}</h3>
                     <p class="news-card-date">${date}</p>
-                    <a href="news.html" class="news-read-link">${lang === 'ky' ? 'Окуу →' : 'Читать →'}</a>
+                    <a href="news.html" class="news-read-link">${t('Читать →','Окуу →','Read more →')}</a>
                 </div>
             </div>`;
     }).join('');
@@ -372,7 +384,7 @@ function initLangSwitcher() {
 
 function applyLang(lang, save) {
     if (save !== false) localStorage.setItem('site-lang', lang);
-    document.documentElement.lang = lang;
+    document.documentElement.lang = lang === 'en' ? 'en' : lang;
     document.body.className = document.body.className.replace(/\blang-\w+\b/g, '').trim();
     document.body.classList.add('lang-' + lang);
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -380,11 +392,15 @@ function applyLang(lang, save) {
     });
     // Update placeholders
     document.querySelectorAll('[data-ph-ru]').forEach(el => {
-        el.placeholder = lang === 'ky' ? el.dataset.phKy : el.dataset.phRu;
+        if (lang === 'ky') el.placeholder = el.dataset.phKy || el.dataset.phRu;
+        else if (lang === 'en') el.placeholder = el.dataset.phEn || el.dataset.phRu;
+        else el.placeholder = el.dataset.phRu;
     });
     // Update select options
     document.querySelectorAll('option[data-ru]').forEach(el => {
-        el.textContent = lang === 'ky' ? el.dataset.ky : el.dataset.ru;
+        if (lang === 'ky') el.textContent = el.dataset.ky || el.dataset.ru;
+        else if (lang === 'en') el.textContent = el.dataset.en || el.dataset.ru;
+        else el.textContent = el.dataset.ru;
     });
     // Re-render hero slides in new language without losing position
     if (heroSlides.length) renderHeroSlides();
@@ -560,9 +576,7 @@ function initContactForm() {
 
         const origHTML = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = lang === 'ky'
-            ? '<span class="t-ky">Жиберилүүдө...</span>'
-            : '<span class="t-ru">Отправка...</span>';
+        btn.textContent = t('Отправка...', 'Жиберилүүдө...', 'Sending...');
 
         try {
             const res = await fetch('/api/contact', {
@@ -576,9 +590,7 @@ function initContactForm() {
                 })
             });
             if (!res.ok) throw new Error((await res.json()).error || 'Ошибка');
-            btn.innerHTML = lang === 'ky'
-                ? '<span class="t-ky">✓ Жиберилди!</span>'
-                : '<span class="t-ru">✓ Отправлено!</span>';
+            btn.textContent = t('✓ Отправлено!', '✓ Жиберилди!', '✓ Sent!');
             btn.style.background = 'var(--color-accent-light, #2D6A4F)';
             form.reset();
             setTimeout(() => {
@@ -587,7 +599,7 @@ function initContactForm() {
                 btn.disabled = false;
             }, 4000);
         } catch (err) {
-            const prefix = lang === 'ky' ? 'Ката: ' : 'Ошибка: ';
+            const prefix = t('Ошибка: ', 'Ката: ', 'Error: ');
             btn.textContent = prefix + (err.message || '');
             btn.style.background = '#c0392b';
             setTimeout(() => {
@@ -811,6 +823,7 @@ function renderAthletes() {
                 <span class="athlete-status athlete-status--${isRetired ? 'retired' : 'active'}">
                     <span class="t-ru">${isRetired ? 'В отставке' : 'Действующий'}</span>
                     <span class="t-ky">${isRetired ? 'Зейнеткерде' : 'Активдүү'}</span>
+                    <span class="t-en">${isRetired ? 'Retired' : 'Active'}</span>
                 </span>
             </div>
         </article>`;
@@ -853,8 +866,8 @@ function showAthleteDetailPage(id) {
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(a => renderAthleteDetail(a))
         .catch(() => {
-            const backLabel = lang === 'ky' ? '← Артка' : '← Назад к спортсменам';
-            const notFound  = lang === 'ky' ? 'Спортчу табылган жок' : 'Спортсмен не найден';
+            const backLabel = t('← Назад к спортсменам', '← Артка', '← Back to Athletes');
+            const notFound  = t('Спортсмен не найден', 'Спортчу табылган жок', 'Athlete not found');
             if (grid) grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 0">
                 <p style="opacity:.6;margin-bottom:1.5rem">${notFound}</p>
                 <a href="athletes.html" class="news-back-btn">${backLabel}</a></div>`;
@@ -870,9 +883,9 @@ function renderAthleteDetail(a) {
     const isRetired = a.careerStatus === 'retired';
     const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
     const achArr = Array.isArray(achievements) ? achievements : [];
-    const statusLabel = lang === 'ky'
-        ? (isRetired ? 'Зейнеткерде' : 'Активдүү')
-        : (isRetired ? 'В отставке' : 'Действующий');
+    const statusLabel = isRetired
+        ? t('В отставке', 'Зейнеткерде', 'Retired')
+        : t('Действующий', 'Активдүү', 'Active');
     const initials = escapeHtml(name).split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
     const photoHtml = a.photo
         ? `<img src="${escapeHtml(a.photo)}" alt="${escapeHtml(name)}"
@@ -881,7 +894,7 @@ function renderAthleteDetail(a) {
         : `<div class="athlete-initials">${initials}</div>`;
 
     document.title = (name ? name + ' — ' : '') + 'Спортсмены — Дирекция национальных видов спорта';
-    const backLabel = lang === 'ky' ? '← Спортчуларга кайтуу' : '← Назад к спортсменам';
+    const backLabel = t('← Назад к спортсменам', '← Спортчуларга кайтуу', '← Back to Athletes');
     const phEl = document.querySelector('.page-header__title');
     if (phEl) phEl.innerHTML = `<a href="athletes.html" class="news-back-btn">${backLabel}</a>`;
     const phSub = document.querySelector('.page-header__subtitle');
@@ -901,14 +914,14 @@ function renderAthleteDetail(a) {
             </div>
         </div>
         ${bio ? `<div class="athlete-detail__section">
-            <div class="athlete-detail__section-title">${lang === 'ky' ? 'Өмүр баяны' : 'Биография'}</div>
+            <div class="athlete-detail__section-title">${t('Биография','Өмүр баяны','Biography')}</div>
             <p class="athlete-detail__bio">${escapeHtml(bio)}</p>
         </div>` : ''}
         ${achArr.length ? `<div class="athlete-detail__section">
-            <div class="athlete-detail__section-title">${lang === 'ky' ? 'Жетишкендиктер' : 'Достижения'}</div>
+            <div class="athlete-detail__section-title">${t('Достижения','Жетишкендиктер','Achievements')}</div>
             <ul class="athlete-detail__achievements">${achArr.map(ach => `<li>${escapeHtml(ach)}</li>`).join('')}</ul>
         </div>` : ''}
-        ${!bio && !achArr.length ? `<p style="opacity:.5;text-align:center;padding:40px 0">${lang === 'ky' ? 'Маалымат жок' : 'Информация не добавлена'}</p>` : ''}
+        ${!bio && !achArr.length ? `<p style="opacity:.5;text-align:center;padding:40px 0">${t('Информация не добавлена','Маалымат жок','No information added')}</p>` : ''}
     </div>`;
 }
 

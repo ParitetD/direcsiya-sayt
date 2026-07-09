@@ -8,7 +8,7 @@
     top: -100%;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--color-primary, #8B2500);
+    background: var(--color-primary, #8C1B2F);
     color: #fff;
     padding: 0.75rem 1.5rem;
     border-radius: 0 0 8px 8px;
@@ -32,7 +32,7 @@
     height: 48px;
     border-radius: 50%;
     border: none;
-    background: var(--color-primary, #8B2500);
+    background: var(--color-primary, #8C1B2F);
     color: #fff;
     cursor: pointer;
     display: flex;
@@ -51,9 +51,9 @@
     transform: translateY(0);
 }
 .scroll-top:hover {
-    background: #B83000;
+    background: #B02742;
     transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(139, 37, 0, 0.4);
+    box-shadow: 0 6px 24px rgba(140, 27, 47, 0.4);
 }
 .scroll-top:active {
     transform: translateY(0);
@@ -94,7 +94,7 @@
     min-width: 280px;
 }
 .cookie-banner__btn {
-    background: var(--color-primary, #8B2500);
+    background: var(--color-primary, #8C1B2F);
     color: #fff;
     border: none;
     padding: 0.6rem 1.8rem;
@@ -106,7 +106,7 @@
     transition: background 0.2s ease;
 }
 .cookie-banner__btn:hover {
-    background: #B83000;
+    background: #B02742;
 }
 
 @keyframes slideUp {
@@ -145,7 +145,7 @@
     transition: color 0.2s ease;
 }
 .breadcrumbs__list a:hover {
-    color: var(--color-primary, #8B2500);
+    color: var(--color-primary, #8C1B2F);
 }
 .breadcrumbs__list li:last-child {
     color: var(--color-text, #2C2C2C);
@@ -205,7 +205,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--color-primary, #8B2500), var(--color-secondary, #C8963E));
+    background: linear-gradient(90deg, var(--color-primary, #8C1B2F), var(--color-secondary, #C8963E));
     transform: scaleX(0);
     transition: transform 0.25s ease;
     transform-origin: left;
@@ -253,7 +253,7 @@
 }
 .athlete-preview-card__sport {
     font-size: 0.72rem;
-    color: var(--color-primary, #8B2500);
+    color: var(--color-primary, #8C1B2F);
     font-weight: 600;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -303,12 +303,12 @@
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 3px;
-    background: linear-gradient(180deg, var(--color-primary, #8B2500), var(--color-secondary, #C8963E));
+    background: linear-gradient(180deg, var(--color-primary, #8C1B2F), var(--color-secondary, #C8963E));
     border-radius: 2px 0 0 2px;
 }
 .partner-item:hover {
     border-color: var(--color-secondary, #C8963E);
-    color: var(--color-primary, #8B2500);
+    color: var(--color-primary, #8C1B2F);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(139,37,0,0.08);
 }
@@ -330,7 +330,7 @@
 
 /* ── Event card: gold accent on date hover ── */
 .event-card:hover .event-card__date {
-    background: linear-gradient(135deg, var(--color-primary, #8B2500), var(--color-secondary, #C8963E));
+    background: linear-gradient(135deg, var(--color-primary, #8C1B2F), var(--color-secondary, #C8963E));
 }
 
 /* ── News card image overlay ── */
@@ -364,13 +364,13 @@
     box-shadow: 0 8px 28px rgba(139,37,0,0.14);
 }
 .sport-card--clickable:focus-visible {
-    outline: 2px solid var(--color-primary, #8B2500);
+    outline: 2px solid var(--color-primary, #8C1B2F);
     outline-offset: 2px;
 }
 .sport-card__icon svg {
     width: 56px;
     height: 56px;
-    color: var(--color-primary, #8B2500);
+    color: var(--color-primary, #8C1B2F);
     display: block;
     margin: 0 auto;
 }

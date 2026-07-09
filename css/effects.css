@@ -115,11 +115,11 @@
 .section-title {
     background: linear-gradient(
         90deg,
-        #8B2500 0%,
+        #8C1B2F 0%,
         #C8963E 30%,
-        #8B2500 50%,
+        #8C1B2F 50%,
         #C8963E 70%,
-        #8B2500 100%
+        #8C1B2F 100%
     );
     background-size: 250% auto;
     -webkit-background-clip: text;
@@ -211,7 +211,7 @@
 .sports-marquee-divider {
     width: 100%;
     overflow: hidden;
-    background: var(--color-primary, #8B2500);
+    background: var(--color-primary, #8C1B2F);
     padding: 0.85rem 0;
     position: relative;
 }

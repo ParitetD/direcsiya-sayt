@@ -658,7 +658,7 @@
     display: inline-flex;
     align-items: center;
     padding: 12px 28px;
-    background: var(--color-primary, #8B2500);
+    background: var(--color-primary, #8C1B2F);
     color: #fff;
     border-radius: var(--radius-full, 50px);
     font-weight: 700;
@@ -673,8 +673,8 @@
     display: inline-flex;
     align-items: center;
     padding: 12px 28px;
-    border: 2px solid var(--color-primary, #8B2500);
-    color: var(--color-primary, #8B2500);
+    border: 2px solid var(--color-primary, #8C1B2F);
+    color: var(--color-primary, #8C1B2F);
     border-radius: var(--radius-full, 50px);
     font-weight: 700;
     font-size: .9rem;
@@ -682,7 +682,7 @@
     transition: background .2s, color .2s, transform .2s;
 }
 
-.btn-outline-link:hover { background: var(--color-primary, #8B2500); color: #fff; transform: translateY(-2px); }
+.btn-outline-link:hover { background: var(--color-primary, #8C1B2F); color: #fff; transform: translateY(-2px); }
 
 @media (max-width: 768px) {
     .sport-detail__hero { aspect-ratio: 4/3; }
@@ -1182,7 +1182,7 @@
     opacity: 0.04;
     pointer-events: none;
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='none' stroke='%238B2500' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%238B2500' stroke-width='1.5'/%3E%3Cline x1='50' y1='3' x2='50' y2='97' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='3' y1='50' x2='97' y2='50' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='16' y1='16' x2='84' y2='84' stroke='%238B2500' stroke-width='1.2'/%3E%3Cline x1='84' y1='16' x2='16' y2='84' stroke='%238B2500' stroke-width='1.2'/%3E%3Ccircle cx='50' cy='50' r='8' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Cpolygon points='50,44 56,50 50,56 44,50' fill='%23C8963E'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='none' stroke='%238C1B2F' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%238C1B2F' stroke-width='1.5'/%3E%3Cline x1='50' y1='3' x2='50' y2='97' stroke='%238C1B2F' stroke-width='1.2'/%3E%3Cline x1='3' y1='50' x2='97' y2='50' stroke='%238C1B2F' stroke-width='1.2'/%3E%3Cline x1='16' y1='16' x2='84' y2='84' stroke='%238C1B2F' stroke-width='1.2'/%3E%3Cline x1='84' y1='16' x2='16' y2='84' stroke='%238C1B2F' stroke-width='1.2'/%3E%3Ccircle cx='50' cy='50' r='8' fill='none' stroke='%23C8963E' stroke-width='1.5'/%3E%3Cpolygon points='50,44 56,50 50,56 44,50' fill='%23C8963E'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
 }
