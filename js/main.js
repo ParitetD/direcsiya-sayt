@@ -37,24 +37,30 @@ async function initHeroSlider() {
                 image: 'https://images.unsplash.com/photo-1547941126-3d5322b218b0?w=1600&q=80',
                 titleRu: 'Дирекция национальных видов спорта Кыргызстана',
                 titleKy: 'Кыргызстандын улуттук спорт түрлөрү боюнча дирекциясы',
+                titleEn: 'Directorate of National Sports of Kyrgyzstan',
                 subtitleRu: 'Сохраняем и развиваем национальные спортивные традиции кыргызского народа',
                 subtitleKy: 'Кыргыз элинин улуттук спорт салттарын сактап жана өнүктүрөбүз',
+                subtitleEn: 'Preserving and developing national sports traditions of the Kyrgyz people',
                 active: true, order: 1
             },
             {
                 image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1600&q=80',
                 titleRu: 'Кыргызские спортсмены — гордость нации',
                 titleKy: 'Кыргыз спортчулары — элдин сыймыгы',
+                titleEn: 'Kyrgyz Athletes — Pride of the Nation',
                 subtitleRu: 'Наши атлеты с честью представляют страну на мировых соревнованиях',
                 subtitleKy: 'Биздин спортчулар дүйнөлүк мелдештерде өлкөбүздү намыс менен коргойт',
+                subtitleEn: 'Our athletes honourably represent Kyrgyzstan at international competitions',
                 active: true, order: 2
             },
             {
                 image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80',
                 titleRu: 'Развитие спорта по всему Кыргызстану',
                 titleKy: 'Бүткүл Кыргызстанда спортту өнүктүрүү',
+                titleEn: 'Developing Sport Across All of Kyrgyzstan',
                 subtitleRu: 'Строим объекты и воспитываем чемпионов в каждом регионе',
                 subtitleKy: 'Ар бир аймакта спорт курулуштарын куруп, чемпиондорду тарбиялайбыз',
+                subtitleEn: 'Building facilities and raising champions in every region of the country',
                 active: true, order: 3
             }
         ];
@@ -64,16 +70,72 @@ async function initHeroSlider() {
     startSlider();
 }
 
+function _heroText(s, lang) {
+    if (lang === 'en') return {
+        title:    s.titleEn    || s.titleRu    || s.titleKy    || '',
+        subtitle: s.subtitleEn || s.subtitleRu || s.subtitleKy || ''
+    };
+    if (lang === 'ky') return {
+        title:    s.titleKy    || s.titleRu    || '',
+        subtitle: s.subtitleKy || s.subtitleRu || ''
+    };
+    return { title: s.titleRu || '', subtitle: s.subtitleRu || '' };
+}
+
+function _heroContentHTML(s, lang) {
+    const txt = _heroText(s, lang);
+    const eyebrow = lang === 'en' ? 'KYRGYZSTAN · NATIONAL SPORTS'
+                  : lang === 'ky' ? 'КЫРГЫЗСТАН · УЛУТТУК СПОРТ'
+                  : 'КЫРГЫЗСТАН · НАЦИОНАЛЬНЫЙ СПОРТ';
+    const lSports   = lang === 'en' ? 'sports'   : lang === 'ky' ? 'спорт түрү' : 'вида спорта';
+    const lAthletes = lang === 'en' ? 'athletes' : lang === 'ky' ? 'спортчу'    : 'спортсменов';
+    const lRegions  = lang === 'en' ? 'regions'  : lang === 'ky' ? 'облус'      : 'областей';
+    const lSports2  = lang === 'en' ? 'Sports'   : lang === 'ky' ? 'Спорт түрлөрү' : 'Виды спорта';
+    const lEvents   = lang === 'en' ? 'Events'   : lang === 'ky' ? 'Иш-чаралар'    : 'Мероприятия';
+    return `
+        <div class="hero-eyebrow">
+            <span class="hero-eyebrow-bar"></span>
+            <span class="hero-eyebrow-text">${eyebrow}</span>
+            <span class="hero-eyebrow-bar"></span>
+        </div>
+        <img src="/logo.png" class="hero-logo" onerror="this.style.display='none'" alt="ДНВС">
+        <h1 class="hero-title" id="heroTitle">${escapeHtml(txt.title)}</h1>
+        <div class="hero-separator"></div>
+        <p class="hero-sub" id="heroSub">${escapeHtml(txt.subtitle)}</p>
+        <div class="hero-kpi-row">
+            <div class="hero-kpi"><strong class="hero-kpi-num">18</strong><span class="hero-kpi-lbl">${lSports}</span></div>
+            <span class="hero-kpi-sep">◆</span>
+            <div class="hero-kpi"><strong class="hero-kpi-num">5 000+</strong><span class="hero-kpi-lbl">${lAthletes}</span></div>
+            <span class="hero-kpi-sep">◆</span>
+            <div class="hero-kpi"><strong class="hero-kpi-num">7</strong><span class="hero-kpi-lbl">${lRegions}</span></div>
+        </div>
+        <div class="hero-btns">
+            <a href="sports.html" class="btn-hero-primary">${lSports2}</a>
+            <a href="events.html" class="btn-hero-outline">${lEvents}</a>
+        </div>
+    `;
+}
+
+function _updateHeroContent(idx) {
+    const heroEl = document.getElementById('hero');
+    const dotsEl = document.getElementById('heroDots');
+    if (!heroEl) return;
+    const old = document.getElementById('heroStaticContent');
+    if (old) old.remove();
+    const el = document.createElement('div');
+    el.id = 'heroStaticContent';
+    el.className = 'hero-content';
+    heroEl.insertBefore(el, dotsEl);
+    const lang = localStorage.getItem('site-lang') || 'ru';
+    const s = heroSlides[idx];
+    if (s) el.innerHTML = _heroContentHTML(s, lang);
+}
+
 function renderHeroSlides() {
     const container = document.getElementById('heroSlides');
     const dotsEl    = document.getElementById('heroDots');
-    const heroEl    = document.getElementById('hero');
     if (!container || !heroSlides.length) return;
 
-    const lang    = localStorage.getItem('site-lang') || 'ru';
-    const btnNews = t('Новости', 'Жаңылыктар', 'News');
-
-    // Background slides only — no content inside
     container.innerHTML = heroSlides.map((s, i) => `
         <div class="hero-slide${i === currentSlide ? ' active' : ''}"
              style="background-image:url('${escapeHtml(s.image)}')">
@@ -81,22 +143,7 @@ function renderHeroSlides() {
         </div>
     `).join('');
 
-    // Single static content layer — rendered once, stays visible always
-    var staticEl = document.getElementById('heroStaticContent');
-    if (!staticEl) {
-        staticEl = document.createElement('div');
-        staticEl.id = 'heroStaticContent';
-        staticEl.className = 'hero-content';
-        heroEl.insertBefore(staticEl, dotsEl);
-    }
-    var s0 = heroSlides[currentSlide];
-    var t0 = lang === 'ky' ? (s0.titleKy || s0.titleRu || '') : (s0.titleEn || s0.titleRu || s0.titleKy || '');
-    var u0 = lang === 'ky' ? (s0.subtitleKy || s0.subtitleRu || '') : (s0.subtitleEn || s0.subtitleRu || s0.subtitleKy || '');
-    staticEl.innerHTML =
-        '<img src="/logo.png" class="hero-logo" onerror="this.style.display=\'none\'" alt="ДНВС">' +
-        '<h1 class="hero-title" id="heroTitle">' + escapeHtml(t0) + '</h1>' +
-        '<p class="hero-sub" id="heroSub">' + escapeHtml(u0) + '</p>' +
-        '<div class="hero-btns"><a href="news.html" class="btn-hero-outline">' + btnNews + '</a></div>';
+    _updateHeroContent(currentSlide);
 
     if (dotsEl) {
         dotsEl.innerHTML = heroSlides.map((_, i) =>
@@ -122,21 +169,7 @@ function goSlide(n) {
     allSlides[currentSlide]?.classList.add('active');
     allDots[currentSlide]?.classList.add('active');
 
-    // Fade-update only the text — logo and button stay visible
-    var titleEl = document.getElementById('heroTitle');
-    var subEl   = document.getElementById('heroSub');
-    if (titleEl && subEl && heroSlides[currentSlide]) {
-        var lang = localStorage.getItem('site-lang') || 'ru';
-        var s    = heroSlides[currentSlide];
-        titleEl.style.opacity = '0';
-        subEl.style.opacity   = '0';
-        setTimeout(function() {
-            titleEl.textContent = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleEn || s.titleRu || s.titleKy || '');
-            subEl.textContent   = lang === 'ky' ? (s.subtitleKy || s.subtitleRu || '') : (s.subtitleEn || s.subtitleRu || s.subtitleKy || '');
-            titleEl.style.opacity = '1';
-            subEl.style.opacity   = '1';
-        }, 350);
-    }
+    _updateHeroContent(currentSlide);
 }
 window.goSlide = goSlide;
 
@@ -402,8 +435,8 @@ function applyLang(lang, save) {
         else if (lang === 'en') el.textContent = el.dataset.en || el.dataset.ru;
         else el.textContent = el.dataset.ru;
     });
-    // Re-render hero slides in new language without losing position
-    if (heroSlides.length) renderHeroSlides();
+    // Re-render hero content in new language without losing position
+    if (heroSlides.length) _updateHeroContent(currentSlide);
 }
 
 /* ---------- Header Scroll Effect ---------- */

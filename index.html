@@ -122,6 +122,25 @@
         <div class="hero-dots" id="heroDots"></div>
     </section>
 
+    <!-- Sports Ticker — visible at bottom of initial viewport -->
+    <section class="sports-ticker-section" aria-label="Виды спорта">
+        <div class="ticker-wrap">
+            <div class="ticker-track" id="tickerTrack"></div>
+        </div>
+    </section>
+
+    <!-- Sport Modal -->
+    <div class="sport-modal hidden" id="sportModal">
+        <div class="sport-modal-overlay" onclick="closeSportModal()"></div>
+        <div class="sport-modal-inner">
+            <button class="sport-modal-close" onclick="closeSportModal()">&#x2715;</button>
+            <div class="sport-modal-icon" id="modalIcon"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesc"></p>
+            <div id="modalExtra"></div>
+        </div>
+    </div>
+
     <!-- Nomad Games 2028 Countdown -->
     <section class="nomad-countdown" id="nomadCountdown">
         <div class="container">
@@ -283,30 +302,6 @@
             .catch(function() {});
     })();
     </script>
-
-    <!-- Sports Ticker Section -->
-    <section class="sports-ticker-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span><span class="t-en">Sports</span>
-            </h2>
-        </div>
-        <div class="ticker-wrap">
-            <div class="ticker-track" id="tickerTrack"></div>
-        </div>
-    </section>
-
-    <!-- Sport Modal -->
-    <div class="sport-modal hidden" id="sportModal">
-        <div class="sport-modal-overlay" onclick="closeSportModal()"></div>
-        <div class="sport-modal-inner">
-            <button class="sport-modal-close" onclick="closeSportModal()">&#x2715;</button>
-            <div class="sport-modal-icon" id="modalIcon"></div>
-            <h2 id="modalTitle"></h2>
-            <p id="modalDesc"></p>
-            <div id="modalExtra"></div>
-        </div>
-    </div>
 
     <!-- Marquee sports names divider -->
     <div class="sports-marquee-divider" aria-hidden="true">
@@ -556,7 +551,7 @@
                         <li><a href="sports.html"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span><span class="t-en">Toguz Korgool</span></a></li>
                         <li><a href="sports.html"><span class="t-ru">Көк-Бөрү</span><span class="t-ky">Көк-Бөрү</span><span class="t-en">Kok-Boru</span></a></li>
                         <li><a href="sports.html"><span class="t-ru">Ат чабыш</span><span class="t-ky">Ат чабыш</span><span class="t-en">At Chabysh</span></a></li>
-                        <li><a href="sports.html"><span class="t-ru">Алыш</span><span class="t-ky">Алыш</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Алыш</span><span class="t-ky">Алыш</span><span class="t-en">Alysh</span></a></li>
                     </ul>
                 </div>
                 <div class="footer__col">
@@ -582,8 +577,8 @@
     <!-- Cookie Banner -->
     <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie">
         <div class="cookie-banner__inner">
-            <p><span class="t-ru">Мы используем файлы cookie для улучшения работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с использованием cookie.</span><span class="t-ky">Сайттын ишин жакшыртуу үчүн файлдарды колдонобуз. Сайтты улантуу менен, cookie колдонууга макулдугуңузду билдиресиз.</span></p>
-            <button class="cookie-banner__btn" onclick="document.getElementById('cookieBanner').classList.add('hidden');localStorage.setItem('cookie-accepted','1')"><span class="t-ru">Принять</span><span class="t-ky">Кабыл алуу</span></button>
+            <p><span class="t-ru">Мы используем файлы cookie для улучшения работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с использованием cookie.</span><span class="t-ky">Сайттын ишин жакшыртуу үчүн файлдарды колдонобуз. Сайтты улантуу менен, cookie колдонууга макулдугуңузду билдиресиз.</span><span class="t-en">We use cookies to improve your experience. By continuing to use the site, you agree to our use of cookies.</span></p>
+            <button class="cookie-banner__btn" onclick="document.getElementById('cookieBanner').classList.add('hidden');localStorage.setItem('cookie-accepted','1')"><span class="t-ru">Принять</span><span class="t-ky">Кабыл алуу</span><span class="t-en">Accept</span></button>
         </div>
     </div>
 
@@ -599,10 +594,11 @@
 
         const months   = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
         const monthsKy = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+        const monthsEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
         function fmtDate(iso) {
             const d = new Date(iso);
-            return { day: d.getDate(), month: months[d.getMonth()], monthKy: monthsKy[d.getMonth()] };
+            return { day: d.getDate(), month: months[d.getMonth()], monthKy: monthsKy[d.getMonth()], monthEn: monthsEn[d.getMonth()] };
         }
 
         // Load home events
@@ -615,21 +611,23 @@
                     if (!data || !data.length) { evBox.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--color-text-muted)"><span class="t-ru">Нет мероприятий</span><span class="t-ky">Иш-чара жок</span></p>'; return; }
                     evBox.innerHTML = data.map(e => {
                         const dt = fmtDate(e.date || e.createdAt);
-                        const catMap = { competition:'Соревнование', championship:'Чемпионат', seminar:'Семинар', other:'Другое' };
+                        const catMap   = { competition:'Соревнование', championship:'Чемпионат', seminar:'Семинар', other:'Другое' };
                         const catMapKy = { competition:'Мелдеш', championship:'Чемпионат', seminar:'Семинар', other:'Башка' };
+                        const catMapEn = { competition:'Competition', championship:'Championship', seminar:'Seminar', other:'Other' };
                         const _e = (s) => typeof s==='string' ? s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])) : '';
                         return `<article class="event-card reveal-on-scroll">
                             <div class="event-card__date">
                                 <span class="event-card__day">${dt.day}</span>
                                 <span class="event-card__month t-ru">${dt.month}</span>
                                 <span class="event-card__month t-ky">${dt.monthKy}</span>
+                                <span class="event-card__month t-en">${dt.monthEn}</span>
                             </div>
                             <div class="event-card__content">
-                                <h3 class="event-card__title"><span class="t-ru">${_e(e.titleRu||'')}</span><span class="t-ky">${_e(e.titleKy||'')}</span></h3>
-                                <p class="event-card__location"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:middle"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span class="t-ru">${_e(e.location||'')}</span><span class="t-ky">${_e(e.location||'')}</span></p>
-                                <p class="event-card__desc"><span class="t-ru">${_e((e.descriptionRu||'').slice(0,120))}…</span><span class="t-ky">${_e((e.descriptionKy||'').slice(0,120))}…</span></p>
+                                <h3 class="event-card__title"><span class="t-ru">${_e(e.titleRu||'')}</span><span class="t-ky">${_e(e.titleKy||'')}</span><span class="t-en">${_e(e.titleEn||e.titleRu||'')}</span></h3>
+                                <p class="event-card__location"><svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:middle"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span class="t-ru">${_e(e.location||'')}</span><span class="t-ky">${_e(e.location||'')}</span><span class="t-en">${_e(e.location||'')}</span></p>
+                                <p class="event-card__desc"><span class="t-ru">${_e((e.descriptionRu||'').slice(0,120))}…</span><span class="t-ky">${_e((e.descriptionKy||'').slice(0,120))}…</span><span class="t-en">${_e((e.descriptionEn||e.descriptionRu||'').slice(0,120))}…</span></p>
                                 <div class="event-card__tags">
-                                    <span class="tag"><span class="t-ru">${catMap[e.category]||_e(e.category||'')}</span><span class="t-ky">${catMapKy[e.category]||_e(e.category||'')}</span></span>
+                                    <span class="tag"><span class="t-ru">${catMap[e.category]||_e(e.category||'')}</span><span class="t-ky">${catMapKy[e.category]||_e(e.category||'')}</span><span class="t-en">${catMapEn[e.category]||_e(e.category||'')}</span></span>
                                 </div>
                             </div>
                         </article>`;
@@ -650,15 +648,16 @@
                     const _e = (s) => typeof s==='string' ? s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])) : '';
                     const fmtRu = d => `${d.getDate()} ${['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][d.getMonth()]} ${d.getFullYear()}`;
                     const fmtKy = d => `${d.getFullYear()}-жылдын ${d.getDate()}-${['январы','февралы','марты','апрели','майы','июню','июлу','августу','сентябры','октябры','ноябры','декабры'][d.getMonth()]}`;
+                    const fmtEn = d => `${d.getDate()} ${['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()]} ${d.getFullYear()}`;
 
                     const [main, ...rest] = data;
                     const mainD = new Date(main.createdAt);
                     const featuredHtml = `<article class="news-card news-card--featured reveal-on-scroll">
                         ${main.image ? `<div class="news-card__image"><img src="${_e(main.image)}" alt="${_e(main.titleRu||'')}" loading="lazy"></div>` : ''}
                         <div class="news-card__content">
-                            <time class="news-card__date"><span class="t-ru">${fmtRu(mainD)}</span><span class="t-ky">${fmtKy(mainD)}</span></time>
-                            <h3 class="news-card__title"><span class="t-ru">${_e(main.titleRu||'')}</span><span class="t-ky">${_e(main.titleKy||'')}</span></h3>
-                            <p class="news-card__text"><span class="t-ru">${_e((main.contentRu||'').slice(0,200))}…</span><span class="t-ky">${_e((main.contentKy||'').slice(0,200))}…</span></p>
+                            <time class="news-card__date"><span class="t-ru">${fmtRu(mainD)}</span><span class="t-ky">${fmtKy(mainD)}</span><span class="t-en">${fmtEn(mainD)}</span></time>
+                            <h3 class="news-card__title"><span class="t-ru">${_e(main.titleRu||'')}</span><span class="t-ky">${_e(main.titleKy||'')}</span><span class="t-en">${_e(main.titleEn||main.titleRu||'')}</span></h3>
+                            <p class="news-card__text"><span class="t-ru">${_e((main.contentRu||'').slice(0,200))}…</span><span class="t-ky">${_e((main.contentKy||'').slice(0,200))}…</span><span class="t-en">${_e((main.contentEn||main.contentRu||'').slice(0,200))}…</span></p>
                             <a href="news.html?id=${_e(main.id||'')}" class="news-card__link"><span class="t-ru">Читать далее →</span><span class="t-ky">Кененирээк окуу →</span><span class="t-en">Read more →</span></a>
                         </div>
                     </article>`;
@@ -668,8 +667,8 @@
                         return `<article class="news-card news-card--compact reveal-on-scroll">
                             ${n.image ? `<div class="news-card__image"><img src="${_e(n.image)}" alt="${_e(n.titleRu||'')}" loading="lazy"></div>` : ''}
                             <div class="news-card__content">
-                                <time class="news-card__date"><span class="t-ru">${fmtRu(d)}</span><span class="t-ky">${fmtKy(d)}</span></time>
-                                <h3 class="news-card__title"><a href="news.html?id=${_e(n.id||'')}"><span class="t-ru">${_e(n.titleRu||'')}</span><span class="t-ky">${_e(n.titleKy||'')}</span></a></h3>
+                                <time class="news-card__date"><span class="t-ru">${fmtRu(d)}</span><span class="t-ky">${fmtKy(d)}</span><span class="t-en">${fmtEn(d)}</span></time>
+                                <h3 class="news-card__title"><a href="news.html?id=${_e(n.id||'')}"><span class="t-ru">${_e(n.titleRu||'')}</span><span class="t-ky">${_e(n.titleKy||'')}</span><span class="t-en">${_e(n.titleEn||n.titleRu||'')}</span></a></h3>
                             </div>
                         </article>`;
                     }).join('')}</div>` : '';
