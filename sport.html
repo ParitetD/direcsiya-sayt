@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вид спорта — Дирекция национальных видов спорта</title>
+    <meta name="description" content="Подробная информация о национальном виде спорта Кыргызстана.">
+    <meta name="theme-color" content="#8C1B2F">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ornaments.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/ux.css">
+    <link rel="stylesheet" href="css/effects.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link"><span class="t-ru">Перейти к основному содержанию</span><span class="t-ky">Негизги мазмунга өтүү</span></a>
+    <div class="ethno-border-top" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <div class="nav-brand">
+                        <img src="/logo.png" alt="ДНВС логотип" class="nav-logo" onerror="this.style.display='none'">
+                        <div class="nav-brand-text">
+                            <span class="nav-brand-top">КЫРГЫЗ РЕСПУБЛИКАСЫ</span>
+                            <span class="nav-brand-bottom"><span class="t-ru">Дирекция спорта</span><span class="t-ky">Спорт дирекциясы</span><span class="t-en">Sports Directorate</span></span>
+                        </div>
+                    </div>
+                </a>
+                <button class="burger" id="burger" aria-label="Открыть меню">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="nav" id="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" class="nav__link"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span><span class="t-en">Home</span></a></li>
+                        <li class="nav__item"><a href="sports.html" class="nav__link nav__link--active"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span><span class="t-en">Sports</span></a></li>
+                        <li class="nav__item"><a href="events.html" class="nav__link"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span><span class="t-en">Events</span></a></li>
+                        <li class="nav__item"><a href="gallery.html" class="nav__link"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span><span class="t-en">Gallery</span></a></li>
+                        <li class="nav__item"><a href="news.html" class="nav__link"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span><span class="t-en">News</span></a></li>
+                        <li class="nav__item"><a href="athletes.html" class="nav__link"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span><span class="t-en">Athletes</span></a></li>
+                        <li class="nav__item"><a href="about.html" class="nav__link"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span><span class="t-en">About Us</span></a></li>
+                        <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span><span class="t-en">Contacts</span></a></li>
+                    </ul>
+                    <div class="nav__lang" id="langSwitcher">
+                        <button class="lang-btn active" data-lang="ru">RU</button>
+                        <span class="lang-sep">|</span>
+                        <button class="lang-btn" data-lang="ky">KY</button>
+                        <span class="lang-sep">|</span>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero section: skeleton shown until JS loads -->
+        <section class="sport-detail-hero" id="sportHero">
+            <div class="sport-detail-hero__skeleton" id="heroSkeleton">
+                <div class="sport-detail-hero__back"><a href="sports.html" class="news-back-btn">← <span class="t-ru">Все виды спорта</span><span class="t-ky">Бардык спорт түрлөрү</span><span class="t-en">All Sports</span></a></div>
+            </div>
+        </section>
+
+        <!-- Content section: filled by JS -->
+        <section class="section" id="sportContent" style="display:none">
+            <div class="container">
+                <div class="sport-detail-intro" id="sportIntro"></div>
+                <div class="sport-detail-gallery" id="sportGallery"></div>
+                <div class="sport-detail-stats" id="sportStats"></div>
+                <div class="sport-detail-athletes-link" id="sportAthletesLink"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="ethno-border-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col footer__col--about">
+                    <a href="index.html" class="footer__logo">
+                        <div class="logo__icon">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path d="M30 5 L30 55 M5 30 L55 30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="30" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="30" cy="30" r="5" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span><span class="t-ru">Дирекция национальных видов спорта КР</span><span class="t-ky">КР Улуттук спорт дирекциясы</span><span class="t-en">Directorate of National Sports KR</span></span>
+                    </a>
+                    <p class="footer__desc"><span class="t-ru">Сохранение и развитие традиционных видов спорта народов Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын элдеринин салттуу спорт түрлөрүн сактоо жана өнүктүрүү.</span></p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Навигация</span><span class="t-ky">Навигация</span></h4>
+                    <ul class="footer__links">
+                        <li><a href="index.html"><span class="t-ru">Главная</span><span class="t-ky">Башкы бет</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Виды спорта</span><span class="t-ky">Спорт түрлөрү</span></a></li>
+                        <li><a href="athletes.html"><span class="t-ru">Спортсмены</span><span class="t-ky">Спортчулар</span></a></li>
+                        <li><a href="gallery.html"><span class="t-ru">Галерея</span><span class="t-ky">Галерея</span></a></li>
+                        <li><a href="news.html"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span></a></li>
+                        <li><a href="about.html"><span class="t-ru">О нас</span><span class="t-ky">Биз жөнүндө</span></a></li>
+                        <li><a href="contacts.html"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__heading"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span></h4>
+                    <ul class="footer__contacts">
+                        <li>📍 <span class="t-ru">г. Бишкек, пр. Манаса, д. 40</span><span class="t-ky">Бишкек ш., Манас даңгыры, 40</span></li>
+                        <li>📞 +996 (312) 65-88-00</li>
+                        <li>✉️ info@natsport.kg</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; <span id="footer-year">2026</span> <span class="t-ru">Дирекция национальных видов спорта Кыргызской Республики.</span><span class="t-ky">Кыргыз Республикасынын Улуттук спорт дирекциясы.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/ux.js"></script>
+    <script>
+    (function() {
+        const params = new URLSearchParams(location.search);
+        const id = params.get('id');
+        if (!id) { location.href = 'sports.html'; return; }
+
+        function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+        const lang = localStorage.getItem('site-lang') || 'ru';
+        function tl(ru, ky) { return lang === 'ky' ? (ky || ru) : ru; }
+
+        fetch('/api/sports/' + encodeURIComponent(id))
+            .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+            .then(s => renderSport(s))
+            .catch(() => {
+                document.getElementById('heroSkeleton').innerHTML =
+                    '<div class="sport-detail-hero__back"><a href="sports.html" class="news-back-btn">← ' + tl('Все виды спорта','Бардык спорт түрлөрү') + '</a></div>'
+                    + '<p style="text-align:center;padding:40px;opacity:.5">' + tl('Вид спорта не найден','Спорт түрү табылган жок') + '</p>';
+            });
+
+        function renderSport(s) {
+            const name = esc(lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu);
+            const desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
+            const fullDesc = lang === 'ky' ? (s.fullDescKy || s.fullDescRu || '') : (s.fullDescRu || s.fullDescKy || '');
+
+            document.title = name + ' — ' + tl('Дирекция национальных видов спорта КР', 'КР Улуттук спорт дирекциясы');
+
+            // Hero icon: use uploaded image or fall back to SVG
+            const ICONS = (typeof SPORT_ICONS_BY_ID !== 'undefined') ? SPORT_ICONS_BY_ID : {};
+            const iconHtml = s.icon
+                ? `<img src="${esc(s.icon)}" alt="${name}">`
+                : (ICONS[String(s.id)] || ICONS['default'] || '');
+
+            // Hero
+            const heroEl = document.getElementById('sportHero');
+            heroEl.style.background = s.image
+                ? `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.7) 100%), url('${esc(s.image)}') center/cover no-repeat`
+                : 'linear-gradient(135deg,#8C1B2F,#5E121E)';
+            heroEl.innerHTML = `
+                <div class="sport-detail-hero__inner container">
+                    <a href="sports.html" class="sport-detail-back news-back-btn">← <span class="t-ru">Все виды спорта</span><span class="t-ky">Бардык спорт түрлөрү</span><span class="t-en">All Sports</span></a>
+                    <div class="sport-detail-hero__content">
+                        ${iconHtml ? `<div class="sport-detail-hero__icon">${iconHtml}</div>` : ''}
+                        <h1 class="sport-detail-hero__title">${name}</h1>
+                        ${s.athletesCount ? `<p class="sport-detail-hero__count">${Number(s.athletesCount)} ${tl('спортсменов','спортчу')}</p>` : ''}
+                    </div>
+                </div>`;
+
+            // Main description
+            const introEl = document.getElementById('sportIntro');
+            introEl.innerHTML = `<div class="sport-detail-desc"><p>${esc(desc).replace(/\n/g,'<br>')}</p>${fullDesc ? '<p class="sport-detail-desc--full">' + esc(fullDesc).replace(/\n/g,'<br>') + '</p>' : ''}</div>`;
+
+            // Alternating photo/text gallery
+            const photos = Array.isArray(s.photos) ? s.photos.filter(Boolean) : [];
+            const galleryEl = document.getElementById('sportGallery');
+            if (photos.length > 0) {
+                galleryEl.innerHTML = photos.map((photo, i) => {
+                    const isEven = i % 2 === 0;
+                    const caption = tl('Фотография ' + (i + 1), 'Сүрөт ' + (i + 1));
+                    return `<div class="sport-gallery-row ${isEven ? 'sport-gallery-row--photo-left' : 'sport-gallery-row--photo-right'}">
+                        <div class="sport-gallery-row__photo">
+                            <img src="${esc(photo)}" alt="${caption}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                        </div>
+                        <div class="sport-gallery-row__text">
+                            <div class="sport-gallery-row__ornament"></div>
+                            <p>${esc(desc).replace(/\n/g,'<br>')}</p>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else if (s.image) {
+                galleryEl.innerHTML = `<div class="sport-gallery-single">
+                    <img src="${esc(s.image)}" alt="${name}" loading="lazy">
+                </div>`;
+            }
+
+            // Athletes link
+            const alEl = document.getElementById('sportAthletesLink');
+            alEl.innerHTML = `<a href="athletes.html?sport=${encodeURIComponent(s.nameRu)}" class="btn btn-primary">
+                <span class="t-ru">Спортсмены — ${esc(name)}</span>
+                <span class="t-ky">Спортчулар — ${esc(name)}</span>
+                <span class="t-en">Athletes of ${esc(name)}</span>
+            </a>`;
+
+            document.getElementById('sportContent').style.display = '';
+        }
+    })();
+    </script>
+</body>
+</html>

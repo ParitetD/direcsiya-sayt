@@ -16,13 +16,13 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc:     ["'self'"],
-      scriptSrc:      ["'self'", "'unsafe-inline'"],
+      scriptSrc:      ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://unpkg.com"],
       scriptSrcAttr:  ["'unsafe-inline'"],
-      styleSrc:       ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      styleSrc:       ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com"],
       fontSrc:        ["'self'", "https://fonts.gstatic.com"],
-      imgSrc:         ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://loremflickr.com"],
-      connectSrc:     ["'self'"],
-      frameSrc:       ["https://www.openstreetmap.org"],
+      imgSrc:         ["'self'", "data:", "blob:", "https://images.unsplash.com", "https://loremflickr.com", "https://*.tile.openstreetmap.org"],
+      connectSrc:     ["'self'", "https://www.google-analytics.com", "https://analytics.google.com", "https://*.tile.openstreetmap.org"],
+      frameSrc:       ["https://www.openstreetmap.org", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://player.vimeo.com"],
       objectSrc:      ["'none'"],
       baseUri:        ["'self'"],
       formAction:     ["'self'"],
@@ -30,6 +30,7 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 // CORS: only open if CORS_ORIGIN is explicitly set; by default same-origin only.
 if (process.env.CORS_ORIGIN) {
@@ -66,6 +67,7 @@ app.use((req, res, next) => {
 
 /* ── Page routes ── */
 app.get('/athletes', (req, res) => res.sendFile(path.join(__dirname, 'athletes.html')));
+app.get('/livestreams', (req, res) => res.sendFile(path.join(__dirname, 'livestreams.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 
 /* ── Static files (before admin SPA fallback) ── */
@@ -93,7 +95,7 @@ app.get('/admin/*', (req, res) => {
 /* ── Rate limiting ── */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 30,
   message: { error: 'Слишком много попыток входа. Попробуйте позже.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -116,7 +118,7 @@ app.use('/api/contact', contactLimiter);
 app.use('/api/', apiLimiter);
 
 /* ── Data directories & defaults ── */
-const dirs = ['data', 'uploads/news', 'uploads/events', 'uploads/gallery', 'uploads/people', 'uploads/sports', 'uploads/slides'];
+const dirs = ['data', 'uploads/news', 'uploads/events', 'uploads/gallery', 'uploads/people', 'uploads/sports', 'uploads/slides', 'uploads/livestreams', 'uploads/partners'];
 dirs.forEach(d => { if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true }); });
 
 const dataDefaults = {
@@ -129,9 +131,19 @@ const dataDefaults = {
     email: 'info@sport.kg',
     phone: '+996 312 000-000',
     address: { ru: 'г. Бишкек, пр. Манаса, д. 40', ky: 'Бишкек ш., Манас даңгыры, 40' },
+    mapLat: 42.8736,
+    mapLon: 74.5907,
     socialVk: '',
     socialTelegram: '',
     socialInstagram: ''
+  },
+  'data/partners.json':   [],
+  'data/livestreams.json': [],
+  'data/stats.json': {
+    totalVisits: 0,
+    dailyVisits: {},
+    pageVisits: {},
+    lastUpdated: new Date().toISOString()
   }
 };
 
@@ -167,6 +179,9 @@ app.use('/api/sports', require('./api/sports'));
 app.use('/api/slides', require('./api/slides'));
 app.use('/api/contact', require('./api/contact'));
 app.use('/api/about', require('./api/about'));
+app.use('/api/partners',   require('./api/partners'));
+app.use('/api/livestreams', require('./api/livestreams'));
+app.use('/api/stats', require('./api/stats'));
 
 /* ── Page routes moved before static middleware ── */
 

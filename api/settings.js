@@ -7,7 +7,7 @@ const { verifyToken } = require('./auth');
 
 const FILE = 'data/settings.json';
 function read() {
-  try { return JSON.parse(fs.readFileSync(FILE, 'utf8')); }
+  try { return JSON.parse(fs.readFileSync(FILE, 'utf8').replace(/^\uFEFF/, '')); }
   catch { return {}; }
 }
 function write(d) { fs.writeFileSync(FILE, JSON.stringify(d, null, 2)); }
@@ -41,6 +41,15 @@ router.put('/', verifyToken, (req, res) => {
   if (socialYoutube !== undefined)   updated.socialYoutube = socialYoutube;
   if (req.body.siteTitleRu) updated.siteTitle = { ru: str(req.body.siteTitleRu, 200), ky: str(req.body.siteTitleKy, 200) || current.siteTitle?.ky };
   if (req.body.addressRu)   updated.address   = { ru: str(req.body.addressRu, 300), ky: str(req.body.addressKy, 300) || current.address?.ky };
+
+  if (req.body.mapLat !== undefined) {
+    const lat = parseFloat(req.body.mapLat);
+    if (!isNaN(lat) && lat >= -90 && lat <= 90) updated.mapLat = lat;
+  }
+  if (req.body.mapLon !== undefined) {
+    const lon = parseFloat(req.body.mapLon);
+    if (!isNaN(lon) && lon >= -180 && lon <= 180) updated.mapLon = lon;
+  }
 
   const cd = [
     ['countdownTitleRu', 300], ['countdownTitleKy', 300],

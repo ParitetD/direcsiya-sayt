@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -35,6 +35,9 @@
         .news-back-btn { display: inline-flex; align-items: center; gap: .4rem; color: var(--color-primary,#8C1B2F); font-size: .9rem; font-weight: 600; text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
         .news-back-btn:hover { border-bottom-color: var(--color-primary,#8C1B2F); }
     </style>
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 </head>
 <body>
     <noscript><div style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem"><div><h1 style="font-size:1.5rem;margin-bottom:1rem">⚠️ JavaScript отключён</h1><p><span class="t-ru">Для работы сайта необходимо включить JavaScript в настройках браузера.</span><span class="t-ky">Сайттын иштеши үчүн JavaScript иштетилиши керек.</span><span class="t-en">This site requires JavaScript to be enabled in your browser settings.</span></p></div></div></noscript>
@@ -110,13 +113,22 @@
                         <li class="nav__item"><a href="contacts.html" class="nav__link"><span class="t-ru">Контакты</span><span class="t-ky">Байланыш</span><span class="t-en">Contacts</span></a></li>
                     </ul>
                 </nav>
-                <div class="lang-switcher">
-                    <button class="lang-btn lang-btn--active" data-lang="ru">RU</button>
-                    <span class="lang-sep">/</span>
-                    <button class="lang-btn" data-lang="ky">KY</button>
-                    <span class="lang-sep">/</span>
-                    <button class="lang-btn" data-lang="en">EN</button>
+                <a href="livestreams.html" class="live-icon-btn" id="navLiveStream" title="Эфиры / Эфирлер / Streams" aria-label="Эфиры / Эфирлер / Streams">
+                    <span class="live-dot" id="navLiveDot"></span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+                </a>
+                <div class="lang-switcher" id="langSwitcher">
+                    <button class="lang-globe-btn" id="langGlobeBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="RU / KY / EN">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M4.5 7.5h15M4.5 16.5h15"/></svg>
+                        <span class="lang-globe-code" id="langGlobeCode">RU</span>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-btn lang-btn--active" data-lang="ru">Русский</button>
+                        <button class="lang-btn" data-lang="ky">Кыргызча</button>
+                        <button class="lang-btn" data-lang="en">English</button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </header>
@@ -140,13 +152,6 @@
                             placeholder="Поиск новостей..."
                             data-ph-ru="Поиск новостей..." data-ph-ky="Жаңылыктарды издөө..." data-ph-en="Search news..."
                             autocomplete="off" oninput="newsSearch(this.value)">
-                    </div>
-                    <div class="news-cats" id="newsCats">
-                        <button class="news-cat active" data-cat="" onclick="newsCat('',this)"><span class="t-ru">Все</span><span class="t-ky">Баары</span><span class="t-en">All</span></button>
-                        <button class="news-cat" data-cat="news" onclick="newsCat('news',this)"><span class="t-ru">Новости</span><span class="t-ky">Жаңылыктар</span><span class="t-en">News</span></button>
-                        <button class="news-cat" data-cat="achievement" onclick="newsCat('achievement',this)"><span class="t-ru">Достижения</span><span class="t-ky">Жетишкендиктер</span><span class="t-en">Achievements</span></button>
-                        <button class="news-cat" data-cat="competition" onclick="newsCat('competition',this)"><span class="t-ru">Соревнования</span><span class="t-ky">Мелдештер</span><span class="t-en">Competitions</span></button>
-                        <button class="news-cat" data-cat="event" onclick="newsCat('event',this)"><span class="t-ru">Мероприятия</span><span class="t-ky">Иш-чаралар</span><span class="t-en">Events</span></button>
                     </div>
                 </div>
 
@@ -336,7 +341,7 @@
                         <li><a href="sports.html"><span class="t-ru">Тогуз коргоол</span><span class="t-ky">Тогуз коргоол</span><span class="t-en">Toguz Korgool</span></a></li>
                         <li><a href="sports.html"><span class="t-ru">Көк-Бөрү</span><span class="t-ky">Көк-Бөрү</span><span class="t-en">Kok-Boru</span></a></li>
                         <li><a href="sports.html"><span class="t-ru">Ат чабыш</span><span class="t-ky">Ат чабыш</span><span class="t-en">At Chabysh</span></a></li>
-                        <li><a href="sports.html"><span class="t-ru">Алыш</span><span class="t-ky">Алыш</span></a></li>
+                        <li><a href="sports.html"><span class="t-ru">Алыш</span><span class="t-ky">Алыш</span><span class="t-en">Alysh</span></a></li>
                     </ul>
                 </div>
                 <div class="footer__col">
@@ -360,12 +365,12 @@
   'use strict';
 
   var CAT = {
-    news:        { ru: 'Новости',         ky: 'Жаңылыктар' },
-    achievement: { ru: 'Достижения',      ky: 'Жетишкендиктер' },
-    competition: { ru: 'Соревнования',    ky: 'Мелдештер' },
-    event:       { ru: 'Мероприятия',     ky: 'Иш-чаралар' },
-    announcement:{ ru: 'Объявление',      ky: 'Билдирүү' },
-    result:      { ru: 'Результат',       ky: 'Натыйжа' }
+    news:        { ru: 'Новости',         ky: 'Жаңылыктар',        en: 'News' },
+    achievement: { ru: 'Достижения',      ky: 'Жетишкендиктер',    en: 'Achievements' },
+    competition: { ru: 'Соревнования',    ky: 'Мелдештер',         en: 'Competitions' },
+    event:       { ru: 'Мероприятия',     ky: 'Иш-чаралар',        en: 'Events' },
+    announcement:{ ru: 'Объявление',      ky: 'Билдирүү',          en: 'Announcement' },
+    result:      { ru: 'Результат',       ky: 'Натыйжа',           en: 'Result' }
   };
 
   var allNews   = [];
@@ -388,8 +393,10 @@
   }
 
   function catLabel(cat, lang) {
-    var c = CAT[cat] || { ru: cat || '', ky: cat || '' };
-    return lang === 'ky' ? c.ky : c.ru;
+    var c = CAT[cat] || { ru: cat || '', ky: cat || '', en: cat || '' };
+    if (lang === 'ky') return c.ky || c.ru || '';
+    if (lang === 'en') return c.en || c.ru || '';
+    return c.ru || '';
   }
 
   function getLang() {
@@ -417,7 +424,7 @@
 
     if (!items.length) {
       list.innerHTML = '<p class="news-empty" style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">'
-        + (lang === 'ky' ? 'Жаңылыктар жок' : 'Новостей пока нет') + '</p>';
+        + (lang === 'ky' ? 'Жаңылыктар жок' : lang === 'en' ? 'No news yet' : 'Новостей пока нет') + '</p>';
       var btn = document.getElementById('newsLoadMore');
       if (btn) btn.hidden = true;
       return;
@@ -434,9 +441,9 @@
         ? '<div class="news-full-card__image"><img src="' + esc(n.image) + '" alt="' + esc(title) + '" loading="lazy" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=60\'">'
           + '<span class="news-full-card__badge">' + esc(catLabel(n.category, lang)) + '</span></div>'
         : '';
-      var readLabel = lang === 'ky' ? 'Окуу →' : 'Читать →';
+      var readLabel = lang === 'ky' ? 'Окуу →' : lang === 'en' ? 'Read →' : 'Читать →';
       var nid = esc(n.id || '');
-      return '<article class="news-full-card' + (i === 0 && page === 1 ? ' news-full-card--featured' : '') + '">'
+      return '<article class="news-full-card' + (i === 0 && page === 1 ? ' news-full-card--featured' : '') + '" onclick="location.href=\'news.html?id=' + nid + '\'" style="cursor:pointer">'
         + imgH
         + '<div class="news-full-card__content">'
         + '<div class="news-full-card__meta">'
@@ -452,7 +459,7 @@
     var loadBtn = document.getElementById('newsLoadMore');
     if (loadBtn) {
       loadBtn.hidden = !hasMore;
-      loadBtn.textContent = lang === 'ky' ? 'Дагы жүктөө' : 'Загрузить ещё';
+      loadBtn.textContent = lang === 'ky' ? 'Дагы жүктөө' : lang === 'en' ? 'Load more' : 'Загрузить ещё';
     }
 
     if (typeof initRevealAnimations === 'function') initRevealAnimations();
@@ -478,7 +485,7 @@
         var list = document.getElementById('news-list');
         var lang = getLang();
         if (list) list.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:60px 0;opacity:.5">'
-          + (lang === 'ky' ? 'Жүктөө мүмкүн болгон жок' : 'Не удалось загрузить новости') + '</p>';
+          + (lang === 'ky' ? 'Жүктөө мүмкүн болгон жок' : lang === 'en' ? 'Failed to load news' : 'Не удалось загрузить новости') + '</p>';
       });
   }
 
@@ -490,7 +497,7 @@
 
     document.title = (title ? title + ' — ' : '') + 'Новости — Дирекция национальных видов спорта КР';
 
-    var backLabel = lang === 'ky' ? '← Жаңылыктарга кайтуу' : '← Назад к новостям';
+    var backLabel = lang === 'ky' ? '← Жаңылыктарга кайтуу' : lang === 'en' ? '← Back to news' : '← Назад к новостям';
     var phEl = document.querySelector('.page-header__title');
     if (phEl) phEl.innerHTML = '<a href="news.html" class="news-back-btn">' + backLabel + '</a>';
     var phSub = document.querySelector('.page-header__subtitle');
@@ -499,8 +506,28 @@
     var list = document.getElementById('news-list');
     if (!list) return;
 
+    // Video embed helper
+    function getVideoEmbed(url, platform) {
+      if (!url || !platform) return '';
+      if (platform === 'youtube') {
+        var videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+        if (videoId && videoId[1]) {
+          return '<div class="news-article__video"><iframe src="https://www.youtube.com/embed/' + esc(videoId[1]) + '?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+        }
+      } else if (platform === 'vimeo') {
+        var videoId = url.match(/vimeo\.com\/(\d+)/);
+        if (videoId && videoId[1]) {
+          return '<div class="news-article__video"><iframe src="https://player.vimeo.com/video/' + esc(videoId[1]) + '?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
+        }
+      }
+      return '';
+    }
+
+    var videoEmbed = getVideoEmbed(n.videoUrl, n.videoPlatform);
+
     list.innerHTML = '<article class="news-article-page">'
       + (n.image ? '<div class="news-article__image"><img src="' + esc(n.image) + '" alt="' + esc(title) + '"></div>' : '')
+      + videoEmbed
       + '<div class="news-article__meta">'
       + '<time class="news-full-card__date">' + esc(fmtDate(n.createdAt)) + '</time>'
       + (n.category ? '<span class="news-full-card__tag">' + esc(catLabel(n.category, lang)) + '</span>' : '')
@@ -529,8 +556,8 @@
       })
       .then(function (n) { renderArticle(n); })
       .catch(function () {
-        var backLabel = lang === 'ky' ? '← Артка' : '← Назад к новостям';
-        var notFound  = lang === 'ky' ? 'Жаңылык табылган жок' : 'Новость не найдена';
+        var backLabel = lang === 'ky' ? '← Артка' : lang === 'en' ? '← Back to news' : '← Назад к новостям';
+        var notFound  = lang === 'ky' ? 'Жаңылык табылган жок' : lang === 'en' ? 'Article not found' : 'Новость не найдена';
         if (list) list.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 0">'
           + '<p style="opacity:.6;margin-bottom:1.5rem">' + notFound + '</p>'
           + '<a href="news.html" class="news-back-btn">' + backLabel + '</a>'

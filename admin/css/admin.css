@@ -206,6 +206,10 @@ tbody tr:hover td{background:rgba(200,150,62,0.07) !important}
 .b-pub{background:var(--gl);color:var(--green-t)}
 .b-draft{background:var(--al);color:var(--amber-t)}
 .b-archived{background:#f1f5f9;color:#64748b}
+.b-live{background:#fee2e2;color:#dc2626;animation:pulseLive 2s ease-in-out infinite}
+.b-scheduled{background:var(--al);color:var(--amber-t)}
+.b-ended{background:#f1f5f9;color:#64748b}
+@keyframes pulseLive{0%,100%{opacity:1}50%{opacity:.6}}
 .b-athlete{background:var(--bll);color:var(--blue-t)}
 .b-staff{background:var(--pl);color:var(--purple-t)}
 .b-coach{background:var(--gl);color:var(--green-t)}
@@ -385,6 +389,9 @@ textarea.form-input{resize:vertical;min-height:110px;line-height:1.6}
 .help-steps li strong{color:var(--t1)}
 .help-steps li em{font-style:normal;font-weight:600;color:var(--color-primary,#1a4a8a)}
 @media(max-width:900px){.help-grid{grid-template-columns:1fr}}
+/* Gallery Manager */
+.gm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:8px}
+.gm-photo img{border-radius:8px;display:block}
 
 /* ── Image grid upload ── */
 .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:12px}

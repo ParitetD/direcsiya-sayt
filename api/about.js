@@ -66,11 +66,55 @@ router.use('/values', createCRUD({
   searchFields: ['titleRu','titleKy'],
 }));
 
-router.use('/timeline', createCRUD({
+const timelineUpload = multer({
+  storage: multer.diskStorage({
+    destination: UPLOAD_DIR,
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      cb(null, `timeline-${Date.now()}-${Math.random().toString(36).slice(2,7)}${ext}`);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, /^image\//.test(file.mimetype) && ['.jpg','.jpeg','.png','.webp','.gif'].includes(ext));
+  },
+});
+
+const timelineCrud = createCRUD({
   file: 'data/about-timeline.json',
   defaultSort: (a, b) => Number(a.year || 0) - Number(b.year || 0),
-  bodyFields: ['year','titleRu','titleKy','descRu','descKy','order'],
+  bodyFields: ['year','titleRu','titleKy','descRu','descKy','fullDescRu','fullDescKy','order'],
   searchFields: ['titleRu','titleKy','year'],
-}));
+});
+router.use('/timeline', timelineCrud);
+
+function readTimeline() {
+  try { return JSON.parse(fs.readFileSync('data/about-timeline.json', 'utf8')); } catch { return []; }
+}
+function writeTimeline(d) { fs.writeFileSync('data/about-timeline.json', JSON.stringify(d, null, 2)); }
+
+router.post('/timeline/:id/add-photo', verifyToken, timelineUpload.single('photo'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'Файл не загружен' });
+  const items = readTimeline();
+  const idx = items.findIndex(i => i.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'Не найдено' });
+  const url = `/uploads/about/${req.file.filename}`;
+  if (!Array.isArray(items[idx].photos)) items[idx].photos = [];
+  items[idx].photos.push(url);
+  writeTimeline(items);
+  res.json({ url, photos: items[idx].photos });
+});
+
+router.delete('/timeline/:id/remove-photo', verifyToken, (req, res) => {
+  const items = readTimeline();
+  const idx = items.findIndex(i => i.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'Не найдено' });
+  const url = req.body.url;
+  if (!url) return res.status(400).json({ error: 'Не указан url' });
+  items[idx].photos = (items[idx].photos || []).filter(p => p !== url);
+  writeTimeline(items);
+  res.json({ photos: items[idx].photos });
+});
 
 module.exports = router;

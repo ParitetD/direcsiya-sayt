@@ -13,5 +13,7 @@ module.exports = createCRUD({
     'contentRu', 'contentKy',
     'category', 'status',
     'image',
+    'videoUrl',
+    'videoPlatform',
   ],
 });

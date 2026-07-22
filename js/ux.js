@@ -20,7 +20,10 @@
     }
 
     /* ── 2. Main content anchor ── */
-    const firstSection = document.querySelector('section.section, main, .section');
+    // Skip elements hidden via inline style — sections like #livestreamSection start
+    // hidden and are only shown conditionally by JS, so they're never real "main content".
+    const sectionCandidates = document.querySelectorAll('section.section, main, .section');
+    const firstSection = Array.from(sectionCandidates).find(el => el.style.display !== 'none');
     if (firstSection && !document.getElementById('main-content')) {
         firstSection.id = 'main-content';
     }
@@ -31,8 +34,8 @@
         scrollBtn = document.createElement('button');
         scrollBtn.className = 'scroll-top';
         scrollBtn.id = 'scrollTopBtn';
-        scrollBtn.setAttribute('aria-label', lang === 'ky' ? 'Жогору' : 'Наверх');
-        scrollBtn.title = lang === 'ky' ? 'Жогору' : 'Наверх';
+        scrollBtn.setAttribute('aria-label', lang === 'ky' ? 'Жогору' : lang === 'en' ? 'Back to top' : 'Наверх');
+        scrollBtn.title = lang === 'ky' ? 'Жогору' : lang === 'en' ? 'Back to top' : 'Наверх';
         scrollBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
         document.body.appendChild(scrollBtn);
     }
@@ -53,9 +56,11 @@
         banner.innerHTML = '<div class="cookie-banner__inner">'
             + '<p>' + (lang === 'ky'
                 ? 'Сайттын ишин жакшыртуу үчүн cookie файлдарын колдонобуз. Сайтты улантуу менен, cookie колдонууга макулдугуңузду билдиресиз.'
+                : lang === 'en'
+                ? 'We use cookies to improve your experience. By continuing to use the site, you agree to the use of cookies.'
                 : 'Мы используем файлы cookie для улучшения работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с использованием cookie.') + '</p>'
             + '<button class="cookie-banner__btn" id="cookieAcceptBtn">'
-            + (lang === 'ky' ? 'Кабыл алуу' : 'Принять')
+            + (lang === 'ky' ? 'Кабыл алуу' : lang === 'en' ? 'Accept' : 'Принять')
             + '</button></div>';
         document.body.appendChild(banner);
 
@@ -67,13 +72,14 @@
 
     /* ── 5. Breadcrumbs ── */
     const pageMap = {
-        'sports.html':    { ru: 'Виды спорта',    ky: 'Спорт түрлөрү' },
-        'events.html':    { ru: 'Мероприятия',    ky: 'Иш-чаралар' },
-        'gallery.html':   { ru: 'Галерея',        ky: 'Галерея' },
-        'news.html':      { ru: 'Новости',        ky: 'Жаңылыктар' },
-        'about.html':     { ru: 'О нас',          ky: 'Биз жөнүндө' },
-        'contacts.html':  { ru: 'Контакты',       ky: 'Байланыш' },
-        'athletes.html':  { ru: 'Спортсмены',     ky: 'Спортчулар' },
+        'sports.html':       { ru: 'Виды спорта', ky: 'Спорт түрлөрү', en: 'Sports' },
+        'events.html':       { ru: 'Мероприятия', ky: 'Иш-чаралар',    en: 'Events' },
+        'gallery.html':      { ru: 'Галерея',     ky: 'Галерея',       en: 'Gallery' },
+        'news.html':         { ru: 'Новости',     ky: 'Жаңылыктар',    en: 'News' },
+        'about.html':        { ru: 'О нас',       ky: 'Биз жөнүндө',   en: 'About Us' },
+        'contacts.html':     { ru: 'Контакты',    ky: 'Байланыш',      en: 'Contacts' },
+        'athletes.html':     { ru: 'Спортсмены',  ky: 'Спортчулар',    en: 'Athletes' },
+        'livestreams.html':  { ru: 'Эфиры',       ky: 'Эфирлер',       en: 'Streams' },
     };
 
     // Handle server-routed pages like /athletes (no .html extension)
@@ -85,8 +91,8 @@
         const bc = document.createElement('nav');
         bc.className = 'breadcrumbs';
         bc.setAttribute('aria-label', lang === 'ky' ? 'Навигация' : 'Навигация');
-        const homeText = lang === 'ky' ? 'Башкы бет' : 'Главная';
-        const currentText = lang === 'ky' ? pageInfo.ky : pageInfo.ru;
+        const homeText = lang === 'ky' ? 'Башкы бет' : lang === 'en' ? 'Home' : 'Главная';
+        const currentText = lang === 'ky' ? pageInfo.ky : lang === 'en' ? (pageInfo.en || pageInfo.ru) : pageInfo.ru;
         bc.innerHTML = '<div class="container"><ol class="breadcrumbs__list">'
             + '<li><a href="index.html">' + homeText + '</a></li>'
             + '<li>' + currentText + '</li>'
@@ -163,8 +169,10 @@
                     lis[0].appendChild(document.createTextNode(' '));
                     var spRu = document.createElement('span'); spRu.className = 't-ru'; spRu.textContent = s.address.ru || '';
                     var spKy = document.createElement('span'); spKy.className = 't-ky'; spKy.textContent = s.address.ky || '';
+                    var spEn = document.createElement('span'); spEn.className = 't-en'; spEn.textContent = s.address.en || s.address.ru || '';
                     lis[0].appendChild(spRu);
                     lis[0].appendChild(spKy);
+                    lis[0].appendChild(spEn);
                 }
                 if (lis[1] && s.phone) {
                     setContactLi(lis[1], lis[1].querySelector('svg'), s.phone);

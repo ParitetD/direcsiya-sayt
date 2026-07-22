@@ -30,7 +30,9 @@ const CFG = {
       {key:'contentRu',label:'Текст новости',lang:'ru',type:'editor',ph:'Введите текст новости...'},
       {key:'contentKy',label:'Тексти',lang:'ky',type:'editor',ph:'Жаңылыктын тексти...'},
       {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'news',l:'Новость'},{v:'announcement',l:'Анонс'},{v:'result',l:'Результат'}]},
-      {key:'image',label:'Обложка',type:'upload'}
+      {key:'image',label:'Обложка',type:'upload'},
+      {key:'videoUrl',label:'Ссылка на видео',type:'text',noLang:true,ph:'https://youtube.com/watch?v=... или https://vimeo.com/...'},
+      {key:'videoPlatform',label:'Платформа видео',type:'select',noLang:true,opts:[{v:'',l:'Не выбрано'},{v:'youtube',l:'YouTube'},{v:'vimeo',l:'Vimeo'}]}
     ]
   },
   events: {
@@ -126,13 +128,35 @@ const CFG = {
     fields:[
       {key:'nameRu', label:'Название', lang:'ru', type:'text', req:true, ph:'Вид спорта на русском'},
       {key:'nameKy', label:'Аталышы', lang:'ky', type:'text', req:true, ph:'Кыргызча аталышы'},
-      {key:'descriptionRu', label:'Описание', lang:'ru', type:'textarea', ph:'Описание вида спорта...'},
-      {key:'descriptionKy', label:'Сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн сүрөттөмөсү...'},
+      {key:'descriptionRu', label:'Краткое описание', lang:'ru', type:'textarea', ph:'Краткое описание вида спорта...'},
+      {key:'descriptionKy', label:'Кыска сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн кыска сүрөттөмөсү...'},
+      {key:'fullDescRu', label:'Полное описание', lang:'ru', type:'textarea', ph:'Подробная история и правила вида спорта...'},
+      {key:'fullDescKy', label:'Толук сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн тарыхы жана эрежелери...'},
       {key:'athletesCount', label:'Число спортсменов', type:'number', noLang:true},
       {key:'order', label:'Порядок показа (1 = первый)', type:'number', noLang:true},
       {key:'status', label:'Статус', type:'select', noLang:true, opts:[{v:'published',l:'Опубликован — виден на сайте'},{v:'draft',l:'Черновик — скрыт'}]},
       {key:'image', label:'Фотография', type:'upload'},
       {key:'icon',  label:'Иконка вида спорта', type:'icon-upload', noLang:true}
+    ]
+  },
+  partners: {
+    title: 'Партнёры', hint: 'Партнёры и организации на главной странице', api: '/api/partners',
+    cols: [
+      {key:'logo',   label:'Лого', type:'img'},
+      {key:'nameRu', label:'Название', type:'name'},
+      {key:'url',    label:'Ссылка'},
+      {key:'order',  label:'Порядок'},
+      {key:'status', label:'Статус', type:'badge'}
+    ],
+    filterKey:'status', filterOpts:[{v:'',l:'Все'},{v:'published',l:'Активно'},{v:'draft',l:'Скрыто'}],
+    fields:[
+      {key:'nameRu', label:'Название', lang:'ru', type:'text', req:true, ph:'Название партнёра'},
+      {key:'nameKy', label:'Аталышы', lang:'ky', type:'text', ph:'Өнөктөштүн аталышы'},
+      {key:'nameEn', label:'Name (EN)', type:'text', noLang:true, ph:'Partner name in English'},
+      {key:'url',    label:'Ссылка на сайт', type:'text', noLang:true, ph:'https://...'},
+      {key:'logo',   label:'Логотип', type:'upload'},
+      {key:'order',  label:'Порядок показа (1 = первый)', type:'number', noLang:true},
+      {key:'status', label:'Статус', type:'select', noLang:true, opts:[{v:'published',l:'Активен — виден на сайте'},{v:'draft',l:'Скрыт'}]}
     ]
   },
   'about-values': {
@@ -153,9 +177,33 @@ const CFG = {
       {key:'year',label:'Год',type:'text',noLang:true,req:true,ph:'2015'},
       {key:'titleRu',label:'Название (RU)',lang:'ru',type:'text',req:true,ph:'Название события'},
       {key:'titleKy',label:'Аталышы (KY)',lang:'ky',type:'text',ph:'Окуянын аталышы'},
-      {key:'descRu',label:'Описание (RU)',lang:'ru',type:'textarea',ph:'Краткое описание...'},
-      {key:'descKy',label:'Сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Кыскача сүрөттөмө...'},
+      {key:'descRu',label:'Краткое описание (RU)',lang:'ru',type:'textarea',ph:'Краткое описание...'},
+      {key:'descKy',label:'Кыска сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Кыскача сүрөттөмө...'},
+      {key:'fullDescRu',label:'Полное описание (RU)',lang:'ru',type:'textarea',ph:'Подробное описание события, фоновая информация...'},
+      {key:'fullDescKy',label:'Толук сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Окуянын толук сүрөттөмөсү...'},
       {key:'order',label:'Порядок (1 = первый)',type:'number',noLang:true}
+    ]
+  },
+  livestreams: {
+    title:'Прямые эфиры', hint:'Управление трансляциями YouTube/Vimeo', api:'/api/livestreams',
+    cols:[
+      {key:'thumbnail',label:'Обложка',type:'img'},
+      {key:'titleRu',label:'Название',type:'name'},
+      {key:'platform',label:'Платформа',map:{youtube:'YouTube',vimeo:'Vimeo'}},
+      {key:'status',label:'Статус',type:'badge',map:{live:'В эфире',scheduled:'Запланирован',ended:'Завершён'}},
+      {key:'scheduledAt',label:'Дата эфира',type:'date'}
+    ],
+    filterKey:'status', filterOpts:[{v:'',l:'Все статусы'},{v:'live',l:'В эфире'},{v:'scheduled',l:'Запланированные'},{v:'ended',l:'Завершённые'}],
+    fields:[
+      {key:'titleRu',label:'Название',lang:'ru',type:'text',req:true,ph:'Название трансляции'},
+      {key:'titleKy',label:'Аталышы',lang:'ky',type:'text',req:true,ph:'Трансляциянын аталышы'},
+      {key:'descriptionRu',label:'Описание',lang:'ru',type:'textarea',ph:'Описание трансляции...'},
+      {key:'descriptionKy',label:'Сүрөттөмө',lang:'ky',type:'textarea',ph:'Трансляциянын сүрөттөмөсү...'},
+      {key:'streamUrl',label:'Ссылка на трансляцию',type:'text',noLang:true,req:true,ph:'https://youtube.com/watch?v=... или https://vimeo.com/...'},
+      {key:'platform',label:'Платформа',type:'select',noLang:true,opts:[{v:'youtube',l:'YouTube'},{v:'vimeo',l:'Vimeo'}]},
+      {key:'status',label:'Статус',type:'select',noLang:true,opts:[{v:'live',l:'В эфире — транслируется сейчас'},{v:'scheduled',l:'Запланирован — анонс на сайте'},{v:'ended',l:'Завершён — архив'}]},
+      {key:'scheduledAt',label:'Дата и время эфира',type:'datetime-local',noLang:true},
+      {key:'thumbnail',label:'Обложка эфира',type:'upload'}
     ]
   }
 };
@@ -199,7 +247,7 @@ function showApp() {
 }
 
 async function loadBadges() {
-  for (const s of ['news','events','gallery','people','sports','slides']) {
+  for (const s of ['news','events','gallery','people','sports','slides','livestreams','partners']) {
     try {
       const r = await api(`${CFG[s].api}?limit=1`);
       const el = document.getElementById(`badge-${s}`);
@@ -218,7 +266,7 @@ async function loadBadges() {
 /* ── Navigation ── */
 function navigate(section) {
   document.querySelectorAll('.sb-item').forEach(n => n.classList.toggle('active', n.dataset.section === section));
-  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',slides:'Слайдер',settings:'Настройки',contacts:'Обращения',homepage:'Главная страница',help:'Инструкция',about:'О нас'};
+  const labels = {dashboard:'Дашборд',news:'Новости',events:'Мероприятия',gallery:'Галерея',people:'Спортсмены',sports:'Виды спорта',livestreams:'Прямые эфиры',slides:'Слайдер',partners:'Партнёры',settings:'Настройки',contacts:'Обращения',homepage:'Главная страница',help:'Инструкция',about:'О нас'};
   document.getElementById('topbar-section').textContent = labels[section] || section;
   if (section === 'dashboard') renderDashboard();
   else if (section === 'settings') renderSettings();
@@ -272,6 +320,7 @@ async function renderDashboard() {
     api('/api/news?limit=5').catch(() => ({data:[]})),
     api('/api/events?limit=5').catch(() => ({data:[]}))
   ]);
+  const stats = await api('/api/stats').catch(() => null);
 
   const kpis = [
     {icon:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>`,cls:'i-red',val:news.total||0,lbl:'Новостей'},
@@ -279,6 +328,37 @@ async function renderDashboard() {
     {icon:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,cls:'i-green',val:gallery.total||0,lbl:'Фотографий'},
     {icon:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,cls:'i-blue',val:people.total||0,lbl:'Людей'}
   ];
+
+  // Stats widget
+  const statsHtml = stats ? (function() {
+    const maxVal = Math.max.apply(null, stats.chartDays.concat([1]));
+    const bars = stats.chartDays.map(function(v, i) {
+      const h = Math.max(4, Math.round((v / maxVal) * 100));
+      return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">'
+        + '<span style="font-size:.7rem;color:var(--t2);font-weight:600">' + (v || '') + '</span>'
+        + '<div style="width:100%;max-width:32px;height:' + h + 'px;background:linear-gradient(180deg,var(--brand),var(--gold));border-radius:4px 4px 0 0;min-height:4px;transition:height .3s"></div>'
+        + '<span style="font-size:.65rem;color:var(--t3)">' + escapeHtml(stats.chartLabels[i]) + '</span>'
+      + '</div>';
+    }).join('');
+    const topPagesHtml = (stats.topPages || []).slice(0, 5).map(function(p) {
+      const pageNames = {'/':'Главная','/index.html':'Главная','/news':'Новости','/news.html':'Новости','/events':'Мероприятия','/events.html':'Мероприятия','/gallery':'Галерея','/gallery.html':'Галерея','/sports':'Виды спорта','/sports.html':'Виды спорта','/athletes':'Спортсмены','/athletes.html':'Спортсмены','/about':'О нас','/about.html':'О нас','/contacts':'Контакты','/contacts.html':'Контакты'};
+      return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem">'
+        + '<span>' + escapeHtml(pageNames[p.page] || p.page) + '</span>'
+        + '<span style="font-weight:700;color:var(--brand)">' + p.count + '</span>'
+      + '</div>';
+    }).join('');
+    return '<div class="dash-card" style="grid-column:1/-1">'
+      + '<div class="dash-card-head"><h3>📊 Статистика посещений</h3></div>'
+      + '<div style="padding:20px">'
+      + '<div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">'
+        + '<div style="text-align:center"><div style="font-size:1.8rem;font-weight:700;color:var(--brand)">' + (stats.totalVisits||0) + '</div><div style="font-size:.75rem;color:var(--t2)">Всего посещений</div></div>'
+        + '<div style="text-align:center"><div style="font-size:1.8rem;font-weight:700;color:var(--green)">' + (stats.todayVisits||0) + '</div><div style="font-size:.75rem;color:var(--t2)">Сегодня</div></div>'
+        + '<div style="text-align:center"><div style="font-size:1.8rem;font-weight:700;color:var(--gold-t,#C8963E)">' + (stats.weekVisits||0) + '</div><div style="font-size:.75rem;color:var(--t2)">За 7 дней</div></div>'
+      + '</div>'
+      + '<div style="display:flex;align-items:flex-end;gap:4px;height:120px;padding:0 4px;margin-bottom:16px;border-bottom:1px solid var(--border)">' + bars + '</div>'
+      + (topPagesHtml ? '<div><p style="font-size:.78rem;font-weight:600;color:var(--t2);margin-bottom:8px">Популярные страницы</p>' + topPagesHtml + '</div>' : '')
+      + '</div></div>';
+  })() : '';
 
   const newsList = (recentNews.data||[]).map(n => `
     <div class="dash-item" onclick="location.hash='news';navigate('news')">
@@ -336,7 +416,8 @@ async function renderDashboard() {
           ${actions.slice(2).map(a=>`<button class="dash-action-btn" onclick="${a.fn}"><span style="font-size:1.1rem">${a.icon}</span>${a.label}</button>`).join('')}
         </div>
       </div>
-    </div>`;
+    </div>
+    ${statsHtml}`;
 }
 
 /* ── List section ── */
@@ -404,6 +485,7 @@ async function renderSection(section) {
   const rowsH = data.length ? data.map(item => `<tr>
     ${cfg.cols.map(col => `<td>${renderCell(col, item)}</td>`).join('')}
     <td><div class="td-act">
+      ${section === 'sports' ? `<button class="btn btn-icon" onclick="openGalleryManager('sports',${JSON.stringify(item.id)},${JSON.stringify(item.nameRu||'')})" title="Фото галерея" style="color:var(--primary)">📸</button>` : ''}
       <button class="btn btn-icon" onclick="openDrawer('${section}','${item.id}')" title="Редактировать">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       </button>
@@ -438,12 +520,12 @@ async function renderSection(section) {
 
 function renderCell(col, item) {
   const v = item[col.key];
-  if (col.type === 'img') { const s = item.image||item.photo; return s ? `<img class="td-thumb" src="${escapeHtml(s)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">` : '<div class="td-thumb-ph">📷</div>'; }
+  if (col.type === 'img') { const s = item[col.key]||item.image||item.photo; return s ? `<img class="td-thumb" src="${escapeHtml(s)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&q=60'">` : '<div class="td-thumb-ph">📷</div>'; }
   if (col.type === 'name') return `<div class="td-name">${escapeHtml(v||'—')}</div><div class="td-meta">${escapeHtml(item.titleKy||'')}</div>`;
   if (col.type === 'badge') {
     const sv = String(v);
     const l = col.map?.[sv] ?? col.map?.[v] ?? sv ?? '—';
-    const clsMap = {published:'b-pub', draft:'b-draft', archived:'b-archived', athlete:'b-athlete', staff:'b-staff', coach:'b-coach', true:'b-pub', false:'b-draft', active:'b-pub', retired:'b-draft'};
+    const clsMap = {published:'b-pub', draft:'b-draft', archived:'b-archived', athlete:'b-athlete', staff:'b-staff', coach:'b-coach', true:'b-pub', false:'b-draft', active:'b-pub', retired:'b-draft', live:'b-live', scheduled:'b-scheduled', ended:'b-ended'};
     const cls = clsMap[sv] || clsMap[v] || 'b-draft';
     return `<span class="badge ${cls}">${escapeHtml(l)}</span>`;
   }
@@ -470,7 +552,7 @@ function debounce(section) {
 async function openDrawer(section, id) {
   const cfg = CFG[section];
   drawerSection = section; drawerItemId = id||null;
-  const sectionRatios = { news: 16/9, events: 16/9, gallery: 4/3, people: 3/4, slides: 16/9 };
+  const sectionRatios = { news: 16/9, events: 16/9, gallery: 4/3, people: 3/4, slides: 16/9, livestreams: 16/9 };
   currentCropRatio = sectionRatios[section] || 16/9;
   document.querySelectorAll('.crop-ratio-btn').forEach((btn, i) => {
     btn.classList.toggle('active', [16/9, 4/3, 1/1, 3/4][i] === currentCropRatio);
@@ -568,6 +650,7 @@ function renderField(f, item) {
   if (f.type === 'textarea') return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><textarea class="form-input" name="${f.key}" placeholder="${f.ph||''}" rows="4">${escapeHtml(v)}</textarea></div>`;
   if (f.type === 'select') return `<div class="form-field"><label class="form-lbl">${f.label}</label><select class="form-input form-select" name="${f.key}">${(f.opts||[]).map(o=>`<option value="${o.v}"${String(v)===String(o.v)?' selected':''}>${o.l}</option>`).join('')}</select></div>`;
   if (f.type === 'date') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="date" class="form-input" name="${f.key}" value="${escapeHtml(v)}"></div>`;
+  if (f.type === 'datetime-local') return `<div class="form-field"><label class="form-lbl">${f.label}${req}</label><input type="datetime-local" class="form-input" name="${f.key}" value="${escapeHtml(v)}"></div>`;
   if (f.type === 'number') return `<div class="form-field"><label class="form-lbl">${f.label}</label><input type="number" class="form-input" name="${f.key}" value="${escapeHtml(v)}" min="1"></div>`;
   if (f.type === 'icon-upload') {
     const previewHtml = v
@@ -593,7 +676,7 @@ function renderField(f, item) {
   }
   if (f.type === 'upload') {
     const existingImages = item
-      ? [item.image, ...(item.images || [])].filter(Boolean)
+      ? [item[f.key], item.image, item.photo, ...(item.images || [])].filter(Boolean)
       : [];
     const urlInput = drawerSection === 'slides' ? `
       <div class="form-field" style="margin-top:8px">
@@ -1123,6 +1206,10 @@ async function renderSettings() {
             <div class="form-field"><label class="form-lbl">Телефон</label><input class="form-input" name="phone" value="${escapeHtml(s.phone||'')}"></div>
             <div class="form-field"><label class="form-lbl">Адрес (RU)</label><input class="form-input" name="addressRu" value="${escapeHtml(s.address?.ru||'')}"></div>
             <div class="form-field"><label class="form-lbl">Адрес (KY)</label><input class="form-input" name="addressKy" value="${escapeHtml(s.address?.ky||'')}"></div>
+            <div class="form-field"><label class="form-lbl">Широта</label><input class="form-input" id="adminMapLat" name="mapLat" type="number" step="any" value="${s.mapLat!=null?s.mapLat:42.8736}" placeholder="42.8736" oninput="adminMapUpdate()"></div>
+            <div class="form-field"><label class="form-lbl">Долгота</label><input class="form-input" id="adminMapLon" name="mapLon" type="number" step="any" value="${s.mapLon!=null?s.mapLon:74.5907}" placeholder="74.5907" oninput="adminMapUpdate()"></div>
+            <div style="font-size:.8rem;color:var(--t2);margin:-6px 0 10px;line-height:1.5">Нажмите на карту или перетащите маркер — координаты обновятся автоматически</div>
+            <div id="adminMapPicker" style="height:260px;border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--border)"></div>
             <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
           </form>
         </div>
@@ -1178,24 +1265,102 @@ async function renderSettings() {
       </div>
     </div>`;
 
+  setTimeout(() => initAdminMapPicker(s.mapLat || 42.8736, s.mapLon || 74.5907), 60);
+}
+
+function initAdminMapPicker(lat, lon) {
+  if (typeof L === 'undefined') return;
+  const el = document.getElementById('adminMapPicker');
+  if (!el) return;
+  if (window._adminMap) { try { window._adminMap.remove(); } catch(e){} window._adminMap = null; }
+  const map = L.map('adminMapPicker').setView([lat, lon], 15);
+  window._adminMap = map;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(map);
+  window._adminMapMarker = L.marker([lat, lon], { draggable: true }).addTo(map);
+  function setCoords(ll) {
+    const latI = document.getElementById('adminMapLat');
+    const lonI = document.getElementById('adminMapLon');
+    if (latI) latI.value = ll.lat.toFixed(6);
+    if (lonI) lonI.value = ll.lng.toFixed(6);
+  }
+  window._adminMapMarker.on('dragend', e => setCoords(e.target.getLatLng()));
+  map.on('click', e => { window._adminMapMarker.setLatLng(e.latlng); setCoords(e.latlng); });
+}
+
+function adminMapUpdate() {
+  if (!window._adminMapMarker) return;
+  const lat = parseFloat(document.getElementById('adminMapLat')?.value);
+  const lon = parseFloat(document.getElementById('adminMapLon')?.value);
+  if (isNaN(lat) || isNaN(lon)) return;
+  window._adminMapMarker.setLatLng([lat, lon]);
+  window._adminMap?.setView([lat, lon], 15);
 }
 
 /* ── Homepage editor ── */
 async function renderHomePage() {
   const c = document.getElementById('content');
   c.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div></div>';
-  let s;
-  try { s = await api('/api/settings'); } catch { toast('Ошибка загрузки','e'); return; }
+  let s, slidesData;
+  try {
+    [s, slidesData] = await Promise.all([
+      api('/api/settings'),
+      api('/api/slides?limit=50').catch(() => ({data: []}))
+    ]);
+  } catch { toast('Ошибка загрузки','e'); return; }
+  const slides = (slidesData.data || []).sort((a,b) => (a.order||0) - (b.order||0));
+
+  var slideCardsHtml = '';
+  if (slides.length) {
+    slideCardsHtml = slides.map(function(sl) {
+      var img = sl.image ? '<img src="' + escapeHtml(sl.image) + '" style="width:100%;height:80px;object-fit:cover;border-radius:6px" loading="lazy">' : '<div style="width:100%;height:80px;background:#f3f4f6;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:.75rem">Нет фото</div>';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff">'
+        + '<div style="width:120px;flex-shrink:0">' + img + '</div>'
+        + '<div style="flex:1;min-width:0">'
+        + '<div style="font-weight:600;font-size:.85rem;margin-bottom:2px">' + escapeHtml(sl.titleRu || 'Без названия') + '</div>'
+        + '<div style="font-size:.75rem;color:var(--t2)">Порядок: ' + (sl.order || 0) + ' · ' + (sl.active === true || sl.active === 'true' || sl.active === '1' ? 'Активен' : 'Скрыт') + '</div>'
+        + '</div>'
+        + '<button class="btn btn-icon-danger" style="background:#fee2e2" onclick="deleteHomeSlide(\'' + sl.id + '\')" title="Удалить">'
+        + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>'
+        + '</button>'
+        + '</div>';
+    }).join('');
+  } else {
+    slideCardsHtml = '<div style="text-align:center;padding:24px;color:var(--t2)"><p>Пока нет слайдов. Добавьте первый ниже.</p></div>';
+  }
 
   c.innerHTML = `
-    <div class="page-head"><div class="page-head-txt"><h2>Главная страница</h2><p>Обратный отсчёт и статистика на главной</p></div></div>
+    <div class="page-head"><div class="page-head-txt"><h2>Главная страница</h2><p>Баннер, обратный отсчёт и статистика</p></div></div>
     <div class="settings-grid">
+
+      <!-- Баннер главной -->
+      <div class="settings-card" style="grid-column:1/-1">
+        <div class="settings-card-head"><h3>🖼 Баннер на главной</h3><p>Фото и текст на главном экране</p></div>
+        <div class="settings-card-body">
+          <div id="home-slides-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">${slideCardsHtml}</div>
+          <form onsubmit="addHomeSlide(event)" style="border-top:1px solid var(--border);padding-top:14px">
+            <p style="font-size:.8rem;font-weight:600;margin-bottom:10px;color:var(--t2)">Добавить слайд</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="form-field"><label class="form-lbl">Заголовок (RU)</label><input class="form-input" name="slideTitleRu" required placeholder="Заголовок слайда"></div>
+              <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="slideTitleKy" placeholder="Слайддын аталышы"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Подзаголовок (RU)</label><textarea class="form-input" name="slideSubtitleRu" rows="2" placeholder="Краткое описание"></textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Кыскача (KY)</label><textarea class="form-input" name="slideSubtitleKy" rows="2" placeholder="Кыскача маалымат"></textarea></div>
+              <div class="form-field"><label class="form-lbl">URL фото</label><input class="form-input" name="slideImage" required placeholder="https://..."></div>
+              <div class="form-field"><label class="form-lbl">Порядок</label><input class="form-input" type="number" name="slideOrder" value="1"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-field" style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" name="slideActive" checked> <span>Активен — показывается на сайте</span></label></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:10px">Добавить слайд</button>
+          </form>
+        </div>
+      </div>
 
       <!-- Обратный отсчёт -->
       <div class="settings-card" style="grid-column:1/-1">
         <div class="settings-card-head"><h3>⏳ Обратный отсчёт</h3><p>Заголовок, дата, время и место мероприятия</p></div>
         <div class="settings-card-body">
-          <form onsubmit="saveHomePage(event)">
+          <form id="settings-form" onsubmit="saveHomePage(event)">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="form-field"><label class="form-lbl">Название (RU)</label><input class="form-input" name="countdownTitleRu" value="${escapeHtml(s.countdownTitleRu||'')}" placeholder="VI Всемирные игры кочевников"></div>
               <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="countdownTitleKy" value="${escapeHtml(s.countdownTitleKy||'')}" placeholder="VI Дүйнөлүк көчмөндөр оюндары"></div>
@@ -1232,22 +1397,41 @@ async function renderHomePage() {
 
     </div>`;
 
-  const sel = document.getElementById('cdEventSelect');
+  var sel = document.getElementById('cdEventSelect');
   if (sel) {
     api('/api/events?status=published&limit=200').then(function(j) {
-      const events = j.data || [];
-      const lang = localStorage.getItem('site-lang') || 'ru';
+      var events = j.data || [];
+      var lang = localStorage.getItem('site-lang') || 'ru';
       events.forEach(function(ev) {
-        const opt = document.createElement('option');
+        var opt = document.createElement('option');
         opt.value = ev.id;
-        const title = lang === 'ky' ? (ev.titleKy || ev.titleRu || '') : (ev.titleRu || ev.titleKy || '');
-        const date  = ev.date ? (' (' + ev.date.slice(0,10) + ')') : '';
+        var title = lang === 'ky' ? (ev.titleKy || ev.titleRu || '') : (ev.titleRu || ev.titleKy || '');
+        var date  = ev.date ? (' (' + ev.date.slice(0,10) + ')') : '';
         opt.textContent = title + date;
         if (ev.id === s.countdownEventId) opt.selected = true;
         sel.appendChild(opt);
       });
     }).catch(function() {});
   }
+}
+
+async function addHomeSlide(e) {
+  e.preventDefault();
+  var fd = new FormData(e.target);
+  try {
+    await apiFd('/api/slides', 'POST', fd);
+    toast('Слайд добавлен');
+    renderHomePage();
+  } catch { toast('Ошибка добавления слайда', 'e'); }
+}
+
+async function deleteHomeSlide(id) {
+  if (!confirm('Удалить этот слайд?')) return;
+  try {
+    await api('/api/slides/' + id, 'DELETE');
+    toast('Слайд удалён');
+    renderHomePage();
+  } catch { toast('Ошибка удаления', 'e'); }
 }
 
 async function saveHomePage(e) {
@@ -1355,6 +1539,21 @@ function renderHelp() {
       ]
     },
     {
+      icon: '📡',
+      title: 'Прямые эфиры',
+      nav: 'livestreams',
+      color: '#dc2626',
+      steps: [
+        'Нажмите <strong>«Добавить»</strong> и заполните название трансляции на двух языках.',
+        'Вставьте <strong>ссылку на трансляцию</strong> — YouTube или Vimeo.',
+        'Выберите <strong>платформу</strong> (YouTube или Vimeo) — от этого зависит, как видео будет встроено.',
+        'Укажите <strong>статус</strong>: «В эфире» — трансляция идёт сейчас, «Запланирован» — анонс на сайте, «Завершён» — архив.',
+        'Укажите <strong>дату и время</strong> начала эфира (для запланированных).',
+        'Загрузите <strong>обложку</strong> эфира (формат 16:9).',
+        'Активный эфир (статус «В эфире») отображается на главной странице сайта.',
+      ]
+    },
+    {
       icon: '✉️',
       title: 'Обращения',
       nav: 'contacts',
@@ -1373,7 +1572,7 @@ function renderHelp() {
       color: '#374151',
       steps: [
         '<strong>Логотип</strong> — выберите файл PNG/JPG и нажмите «Загрузить». Логотип появится в шапке и футере сайта.',
-        '<strong>Контакты</strong> — email, телефон и адрес организации. Отображаются в разделе «Контакты» на сайте.',
+        '<strong>Контакты</strong> — email, телефон, адрес организации и <strong>координаты офиса</strong> (широта и долгота). Карта на странице «Контакты» обновится автоматически. При переезде просто измените адрес и координаты.',
         '<strong>Социальные сети</strong> — ссылки на Telegram, Instagram, YouTube, ВКонтакте. Иконки в подвале сайта.',
         '<strong>Безопасность</strong> — смена пароля администратора. Введите текущий пароль, затем новый (минимум 6 символов).',
       ]
@@ -1512,6 +1711,64 @@ async function clearHistoryImage() {
   } catch { toast('Ошибка', 'e'); }
 }
 
+/* ── Gallery Manager (sports photos + timeline photos) ── */
+let _gmType = '', _gmId = '', _gmName = '';
+
+async function openGalleryManager(type, id, name) {
+  _gmType = type; _gmId = id; _gmName = name;
+  const apiPath = type === 'sports' ? `/api/sports/${encodeURIComponent(id)}` : `/api/about/timeline/${encodeURIComponent(id)}`;
+  const addPath = type === 'sports' ? `/api/sports/${encodeURIComponent(id)}/add-photo` : `/api/about/timeline/${encodeURIComponent(id)}/add-photo`;
+  const delPath = type === 'sports' ? `/api/sports/${encodeURIComponent(id)}/remove-photo` : `/api/about/timeline/${encodeURIComponent(id)}/remove-photo`;
+
+  const modal = document.getElementById('galleryManagerModal');
+  const body  = document.getElementById('galleryManagerBody');
+  const title = document.getElementById('galleryManagerTitle');
+  if (!modal) return;
+  title.textContent = '📸 Фото галерея — ' + name;
+  body.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div></div>';
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  async function refresh() {
+    try {
+      const item = await api(apiPath);
+      const photos = Array.isArray(item.photos) ? item.photos.filter(Boolean) : [];
+      body.innerHTML = `
+        <div style="margin-bottom:14px">
+          <label class="form-lbl">Добавить фото</label>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="file" id="gm-file" accept="image/*" style="flex:1;min-width:0">
+            <button class="btn btn-primary" onclick="gmUpload()">Загрузить</button>
+          </div>
+        </div>
+        ${photos.length ? `<div class="gm-grid">${photos.map((p,i)=>`
+          <div class="gm-photo" style="position:relative">
+            <img src="${escapeHtml(p)}" loading="lazy" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block">
+            <button class="gm-del" onclick="gmDelete(${JSON.stringify(p)})" title="Удалить" style="position:absolute;top:4px;right:4px;background:rgba(220,38,38,.85);color:#fff;border:none;border-radius:4px;padding:3px 7px;cursor:pointer;font-size:.8rem">✕</button>
+          </div>`).join('')}</div>`
+          : '<p style="text-align:center;opacity:.5;padding:20px 0">Фото не добавлены</p>'}`;
+    } catch { body.innerHTML = '<p style="color:red">Ошибка загрузки</p>'; }
+  }
+
+  window.gmUpload = async function() {
+    const f = document.getElementById('gm-file');
+    if (!f || !f.files[0]) { toast('Выберите файл', 'i'); return; }
+    const fd = new FormData(); fd.append('photo', f.files[0]);
+    try { await apiFd(addPath, 'POST', fd); toast('Фото добавлено'); refresh(); } catch(ex) { toast(ex.message||'Ошибка','e'); }
+  };
+  window.gmDelete = async function(url) {
+    if (!confirm('Удалить фото?')) return;
+    try { await api(delPath, 'DELETE', {url}); toast('Фото удалено'); refresh(); } catch { toast('Ошибка','e'); }
+  };
+
+  refresh();
+}
+
+function closeGalleryManager() {
+  document.getElementById('galleryManagerModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
 async function loadAboutList(section, targetId) {
   const cfg = CFG[section];
   const div = document.getElementById(targetId);
@@ -1525,7 +1782,8 @@ async function loadAboutList(section, targetId) {
       + (!items.length ? '<p style="text-align:center;opacity:.5;padding:40px">Ничего нет — нажмите «Добавить»</p>'
         : '<div class="table-wrap"><table class="data-table"><tbody>'
           + items.map(function(it){
-            var icon = `<button class="icon-btn" onclick="openDrawer('${section}','${it.id}')" title="Редактировать"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`
+            var icon = (isTl ? `<button class="icon-btn" onclick="openGalleryManager('timeline',${JSON.stringify(it.id)},${JSON.stringify(it.titleRu||it.year||'')})" title="Фото" style="color:var(--primary)">📸</button>` : '')
+                      + `<button class="icon-btn" onclick="openDrawer('${section}','${it.id}')" title="Редактировать"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`
                       + `<button class="icon-btn danger" onclick="confirmDel('${section}','${it.id}')" title="Удалить"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>`;
             return '<tr>'+(isTl?`<td style="font-weight:700;width:60px">${escapeHtml(it.year||'')}</td>`:'')
               +`<td><strong>${escapeHtml(it.titleRu||'')}</strong></td>`
@@ -1622,7 +1880,7 @@ async function api(url, method='GET', body=null) {
   const opts = {method, headers:h};
   if (body && method!=='GET') opts.body = JSON.stringify(body);
   const res = await fetch(url, opts);
-  if (res.status === 401) {
+  if (res.status === 401 && !url.includes('/login')) {
     toast('Сессия истекла. Перенаправление...', 'i');
     setTimeout(() => { token = null; localStorage.removeItem('adminToken'); showLogin(); }, 1800);
     throw new Error('Сессия истекла');

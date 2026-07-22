@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/admin/css/admin.css">
   <link rel="stylesheet" href="/admin/lib/cropper.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
 </head>
 <body>
 
@@ -101,6 +102,16 @@
         <span>Виды спорта</span>
         <span class="sb-badge" id="badge-sports"></span>
       </a>
+      <a href="#livestreams" class="sb-item" data-section="livestreams">
+        <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M5 12a7 7 0 0 1 14 0M2 12a10 10 0 0 1 20 0"/></svg>
+        <span>Прямые эфиры</span>
+        <span class="sb-badge" id="badge-livestreams"></span>
+      </a>
+      <a href="#partners" class="sb-item" data-section="partners">
+        <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Партнёры</span>
+        <span class="sb-badge" id="badge-partners"></span>
+      </a>
       <a href="#about" class="sb-item" data-section="about">
         <svg class="sb-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span>О нас</span>
@@ -192,6 +203,19 @@
 <!-- ═══ TOASTS ═══ -->
 <div id="toasts" class="toasts" aria-live="polite"></div>
 
+<!-- ═══ GALLERY MANAGER MODAL ═══ -->
+<div class="hidden" id="galleryManagerModal" style="position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center" onclick="if(event.target===this)closeGalleryManager()">
+  <div style="background:#fff;border-radius:12px;width:min(640px,94vw);max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.3)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e2e8f0">
+      <h3 id="galleryManagerTitle" style="margin:0;font-size:1rem"></h3>
+      <button onclick="closeGalleryManager()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#64748b">✕</button>
+    </div>
+    <div id="galleryManagerBody" style="padding:20px;overflow-y:auto;flex:1">
+      <div class="loading-wrap"><div class="loading-spinner"></div></div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ CROP MODAL ═══ -->
 <div class="crop-modal hidden" id="cropModal">
   <div class="crop-modal-inner">
@@ -243,6 +267,7 @@
   </div>
 </div>
 <script src="/admin/lib/cropper.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+ykwzaZoBKnrFpvI=" crossorigin="anonymous"></script>
 <script src="/admin/js/admin.js"></script>
 </body>
 </html>

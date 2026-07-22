@@ -19,3 +19,9 @@ el.*
 sportRegistry*
 console.log*
 String(*
+
+# Dev-tooling / QA artifacts, not project source
+qa-shots/
+.playwright-mcp/
+.claude-flow/
+.container
