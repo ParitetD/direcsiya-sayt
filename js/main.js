@@ -917,9 +917,9 @@ function renderAthletes() {
         if (currentRoleTab !== 'all' && a.role !== currentRoleTab) return false;
         if (activeSportFilter && a.sportRu !== activeSportFilter) return false;
         if (currentSearchQuery) {
-            const name  = (lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '')).toLowerCase();
-            const sport = (lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '')).toLowerCase();
-            const title = (lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || '')).toLowerCase();
+            const name  = (lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : lang === 'en' ? (a.nameEn  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '')).toLowerCase();
+            const sport = (lang === 'ky' ? (a.sportKy || a.sportRu || '') : lang === 'en' ? (a.sportEn || a.sportRu || '') : (a.sportRu || a.sportKy || '')).toLowerCase();
+            const title = (lang === 'ky' ? (a.titleKy || a.titleRu || '') : lang === 'en' ? (a.titleEn || a.titleRu || '') : (a.titleRu || a.titleKy || '')).toLowerCase();
             if (!name.includes(currentSearchQuery) && !sport.includes(currentSearchQuery) && !title.includes(currentSearchQuery)) return false;
         }
         return true;
@@ -939,13 +939,13 @@ function renderAthletes() {
     };
 
     grid.innerHTML = filtered.map(a => {
-        const name       = escapeHtml(lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || ''));
-        const sport      = escapeHtml(lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || ''));
-        const title      = escapeHtml(lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || ''));
+        const name       = escapeHtml(lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : lang === 'en' ? (a.nameEn  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || ''));
+        const sport      = escapeHtml(lang === 'ky' ? (a.sportKy || a.sportRu || '') : lang === 'en' ? (a.sportEn || a.sportRu || '') : (a.sportRu || a.sportKy || ''));
+        const title      = escapeHtml(lang === 'ky' ? (a.titleKy || a.titleRu || '') : lang === 'en' ? (a.titleEn || a.titleRu || '') : (a.titleRu || a.titleKy || ''));
         const roleMeta   = roleMap[a.role] || { ru: '', ky: '' };
         const roleLabel  = escapeHtml(lang === 'ky' ? roleMeta.ky : lang === 'en' ? (roleMeta.en || roleMeta.ru) : roleMeta.ru);
         const isRetired  = a.careerStatus === 'retired';
-        const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
+        const achievements = (lang === 'ky' ? a.achievementsKy : lang === 'en' ? (a.achievementsEn || a.achievementsRu) : a.achievementsRu) || [];
         const achList    = (Array.isArray(achievements) ? achievements : []).slice(0, 2);
 
         const initials  = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
@@ -1022,12 +1022,12 @@ function showAthleteDetailPage(id) {
 
 function renderAthleteDetail(a) {
     const lang = localStorage.getItem('site-lang') || 'ru';
-    const name  = lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '');
-    const sport = lang === 'ky' ? (a.sportKy || a.sportRu || '') : (a.sportRu || a.sportKy || '');
-    const title = lang === 'ky' ? (a.titleKy || a.titleRu || '') : (a.titleRu || a.titleKy || '');
-    const bio   = lang === 'ky' ? (a.bioKy || a.bioRu || '') : (a.bioRu || a.bioKy || '');
+    const name  = lang === 'ky' ? (a.nameKy  || a.nameRu  || '') : lang === 'en' ? (a.nameEn  || a.nameRu  || '') : (a.nameRu  || a.nameKy  || '');
+    const sport = lang === 'ky' ? (a.sportKy || a.sportRu || '') : lang === 'en' ? (a.sportEn || a.sportRu || '') : (a.sportRu || a.sportKy || '');
+    const title = lang === 'ky' ? (a.titleKy || a.titleRu || '') : lang === 'en' ? (a.titleEn || a.titleRu || '') : (a.titleRu || a.titleKy || '');
+    const bio   = lang === 'ky' ? (a.bioKy || a.bioRu || '') : lang === 'en' ? (a.bioEn || a.bioRu || '') : (a.bioRu || a.bioKy || '');
     const isRetired = a.careerStatus === 'retired';
-    const achievements = (lang === 'ky' ? a.achievementsKy : a.achievementsRu) || [];
+    const achievements = (lang === 'ky' ? a.achievementsKy : lang === 'en' ? (a.achievementsEn || a.achievementsRu) : a.achievementsRu) || [];
     const achArr = Array.isArray(achievements) ? achievements : [];
     const statusLabel = isRetired
         ? t('В отставке', 'Зейнеткерде', 'Retired')
@@ -1136,7 +1136,7 @@ async function showSportCategories() {
 
     if (grid) grid.innerHTML = '<div class="sport-cat-grid" id="sportCatGrid">'
         + sports.map(s => {
-            const name = escapeHtml(lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu);
+            const name = escapeHtml(lang === 'ky' ? (s.nameKy || s.nameRu) : lang === 'en' ? (s.nameEn || s.nameRu) : s.nameRu);
             const iconHtml = s.icon
                 ? `<img src="${escapeHtml(s.icon)}" alt="${name}">`
                 : (ICONS[String(s.id)] || ICONS['default'] || '');
@@ -1203,7 +1203,9 @@ var _homeAthleteActiveIdx = 0;
 
 function _athleteField(a, base) {
     const lang = localStorage.getItem('site-lang') || 'ru';
-    return lang === 'ky' ? (a[base + 'Ky'] || a[base + 'Ru'] || '') : (a[base + 'Ru'] || a[base + 'Ky'] || '');
+    if (lang === 'ky') return a[base + 'Ky'] || a[base + 'Ru'] || '';
+    if (lang === 'en') return a[base + 'En'] || a[base + 'Ru'] || '';
+    return a[base + 'Ru'] || a[base + 'Ky'] || '';
 }
 
 async function loadHomeAthletes() {
@@ -1324,17 +1326,19 @@ async function loadHomeSports() {
         grid.innerHTML = sports.map((s, i) => {
             const nameRu = escapeHtml(s.nameRu || '');
             const nameKy = escapeHtml(s.nameKy || s.nameRu || '');
+            const nameEn = escapeHtml(s.nameEn || s.nameRu || '');
             const descRu = escapeHtml((s.descriptionRu || '').slice(0, 120));
             const descKy = escapeHtml((s.descriptionKy || s.descriptionRu || '').slice(0, 120));
+            const descEn = escapeHtml((s.descriptionEn || s.descriptionRu || '').slice(0, 120));
             const svgFallback = SPORT_ICONS_BY_ID[String(s.id)] || SPORT_ICONS_BY_ID['default'];
             const iconHtml = s.icon
                 ? `<img src="${escapeHtml(s.icon)}" alt="" style="width:80px;height:80px;object-fit:contain">`
                 : svgFallback;
             return `<article class="sport-card sport-card--clickable" data-sport-home-idx="${i}" style="cursor:pointer">
                 <div class="sport-card__icon" aria-hidden="true">${iconHtml}</div>
-                <h3 class="sport-card__title"><span class="t-ru">${nameRu}</span><span class="t-ky">${nameKy}</span></h3>
-                <p class="sport-card__text"><span class="t-ru">${descRu}…</span><span class="t-ky">${descKy}…</span></p>
-                <span class="sport-card__link"><span class="t-ru">Подробнее →</span><span class="t-ky">Толугураак →</span></span>
+                <h3 class="sport-card__title"><span class="t-ru">${nameRu}</span><span class="t-ky">${nameKy}</span><span class="t-en">${nameEn}</span></h3>
+                <p class="sport-card__text"><span class="t-ru">${descRu}…</span><span class="t-ky">${descKy}…</span><span class="t-en">${descEn}…</span></p>
+                <span class="sport-card__link"><span class="t-ru">Подробнее →</span><span class="t-ky">Толугураак →</span><span class="t-en">Learn more →</span></span>
             </article>`;
         }).join('');
 
@@ -1377,10 +1381,10 @@ async function loadHomeLivestream() {
             var scheduled = (d2.data || []).find(function(s) { return s.status === 'scheduled'; });
             if (!scheduled) { section.style.display = 'none'; return; }
 
-            var sTitle = lang === 'ky' ? (scheduled.titleKy || scheduled.titleRu) : (scheduled.titleRu || scheduled.titleKy);
-            var whenLabel = lang === 'ky' ? 'Башталышы' : 'Начало';
+            var sTitle = lang === 'ky' ? (scheduled.titleKy || scheduled.titleRu) : lang === 'en' ? (scheduled.titleEn || scheduled.titleRu) : (scheduled.titleRu || scheduled.titleKy);
+            var whenLabel = lang === 'ky' ? 'Башталышы' : lang === 'en' ? 'Starts' : 'Начало';
             var when = scheduled.scheduledAt ? new Date(scheduled.scheduledAt).toLocaleString('ru-RU', {day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}) : '';
-            var scheduledBadge = '<span class="livestream-mini-card__badge livestream-mini-card__badge--scheduled">⏰ ' + (lang === 'ky' ? 'Күтүлүүдө' : 'Скоро') + '</span>';
+            var scheduledBadge = '<span class="livestream-mini-card__badge livestream-mini-card__badge--scheduled">⏰ ' + (lang === 'ky' ? 'Күтүлүүдө' : lang === 'en' ? 'Coming soon' : 'Скоро') + '</span>';
 
             container.innerHTML = '<a href="livestreams.html" class="livestream-mini-card">'
                 + _liveMiniThumb(scheduled.thumbnail, scheduledBadge)
@@ -1392,8 +1396,8 @@ async function loadHomeLivestream() {
             return;
         }
 
-        var title = lang === 'ky' ? (live.titleKy || live.titleRu) : (live.titleRu || live.titleKy);
-        var desc  = lang === 'ky' ? (live.descriptionKy || live.descriptionRu) : (live.descriptionRu || live.descriptionKy);
+        var title = lang === 'ky' ? (live.titleKy || live.titleRu) : lang === 'en' ? (live.titleEn || live.titleRu) : (live.titleRu || live.titleKy);
+        var desc  = lang === 'ky' ? (live.descriptionKy || live.descriptionRu) : lang === 'en' ? (live.descriptionEn || live.descriptionRu) : (live.descriptionRu || live.descriptionKy);
         var liveBadge = '<span class="livestream-mini-card__badge">● LIVE</span>';
 
         container.innerHTML = '<a href="livestreams.html" class="livestream-mini-card">'

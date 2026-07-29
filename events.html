@@ -391,7 +391,8 @@
       var nid=esc(n.id||'');
       var dRu=(n.descriptionRu||'').replace(/<[^>]+>/g,'');
       var dKy=(n.descriptionKy||'').replace(/<[^>]+>/g,'');
-      var excerpt=lang==='ky'?(dKy||dRu):(lang==='en'?dRu:dRu);
+      var dEn=(n.descriptionEn||'').replace(/<[^>]+>/g,'');
+      var excerpt=lang==='ky'?(dKy||dRu):(lang==='en'?(dEn||dRu):dRu);
       excerpt=excerpt.length>160?excerpt.slice(0,160)+'…':excerpt;
       return '<article class="event-card" data-category="'+esc(n.category||'')+'">'
         +'<div class="event-card__date">'
@@ -410,8 +411,8 @@
   }
 
   function renderEvent(n) {
-    var title=lang==='ky'?(n.titleKy||n.titleRu||''):(n.titleRu||n.titleKy||'');
-    var desc=lang==='ky'?(n.descriptionKy||n.descriptionRu||''):(n.descriptionRu||n.descriptionKy||'');
+    var title=lang==='ky'?(n.titleKy||n.titleRu||''):lang==='en'?(n.titleEn||n.titleRu||''):(n.titleRu||n.titleKy||'');
+    var desc=lang==='ky'?(n.descriptionKy||n.descriptionRu||''):lang==='en'?(n.descriptionEn||n.descriptionRu||''):(n.descriptionRu||n.descriptionKy||'');
     var cat=CAT[n.category]||{ru:n.category||'',ky:n.category||'',en:n.category||''};
     var safeDesc=(typeof sanitizeHtml==='function')?sanitizeHtml(desc):(desc?esc(desc).replace(/\n/g,'<br>'):'');
     document.title=(title?title+' — ':'')+'Events — Directorate of National Sports';

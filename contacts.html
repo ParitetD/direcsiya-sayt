@@ -309,7 +309,7 @@
         if (s.email) document.getElementById('contactEmail').textContent = s.email;
         if (s.address) {
             const addrEl = document.querySelector('.contact-info__item:first-child .contact-info__text p');
-            const addrText = (lang === 'ky' ? s.address.ky : s.address.ru) || '';
+            const addrText = (lang === 'ky' ? s.address.ky : lang === 'en' ? s.address.en : s.address.ru) || s.address.ru || '';
             if (addrEl && addrText) addrEl.textContent = addrText;
         }
         // Dynamic map
@@ -319,7 +319,7 @@
         var bbox = (lon - delta) + '%2C' + (lat - delta) + '%2C' + (lon + delta) + '%2C' + (lat + delta);
         var embedSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + '%2C' + lon;
         var linkHref = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon;
-        var addrShort = s.address ? (lang === 'ky' ? s.address.ky : s.address.ru) : '';
+        var addrShort = s.address ? ((lang === 'ky' ? s.address.ky : lang === 'en' ? s.address.en : s.address.ru) || s.address.ru) : '';
         var mapIframe = document.querySelector('.map-embed iframe');
         if (mapIframe) {
             mapIframe.src = embedSrc;

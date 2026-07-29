@@ -105,7 +105,9 @@
       "Bash(git pull *)",
       "Bash(git merge *)",
       "Bash(git reset *)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(git rm *)",
+      "Bash(grep -n \"^function\\\\|^async function\\\\|^window\\\\.\\\\|^/\\\\* ──\\\\|^\\(function\" js/main.js)"
     ],
     "additionalDirectories": [
       "C:\\Users\\user\\Desktop\\aurora-main"

@@ -249,8 +249,8 @@
 
         function renderDetail(s) {
             const lang = getLang();
-            const name = lang==='ky' ? (s.nameKy||s.nameRu||'') : (s.nameRu||s.nameKy||'');
-            const desc = lang==='ky' ? (s.descriptionKy||s.descriptionRu||'') : (s.descriptionRu||s.descriptionKy||'');
+            const name = lang==='ky' ? (s.nameKy||s.nameRu||'') : lang==='en' ? (s.nameEn||s.nameRu||'') : (s.nameRu||s.nameKy||'');
+            const desc = lang==='ky' ? (s.descriptionKy||s.descriptionRu||'') : lang==='en' ? (s.descriptionEn||s.descriptionRu||'') : (s.descriptionRu||s.descriptionKy||'');
             const backLabel = lang==='ky' ? '← Бардык спорт түрлөрү' : lang==='en' ? '← All sports' : '← Все виды спорта';
             const athletesLabel = lang==='ky' ? 'спортсмен' : lang==='en' ? 'athletes' : 'спортсменов';
             const img = s.image || 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80';
@@ -278,6 +278,7 @@
                       <div class="sport-detail__ru-ky">
                         <span class="t-ru">${esc(s.nameRu||'')}</span>
                         <span class="t-ky">${esc(s.nameKy||'')}</span>
+                        <span class="t-en">${esc(s.nameEn||s.nameRu||'')}</span>
                         ${s.nameRu && s.nameKy && s.nameRu !== s.nameKy ? `<span class="sport-detail__alt-name">${esc(lang==='ky'?s.nameRu:s.nameKy)}</span>` : ''}
                       </div>
                     </div>
@@ -285,7 +286,7 @@
                   <div class="sport-detail__desc">
                     <div class="t-ru">${esc(s.descriptionRu||'')}</div>
                     <div class="t-ky">${esc(s.descriptionKy||'')}</div>
-                    <div class="t-en">${esc(s.descriptionRu||'')}</div>
+                    <div class="t-en">${esc(s.descriptionEn||s.descriptionRu||'')}</div>
                   </div>
                   ${s.athletesCount ? `
                   <div class="sport-detail__stats">

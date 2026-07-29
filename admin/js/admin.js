@@ -27,8 +27,10 @@ const CFG = {
     fields:[
       {key:'titleRu',label:'Заголовок',lang:'ru',type:'text',req:true,ph:'Заголовок новости на русском'},
       {key:'titleKy',label:'Аталышы',lang:'ky',type:'text',req:true,ph:'Кыргызча аталышы'},
+      {key:'titleEn',label:'Title',lang:'en',type:'text',ph:'News title in English'},
       {key:'contentRu',label:'Текст новости',lang:'ru',type:'editor',ph:'Введите текст новости...'},
       {key:'contentKy',label:'Тексти',lang:'ky',type:'editor',ph:'Жаңылыктын тексти...'},
+      {key:'contentEn',label:'Text',lang:'en',type:'editor',ph:'Enter news text in English...'},
       {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'news',l:'Новость'},{v:'announcement',l:'Анонс'},{v:'result',l:'Результат'}]},
       {key:'image',label:'Обложка',type:'upload'},
       {key:'videoUrl',label:'Ссылка на видео',type:'text',noLang:true,ph:'https://youtube.com/watch?v=... или https://vimeo.com/...'},
@@ -48,8 +50,10 @@ const CFG = {
     fields:[
       {key:'titleRu',label:'Название',lang:'ru',type:'text',req:true,ph:'Название мероприятия'},
       {key:'titleKy',label:'Аталышы',lang:'ky',type:'text',req:true,ph:'Иш-чаранын аталышы'},
+      {key:'titleEn',label:'Title',lang:'en',type:'text',ph:'Event title in English'},
       {key:'descriptionRu',label:'Описание',lang:'ru',type:'textarea',ph:'Подробное описание...'},
       {key:'descriptionKy',label:'Сүрөттөмө',lang:'ky',type:'textarea',ph:'Кеңири маалымат...'},
+      {key:'descriptionEn',label:'Description',lang:'en',type:'textarea',ph:'Detailed description in English...'},
       {key:'date',label:'Дата проведения',type:'date',noLang:true},
       {key:'location',label:'Место проведения',type:'text',noLang:true,ph:'Город, адрес'},
       {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'competition',l:'Соревнование'},{v:'championship',l:'Чемпионат'},{v:'seminar',l:'Семинар'},{v:'other',l:'Другое'}]},
@@ -62,6 +66,7 @@ const CFG = {
     fields:[
       {key:'titleRu',label:'Подпись',lang:'ru',type:'text',ph:'Описание фотографии'},
       {key:'titleKy',label:'Сүрөт жазуусу',lang:'ky',type:'text',ph:'Сүрөт жазуусу'},
+      {key:'titleEn',label:'Caption',lang:'en',type:'text',ph:'Photo caption in English'},
       {key:'category',label:'Категория',type:'select',noLang:true,opts:[{v:'wrestling',l:'Борьба'},{v:'archery',l:'Стрельба из лука'},{v:'horse',l:'Конные игры'},{v:'festival',l:'Праздники'},{v:'athletes',l:'Спортсмены'}]},
       {key:'image',label:'Фотография',type:'upload',req:true}
     ]
@@ -79,16 +84,21 @@ const CFG = {
     fields:[
       {key:'nameRu',label:'Имя',lang:'ru',type:'text',req:true,ph:'ФИО на русском'},
       {key:'nameKy',label:'Аты-жөнү',lang:'ky',type:'text',req:true,ph:'Кыргызча аты-жөнү'},
+      {key:'nameEn',label:'Full name',lang:'en',type:'text',ph:'Full name in English'},
       {key:'role',label:'Роль',type:'select',noLang:true,opts:[{v:'athlete',l:'Спортсмен'},{v:'coach',l:'Тренер'},{v:'staff',l:'Сотрудник'}]},
       {key:'careerStatus',label:'Карьерный статус',type:'select',noLang:true,opts:[{v:'active',l:'Действующий'},{v:'retired',l:'В отставке'}]},
       {key:'titleRu',label:'Должность',lang:'ru',type:'text',ph:'Должность или звание'},
       {key:'titleKy',label:'Кызматы',lang:'ky',type:'text',ph:'Кызматы же наамы'},
+      {key:'titleEn',label:'Position',lang:'en',type:'text',ph:'Position or title in English'},
       {key:'sportRu',label:'Вид спорта',lang:'ru',type:'text',ph:'Дисциплина'},
       {key:'sportKy',label:'Спорт түрү',lang:'ky',type:'text',ph:'Спорт тармагы'},
+      {key:'sportEn',label:'Sport',lang:'en',type:'text',ph:'Discipline in English'},
       {key:'bioRu',label:'Биография',lang:'ru',type:'textarea',ph:'Краткая биография...'},
       {key:'bioKy',label:'Өмүр баяны',lang:'ky',type:'textarea',ph:'Кыскача өмүр баяны...'},
+      {key:'bioEn',label:'Biography',lang:'en',type:'textarea',ph:'Short biography in English...'},
       {key:'achievementsRu',label:'Достижения',lang:'ru',type:'textarea',ph:'Медали, титулы — по одному на строку'},
       {key:'achievementsKy',label:'Жетишкендиктер',lang:'ky',type:'textarea',ph:'Медалдар, наамдар — ар бири жаңы сапта'},
+      {key:'achievementsEn',label:'Achievements',lang:'en',type:'textarea',ph:'Medals, titles — one per line'},
       {key:'photo',label:'Фотография',type:'upload'},
       {key:'socialInstagram',label:'Instagram',type:'text',noLang:true,ph:'https://instagram.com/...'},
       {key:'socialTelegram', label:'Telegram', type:'text',noLang:true,ph:'https://t.me/...'},
@@ -107,8 +117,10 @@ const CFG = {
     fields: [
       {key:'titleRu', label:'Заголовок', lang:'ru', type:'text', req:true, ph:'Заголовок слайда'},
       {key:'titleKy', label:'Аталышы', lang:'ky', type:'text', req:true, ph:'Слайддын аталышы'},
+      {key:'titleEn', label:'Title', lang:'en', type:'text', ph:'Slide title in English'},
       {key:'subtitleRu', label:'Подзаголовок', lang:'ru', type:'textarea', ph:'Краткое описание'},
       {key:'subtitleKy', label:'Кыскача', lang:'ky', type:'textarea', ph:'Кыскача маалымат'},
+      {key:'subtitleEn', label:'Subtitle', lang:'en', type:'textarea', ph:'Short description in English'},
       {key:'order',  label:'Порядок показа', type:'number', noLang:true},
       {key:'active', label:'Статус слайда', type:'select', noLang:true,
         opts:[{v:'true',l:'Активен — показывается на сайте'},{v:'false',l:'Скрыт — не показывается'}]},
@@ -128,10 +140,13 @@ const CFG = {
     fields:[
       {key:'nameRu', label:'Название', lang:'ru', type:'text', req:true, ph:'Вид спорта на русском'},
       {key:'nameKy', label:'Аталышы', lang:'ky', type:'text', req:true, ph:'Кыргызча аталышы'},
+      {key:'nameEn', label:'Name', lang:'en', type:'text', ph:'Sport name in English'},
       {key:'descriptionRu', label:'Краткое описание', lang:'ru', type:'textarea', ph:'Краткое описание вида спорта...'},
       {key:'descriptionKy', label:'Кыска сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн кыска сүрөттөмөсү...'},
+      {key:'descriptionEn', label:'Short description', lang:'en', type:'textarea', ph:'Short description in English...'},
       {key:'fullDescRu', label:'Полное описание', lang:'ru', type:'textarea', ph:'Подробная история и правила вида спорта...'},
       {key:'fullDescKy', label:'Толук сүрөттөмө', lang:'ky', type:'textarea', ph:'Спорт түрүнүн тарыхы жана эрежелери...'},
+      {key:'fullDescEn', label:'Full description', lang:'en', type:'textarea', ph:'Full history and rules in English...'},
       {key:'athletesCount', label:'Число спортсменов', type:'number', noLang:true},
       {key:'order', label:'Порядок показа (1 = первый)', type:'number', noLang:true},
       {key:'status', label:'Статус', type:'select', noLang:true, opts:[{v:'published',l:'Опубликован — виден на сайте'},{v:'draft',l:'Черновик — скрыт'}]},
@@ -152,7 +167,7 @@ const CFG = {
     fields:[
       {key:'nameRu', label:'Название', lang:'ru', type:'text', req:true, ph:'Название партнёра'},
       {key:'nameKy', label:'Аталышы', lang:'ky', type:'text', ph:'Өнөктөштүн аталышы'},
-      {key:'nameEn', label:'Name (EN)', type:'text', noLang:true, ph:'Partner name in English'},
+      {key:'nameEn', label:'Name', lang:'en', type:'text', ph:'Partner name in English'},
       {key:'url',    label:'Ссылка на сайт', type:'text', noLang:true, ph:'https://...'},
       {key:'logo',   label:'Логотип', type:'upload'},
       {key:'order',  label:'Порядок показа (1 = первый)', type:'number', noLang:true},
@@ -165,8 +180,10 @@ const CFG = {
     fields:[
       {key:'titleRu',label:'Название (RU)',lang:'ru',type:'text',req:true,ph:'Название ценности'},
       {key:'titleKy',label:'Аталышы (KY)',lang:'ky',type:'text',ph:'Баалуулуктун аталышы'},
+      {key:'titleEn',label:'Title (EN)',lang:'en',type:'text',ph:'Value title in English'},
       {key:'textRu',label:'Текст (RU)',lang:'ru',type:'textarea',ph:'Описание ценности...'},
       {key:'textKy',label:'Тексти (KY)',lang:'ky',type:'textarea',ph:'Баалуулуктун сүрөттөмөсү...'},
+      {key:'textEn',label:'Text (EN)',lang:'en',type:'textarea',ph:'Value description in English...'},
       {key:'order',label:'Порядок (1 = первый)',type:'number',noLang:true}
     ]
   },
@@ -177,10 +194,13 @@ const CFG = {
       {key:'year',label:'Год',type:'text',noLang:true,req:true,ph:'2015'},
       {key:'titleRu',label:'Название (RU)',lang:'ru',type:'text',req:true,ph:'Название события'},
       {key:'titleKy',label:'Аталышы (KY)',lang:'ky',type:'text',ph:'Окуянын аталышы'},
+      {key:'titleEn',label:'Title (EN)',lang:'en',type:'text',ph:'Event title in English'},
       {key:'descRu',label:'Краткое описание (RU)',lang:'ru',type:'textarea',ph:'Краткое описание...'},
       {key:'descKy',label:'Кыска сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Кыскача сүрөттөмө...'},
+      {key:'descEn',label:'Short description (EN)',lang:'en',type:'textarea',ph:'Short description in English...'},
       {key:'fullDescRu',label:'Полное описание (RU)',lang:'ru',type:'textarea',ph:'Подробное описание события, фоновая информация...'},
       {key:'fullDescKy',label:'Толук сүрөттөмө (KY)',lang:'ky',type:'textarea',ph:'Окуянын толук сүрөттөмөсү...'},
+      {key:'fullDescEn',label:'Full description (EN)',lang:'en',type:'textarea',ph:'Full description in English...'},
       {key:'order',label:'Порядок (1 = первый)',type:'number',noLang:true}
     ]
   },
@@ -197,8 +217,10 @@ const CFG = {
     fields:[
       {key:'titleRu',label:'Название',lang:'ru',type:'text',req:true,ph:'Название трансляции'},
       {key:'titleKy',label:'Аталышы',lang:'ky',type:'text',req:true,ph:'Трансляциянын аталышы'},
+      {key:'titleEn',label:'Title',lang:'en',type:'text',ph:'Stream title in English'},
       {key:'descriptionRu',label:'Описание',lang:'ru',type:'textarea',ph:'Описание трансляции...'},
       {key:'descriptionKy',label:'Сүрөттөмө',lang:'ky',type:'textarea',ph:'Трансляциянын сүрөттөмөсү...'},
+      {key:'descriptionEn',label:'Description',lang:'en',type:'textarea',ph:'Stream description in English...'},
       {key:'streamUrl',label:'Ссылка на трансляцию',type:'text',noLang:true,req:true,ph:'https://youtube.com/watch?v=... или https://vimeo.com/...'},
       {key:'platform',label:'Платформа',type:'select',noLang:true,opts:[{v:'youtube',l:'YouTube'},{v:'vimeo',l:'Vimeo'}]},
       {key:'status',label:'Статус',type:'select',noLang:true,opts:[{v:'live',l:'В эфире — транслируется сейчас'},{v:'scheduled',l:'Запланирован — анонс на сайте'},{v:'ended',l:'Завершён — архив'}]},
@@ -566,7 +588,7 @@ async function openDrawer(section, id) {
   document.getElementById('drawer-title').textContent = id ? `Редактировать — ${cfg.title}` : `Добавить — ${cfg.title}`;
   document.getElementById('drawer-hint').textContent = id ? 'Измените нужные поля и нажмите «Сохранить»' : 'Заполните форму и нажмите «Добавить»';
 
-  const langFields = {ru: cfg.fields.filter(f=>f.lang==='ru'), ky: cfg.fields.filter(f=>f.lang==='ky')};
+  const langFields = {ru: cfg.fields.filter(f=>f.lang==='ru'), ky: cfg.fields.filter(f=>f.lang==='ky'), en: cfg.fields.filter(f=>f.lang==='en')};
   const genFields = cfg.fields.filter(f=>f.noLang&&f.type!=='upload');
   const uploadField = cfg.fields.find(f=>f.type==='upload');
   const hasLang = langFields.ru.length > 0;
@@ -579,9 +601,11 @@ async function openDrawer(section, id) {
     body += `<div class="lang-tabs" id="lang-tabs">
       <button type="button" class="lang-tab active" onclick="swLang('ru',this)">🇷🇺 Русский</button>
       <button type="button" class="lang-tab" onclick="swLang('ky',this)">🇰🇬 Кыргызча</button>
+      <button type="button" class="lang-tab" onclick="swLang('en',this)">🇬🇧 English</button>
     </div>
     <div class="lang-pane active" data-lang="ru">${langFields.ru.map(f=>renderField(f,item)).join('')}</div>
-    <div class="lang-pane" data-lang="ky">${langFields.ky.map(f=>renderField(f,item)).join('')}</div>`;
+    <div class="lang-pane" data-lang="ky">${langFields.ky.map(f=>renderField(f,item)).join('')}</div>
+    <div class="lang-pane" data-lang="en">${langFields.en.map(f=>renderField(f,item)).join('')}</div>`;
   }
 
   if (genFields.length) {
@@ -1206,6 +1230,7 @@ async function renderSettings() {
             <div class="form-field"><label class="form-lbl">Телефон</label><input class="form-input" name="phone" value="${escapeHtml(s.phone||'')}"></div>
             <div class="form-field"><label class="form-lbl">Адрес (RU)</label><input class="form-input" name="addressRu" value="${escapeHtml(s.address?.ru||'')}"></div>
             <div class="form-field"><label class="form-lbl">Адрес (KY)</label><input class="form-input" name="addressKy" value="${escapeHtml(s.address?.ky||'')}"></div>
+            <div class="form-field"><label class="form-lbl">Address (EN)</label><input class="form-input" name="addressEn" value="${escapeHtml(s.address?.en||'')}"></div>
             <div class="form-field"><label class="form-lbl">Широта</label><input class="form-input" id="adminMapLat" name="mapLat" type="number" step="any" value="${s.mapLat!=null?s.mapLat:42.8736}" placeholder="42.8736" oninput="adminMapUpdate()"></div>
             <div class="form-field"><label class="form-lbl">Долгота</label><input class="form-input" id="adminMapLon" name="mapLon" type="number" step="any" value="${s.mapLon!=null?s.mapLon:74.5907}" placeholder="74.5907" oninput="adminMapUpdate()"></div>
             <div style="font-size:.8rem;color:var(--t2);margin:-6px 0 10px;line-height:1.5">Нажмите на карту или перетащите маркер — координаты обновятся автоматически</div>
@@ -1343,13 +1368,15 @@ async function renderHomePage() {
           <form onsubmit="addHomeSlide(event)" style="border-top:1px solid var(--border);padding-top:14px">
             <p style="font-size:.8rem;font-weight:600;margin-bottom:10px;color:var(--t2)">Добавить слайд</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div class="form-field"><label class="form-lbl">Заголовок (RU)</label><input class="form-input" name="slideTitleRu" required placeholder="Заголовок слайда"></div>
-              <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="slideTitleKy" placeholder="Слайддын аталышы"></div>
-              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Подзаголовок (RU)</label><textarea class="form-input" name="slideSubtitleRu" rows="2" placeholder="Краткое описание"></textarea></div>
-              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Кыскача (KY)</label><textarea class="form-input" name="slideSubtitleKy" rows="2" placeholder="Кыскача маалымат"></textarea></div>
-              <div class="form-field"><label class="form-lbl">URL фото</label><input class="form-input" name="slideImage" required placeholder="https://..."></div>
-              <div class="form-field"><label class="form-lbl">Порядок</label><input class="form-input" type="number" name="slideOrder" value="1"></div>
-              <div class="form-field" style="grid-column:1/-1"><label class="form-field" style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" name="slideActive" checked> <span>Активен — показывается на сайте</span></label></div>
+              <div class="form-field"><label class="form-lbl">Заголовок (RU)</label><input class="form-input" name="titleRu" required placeholder="Заголовок слайда"></div>
+              <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="titleKy" placeholder="Слайддын аталышы"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Title (EN)</label><input class="form-input" name="titleEn" placeholder="Slide title in English"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Подзаголовок (RU)</label><textarea class="form-input" name="subtitleRu" rows="2" placeholder="Краткое описание"></textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Кыскача (KY)</label><textarea class="form-input" name="subtitleKy" rows="2" placeholder="Кыскача маалымат"></textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Subtitle (EN)</label><textarea class="form-input" name="subtitleEn" rows="2" placeholder="Short description in English"></textarea></div>
+              <div class="form-field"><label class="form-lbl">URL фото</label><input class="form-input" name="image" required placeholder="https://..."></div>
+              <div class="form-field"><label class="form-lbl">Порядок</label><input class="form-input" type="number" name="order" value="1"></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-field" style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" name="active" checked> <span>Активен — показывается на сайте</span></label></div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" style="margin-top:10px">Добавить слайд</button>
           </form>
@@ -1364,12 +1391,15 @@ async function renderHomePage() {
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="form-field"><label class="form-lbl">Название (RU)</label><input class="form-input" name="countdownTitleRu" value="${escapeHtml(s.countdownTitleRu||'')}" placeholder="VI Всемирные игры кочевников"></div>
               <div class="form-field"><label class="form-lbl">Аталышы (KY)</label><input class="form-input" name="countdownTitleKy" value="${escapeHtml(s.countdownTitleKy||'')}" placeholder="VI Дүйнөлүк көчмөндөр оюндары"></div>
+              <div class="form-field"><label class="form-lbl">Title (EN)</label><input class="form-input" name="countdownTitleEn" value="${escapeHtml(s.countdownTitleEn||'')}" placeholder="VI World Nomad Games"></div>
               <div class="form-field"><label class="form-lbl">Место (RU)</label><input class="form-input" name="countdownLocationRu" value="${escapeHtml(s.countdownLocationRu||'')}" placeholder="Чолпон-Ата, Иссык-Куль"></div>
               <div class="form-field"><label class="form-lbl">Место (KY)</label><input class="form-input" name="countdownLocationKy" value="${escapeHtml(s.countdownLocationKy||'')}" placeholder="Чолпон-Ата, Ысык-Көл"></div>
+              <div class="form-field"><label class="form-lbl">Location (EN)</label><input class="form-input" name="countdownLocationEn" value="${escapeHtml(s.countdownLocationEn||'')}" placeholder="Cholpon-Ata, Issyk-Kul"></div>
               <div class="form-field"><label class="form-lbl">Дата начала</label><input class="form-input" type="date" name="countdownDate" value="${escapeHtml(s.countdownDate||'')}"></div>
               <div class="form-field"><label class="form-lbl">Время начала</label><input class="form-input" type="time" name="countdownTime" value="${escapeHtml(s.countdownTime||'09:00')}"></div>
               <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Описание (RU)</label><textarea class="form-input" name="countdownDescRu" rows="2" placeholder="Краткое описание мероприятия">${escapeHtml(s.countdownDescRu||'')}</textarea></div>
               <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Сүрөттөмө (KY)</label><textarea class="form-input" name="countdownDescKy" rows="2" placeholder="Иш-чаранын кыскача сүрөттөмөсү">${escapeHtml(s.countdownDescKy||'')}</textarea></div>
+              <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Description (EN)</label><textarea class="form-input" name="countdownDescEn" rows="2" placeholder="Short event description in English">${escapeHtml(s.countdownDescEn||'')}</textarea></div>
               <div class="form-field" style="grid-column:1/-1"><label class="form-lbl">Мероприятие (кнопка «Подробнее»)</label><select class="form-input" name="countdownEventId" id="cdEventSelect"><option value="">— Не привязывать —</option></select></div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px">Сохранить</button>
@@ -1388,6 +1418,7 @@ async function renderHomePage() {
                 <div class="form-field"><label class="form-lbl">Цифра ${i}</label><input class="form-input" name="stat${i}Value" value="${escapeHtml(s['stat'+i+'Value']||'')}" placeholder="18" style="font-size:1.2rem;font-weight:700;text-align:center"></div>
                 <div class="form-field"><label class="form-lbl">Подпись (RU)</label><input class="form-input" name="stat${i}LabelRu" value="${escapeHtml(s['stat'+i+'LabelRu']||'')}"></div>
                 <div class="form-field"><label class="form-lbl">Подпись (KY)</label><input class="form-input" name="stat${i}LabelKy" value="${escapeHtml(s['stat'+i+'LabelKy']||'')}"></div>
+                <div class="form-field"><label class="form-lbl">Label (EN)</label><input class="form-input" name="stat${i}LabelEn" value="${escapeHtml(s['stat'+i+'LabelEn']||'')}"></div>
               </div>`).join('')}
             </div>
             <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px">Сохранить</button>
@@ -1663,6 +1694,7 @@ async function loadAboutHistory() {
         <div class="lang-tabs">
           <button type="button" class="lang-tab active" onclick="abtHistLang('ru',this)">🇷🇺 Русский</button>
           <button type="button" class="lang-tab" onclick="abtHistLang('ky',this)">🇰🇬 Кыргызча</button>
+          <button type="button" class="lang-tab" onclick="abtHistLang('en',this)">🇬🇧 English</button>
         </div>
         <div class="abt-hp" data-al="ru">
           <div class="form-field"><label class="form-lbl">Абзац 1 (RU)</label><textarea class="form-input" name="historyPara1Ru" rows="4">${escapeHtml(h.historyPara1Ru||'')}</textarea></div>
@@ -1673,6 +1705,11 @@ async function loadAboutHistory() {
           <div class="form-field"><label class="form-lbl">Абзац 1 (KY)</label><textarea class="form-input" name="historyPara1Ky" rows="4">${escapeHtml(h.historyPara1Ky||'')}</textarea></div>
           <div class="form-field"><label class="form-lbl">Абзац 2 (KY)</label><textarea class="form-input" name="historyPara2Ky" rows="4">${escapeHtml(h.historyPara2Ky||'')}</textarea></div>
           <div class="form-field"><label class="form-lbl">Абзац 3 (KY)</label><textarea class="form-input" name="historyPara3Ky" rows="4">${escapeHtml(h.historyPara3Ky||'')}</textarea></div>
+        </div>
+        <div class="abt-hp" data-al="en" style="display:none">
+          <div class="form-field"><label class="form-lbl">Paragraph 1 (EN)</label><textarea class="form-input" name="historyPara1En" rows="4">${escapeHtml(h.historyPara1En||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Paragraph 2 (EN)</label><textarea class="form-input" name="historyPara2En" rows="4">${escapeHtml(h.historyPara2En||'')}</textarea></div>
+          <div class="form-field"><label class="form-lbl">Paragraph 3 (EN)</label><textarea class="form-input" name="historyPara3En" rows="4">${escapeHtml(h.historyPara3En||'')}</textarea></div>
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top:8px">💾 Сохранить историю</button>
       </form>`;

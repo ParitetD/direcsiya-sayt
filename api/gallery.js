@@ -8,5 +8,5 @@ module.exports = createCRUD({
   maxSize:      8 * 1024 * 1024,
   searchFields: ['titleRu', 'titleKy'],
   filterFields: ['category'],
-  bodyFields:   ['titleRu', 'titleKy', 'category', 'image'],
+  bodyFields:   ['titleRu', 'titleKy', 'titleEn', 'category', 'image'],
 });

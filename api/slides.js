@@ -9,12 +9,12 @@ module.exports = createCRUD({
   searchFields: ['titleRu', 'titleKy'],
   filterFields: ['active'],
   bodyFields:   [
-    'titleRu', 'titleKy',
-    'subtitleRu', 'subtitleKy',
+    'titleRu', 'titleKy', 'titleEn',
+    'subtitleRu', 'subtitleKy', 'subtitleEn',
     'order', 'active',
     'image',
   ],
   defaultSort: (a, b) => (a.order || 0) - (b.order || 0),
-  onCreate:    (item) => { item.active = item.active === true || item.active === 'true' || item.active === '1'; },
-  onUpdate:    (item) => { item.active = item.active === true || item.active === 'true' || item.active === '1'; },
+  onCreate:    (item) => { item.active = item.active === true || item.active === 'true' || item.active === '1' || item.active === 'on'; },
+  onUpdate:    (item) => { item.active = item.active === true || item.active === 'true' || item.active === '1' || item.active === 'on'; },
 });

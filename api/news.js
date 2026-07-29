@@ -9,8 +9,8 @@ module.exports = createCRUD({
   searchFields: ['titleRu', 'titleKy'],
   filterFields: ['status', 'category'],
   bodyFields:   [
-    'titleRu', 'titleKy',
-    'contentRu', 'contentKy',
+    'titleRu', 'titleKy', 'titleEn',
+    'contentRu', 'contentKy', 'contentEn',
     'category', 'status',
     'image',
     'videoUrl',

@@ -133,23 +133,23 @@
 
         function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
         const lang = localStorage.getItem('site-lang') || 'ru';
-        function tl(ru, ky) { return lang === 'ky' ? (ky || ru) : ru; }
+        function tl(ru, ky, en) { return lang === 'ky' ? (ky || ru) : lang === 'en' ? (en || ru) : ru; }
 
         fetch('/api/sports/' + encodeURIComponent(id))
             .then(r => { if (!r.ok) throw new Error(); return r.json(); })
             .then(s => renderSport(s))
             .catch(() => {
                 document.getElementById('heroSkeleton').innerHTML =
-                    '<div class="sport-detail-hero__back"><a href="sports.html" class="news-back-btn">← ' + tl('Все виды спорта','Бардык спорт түрлөрү') + '</a></div>'
-                    + '<p style="text-align:center;padding:40px;opacity:.5">' + tl('Вид спорта не найден','Спорт түрү табылган жок') + '</p>';
+                    '<div class="sport-detail-hero__back"><a href="sports.html" class="news-back-btn">← ' + tl('Все виды спорта','Бардык спорт түрлөрү','All sports') + '</a></div>'
+                    + '<p style="text-align:center;padding:40px;opacity:.5">' + tl('Вид спорта не найден','Спорт түрү табылган жок','Sport not found') + '</p>';
             });
 
         function renderSport(s) {
-            const name = esc(lang === 'ky' ? (s.nameKy || s.nameRu) : s.nameRu);
-            const desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
-            const fullDesc = lang === 'ky' ? (s.fullDescKy || s.fullDescRu || '') : (s.fullDescRu || s.fullDescKy || '');
+            const name = esc(lang === 'ky' ? (s.nameKy || s.nameRu) : lang === 'en' ? (s.nameEn || s.nameRu) : s.nameRu);
+            const desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : lang === 'en' ? (s.descriptionEn || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
+            const fullDesc = lang === 'ky' ? (s.fullDescKy || s.fullDescRu || '') : lang === 'en' ? (s.fullDescEn || s.fullDescRu || '') : (s.fullDescRu || s.fullDescKy || '');
 
-            document.title = name + ' — ' + tl('Дирекция национальных видов спорта КР', 'КР Улуттук спорт дирекциясы');
+            document.title = name + ' — ' + tl('Дирекция национальных видов спорта КР', 'КР Улуттук спорт дирекциясы', 'Directorate of National Sports of Kyrgyzstan');
 
             // Hero icon: use uploaded image or fall back to SVG
             const ICONS = (typeof SPORT_ICONS_BY_ID !== 'undefined') ? SPORT_ICONS_BY_ID : {};
@@ -168,7 +168,7 @@
                     <div class="sport-detail-hero__content">
                         ${iconHtml ? `<div class="sport-detail-hero__icon">${iconHtml}</div>` : ''}
                         <h1 class="sport-detail-hero__title">${name}</h1>
-                        ${s.athletesCount ? `<p class="sport-detail-hero__count">${Number(s.athletesCount)} ${tl('спортсменов','спортчу')}</p>` : ''}
+                        ${s.athletesCount ? `<p class="sport-detail-hero__count">${Number(s.athletesCount)} ${tl('спортсменов','спортчу','athletes')}</p>` : ''}
                     </div>
                 </div>`;
 
@@ -182,7 +182,7 @@
             if (photos.length > 0) {
                 galleryEl.innerHTML = photos.map((photo, i) => {
                     const isEven = i % 2 === 0;
-                    const caption = tl('Фотография ' + (i + 1), 'Сүрөт ' + (i + 1));
+                    const caption = tl('Фотография ' + (i + 1), 'Сүрөт ' + (i + 1), 'Photo ' + (i + 1));
                     return `<div class="sport-gallery-row ${isEven ? 'sport-gallery-row--photo-left' : 'sport-gallery-row--photo-right'}">
                         <div class="sport-gallery-row__photo">
                             <img src="${esc(photo)}" alt="${caption}" loading="lazy" onerror="this.parentElement.style.display='none'">

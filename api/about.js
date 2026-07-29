@@ -40,7 +40,7 @@ router.put('/history', verifyToken, (req, res) => {
   const str = (v, max) => v != null ? String(v).trim().slice(0, max) : undefined;
   const current = readHistory();
   const updated = { ...current };
-  ['historyPara1Ru','historyPara1Ky','historyPara2Ru','historyPara2Ky','historyPara3Ru','historyPara3Ky'].forEach(k => {
+  ['historyPara1Ru','historyPara1Ky','historyPara1En','historyPara2Ru','historyPara2Ky','historyPara2En','historyPara3Ru','historyPara3Ky','historyPara3En'].forEach(k => {
     const v = str(req.body[k], 2000);
     if (v !== undefined) updated[k] = v;
   });
@@ -62,7 +62,7 @@ router.post('/image', verifyToken, upload.single('image'), (req, res) => {
 router.use('/values', createCRUD({
   file: 'data/about-values.json',
   defaultSort: (a, b) => Number(a.order || 0) - Number(b.order || 0),
-  bodyFields: ['titleRu','titleKy','textRu','textKy','order'],
+  bodyFields: ['titleRu','titleKy','titleEn','textRu','textKy','textEn','order'],
   searchFields: ['titleRu','titleKy'],
 }));
 
@@ -84,7 +84,7 @@ const timelineUpload = multer({
 const timelineCrud = createCRUD({
   file: 'data/about-timeline.json',
   defaultSort: (a, b) => Number(a.year || 0) - Number(b.year || 0),
-  bodyFields: ['year','titleRu','titleKy','descRu','descKy','fullDescRu','fullDescKy','order'],
+  bodyFields: ['year','titleRu','titleKy','titleEn','descRu','descKy','descEn','fullDescRu','fullDescKy','fullDescEn','order'],
   searchFields: ['titleRu','titleKy','year'],
 });
 router.use('/timeline', timelineCrud);

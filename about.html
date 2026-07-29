@@ -286,8 +286,8 @@
                 return;
             }
             list.innerHTML = items.map(function(item, idx) {
-                var title = lang === 'ky' ? (item.titleKy || item.titleRu || '') : (item.titleRu || item.titleKy || '');
-                var desc  = lang === 'ky' ? (item.descKy || item.descRu || '') : (item.descRu || item.descKy || '');
+                var title = lang === 'ky' ? (item.titleKy || item.titleRu || '') : lang === 'en' ? (item.titleEn || item.titleRu || '') : (item.titleRu || item.titleKy || '');
+                var desc  = lang === 'ky' ? (item.descKy || item.descRu || '') : lang === 'en' ? (item.descEn || item.descRu || '') : (item.descRu || item.descKy || '');
                 return '<article class="event-card event-card--clickable" onclick="openTimelineModal(' + idx + ')" title="' + esc(lang==='ky'?'Кеңири маалымат':'Подробнее') + '">'
                     + '<div class="event-card__date">'
                     + '<span class="event-card__day" style="font-size:1.5rem">' + esc(item.year) + '</span>'
@@ -306,9 +306,9 @@
             var item = _tlItems[idx];
             if (!item) return;
             var lang = localStorage.getItem('site-lang') || 'ru';
-            var title    = lang === 'ky' ? (item.titleKy    || item.titleRu    || '') : (item.titleRu    || item.titleKy    || '');
-            var desc     = lang === 'ky' ? (item.descKy     || item.descRu     || '') : (item.descRu     || item.descKy     || '');
-            var fullDesc = lang === 'ky' ? (item.fullDescKy || item.fullDescRu || '') : (item.fullDescRu || item.fullDescKy || '');
+            var title    = lang === 'ky' ? (item.titleKy    || item.titleRu    || '') : lang === 'en' ? (item.titleEn    || item.titleRu    || '') : (item.titleRu    || item.titleKy    || '');
+            var desc     = lang === 'ky' ? (item.descKy     || item.descRu     || '') : lang === 'en' ? (item.descEn     || item.descRu     || '') : (item.descRu     || item.descKy     || '');
+            var fullDesc = lang === 'ky' ? (item.fullDescKy || item.fullDescRu || '') : lang === 'en' ? (item.fullDescEn || item.fullDescRu || '') : (item.fullDescRu || item.fullDescKy || '');
             var photos = Array.isArray(item.photos) ? item.photos.filter(Boolean) : [];
 
             var photosHtml = '';
@@ -455,8 +455,8 @@
     var el=document.querySelector('.about-content__text');
     if(el) {
       var paras=['historyPara1','historyPara2','historyPara3'].map(function(k){
-        var ru=h[k+'Ru'], ky=h[k+'Ky'];
-        return (ru||ky)?'<p><span class="t-ru">'+esc(ru||'')+'</span><span class="t-ky">'+esc(ky||'')+'</span></p>':'';
+        var ru=h[k+'Ru'], ky=h[k+'Ky'], en=h[k+'En'];
+        return (ru||ky)?'<p><span class="t-ru">'+esc(ru||'')+'</span><span class="t-ky">'+esc(ky||'')+'</span><span class="t-en">'+esc(en||ru||'')+'</span></p>':'';
       }).join('');
       if(paras) { el.innerHTML='<h3><span class="t-ru">Наша история</span><span class="t-ky">Биздин тарых</span><span class="t-en">Our History</span></h3>'+paras; if(typeof applyLang==='function') applyLang(lang,false); }
     }
@@ -480,8 +480,8 @@
     if(!grid) return;
     grid.innerHTML=items.map(function(v,i){
       return '<div class="value-card"><div class="value-card__icon">'+(ICONS[i]||ICONS[0])+'</div>'
-        +'<h3 class="value-card__title"><span class="t-ru">'+esc(v.titleRu||'')+'</span><span class="t-ky">'+esc(v.titleKy||v.titleRu||'')+'</span></h3>'
-        +'<p class="value-card__text"><span class="t-ru">'+esc(v.textRu||'')+'</span><span class="t-ky">'+esc(v.textKy||v.textRu||'')+'</span></p></div>';
+        +'<h3 class="value-card__title"><span class="t-ru">'+esc(v.titleRu||'')+'</span><span class="t-ky">'+esc(v.titleKy||v.titleRu||'')+'</span><span class="t-en">'+esc(v.titleEn||v.titleRu||'')+'</span></h3>'
+        +'<p class="value-card__text"><span class="t-ru">'+esc(v.textRu||'')+'</span><span class="t-ky">'+esc(v.textKy||v.textRu||'')+'</span><span class="t-en">'+esc(v.textEn||v.textRu||'')+'</span></p></div>';
     }).join('');
     if(typeof applyLang==='function') applyLang(lang,false);
   }).catch(function(){});
@@ -493,8 +493,8 @@
     if(!list) return;
     list.innerHTML=items.map(function(t){
       return '<article class="event-card"><div class="event-card__date"><span class="event-card__day" style="font-size:1.5rem">'+esc(t.year||'')+'</span><span class="event-card__month">год</span></div>'
-        +'<div class="event-card__content"><h3 class="event-card__title"><span class="t-ru">'+esc(t.titleRu||'')+'</span><span class="t-ky">'+esc(t.titleKy||t.titleRu||'')+'</span></h3>'
-        +'<p class="event-card__desc"><span class="t-ru">'+esc(t.descRu||'')+'</span><span class="t-ky">'+esc(t.descKy||t.descRu||'')+'</span></p></div></article>';
+        +'<div class="event-card__content"><h3 class="event-card__title"><span class="t-ru">'+esc(t.titleRu||'')+'</span><span class="t-ky">'+esc(t.titleKy||t.titleRu||'')+'</span><span class="t-en">'+esc(t.titleEn||t.titleRu||'')+'</span></h3>'
+        +'<p class="event-card__desc"><span class="t-ru">'+esc(t.descRu||'')+'</span><span class="t-ky">'+esc(t.descKy||t.descRu||'')+'</span><span class="t-en">'+esc(t.descEn||t.descRu||'')+'</span></p></div></article>';
     }).join('');
     if(typeof applyLang==='function') applyLang(lang,false);
   }).catch(function(){});
@@ -524,8 +524,8 @@
           :AVATAR_SVG;
         return '<div class="team-card">'
           +'<div class="team-card__avatar">'+avatarHtml+'</div>'
-          +'<h4 class="team-card__name"><span class="t-ru">'+esc(p.nameRu||'')+'</span><span class="t-ky">'+esc(p.nameKy||p.nameRu||'')+'</span></h4>'
-          +'<p class="team-card__role"><span class="t-ru">'+esc(p.titleRu||'')+'</span><span class="t-ky">'+esc(p.titleKy||p.titleRu||'')+'</span></p>'
+          +'<h4 class="team-card__name"><span class="t-ru">'+esc(p.nameRu||'')+'</span><span class="t-ky">'+esc(p.nameKy||p.nameRu||'')+'</span><span class="t-en">'+esc(p.nameEn||p.nameRu||'')+'</span></h4>'
+          +'<p class="team-card__role"><span class="t-ru">'+esc(p.titleRu||'')+'</span><span class="t-ky">'+esc(p.titleKy||p.titleRu||'')+'</span><span class="t-en">'+esc(p.titleEn||p.titleRu||'')+'</span></p>'
           +'</div>';
       }).join('');
       if(typeof initRevealAnimations==='function') initRevealAnimations();

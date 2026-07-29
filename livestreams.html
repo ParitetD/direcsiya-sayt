@@ -226,8 +226,8 @@
 
         function renderStreamCard(s) {
             var lang = getLang();
-            var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '');
-            var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
+            var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : lang === 'en' ? (s.titleEn || s.titleRu || '') : (s.titleRu || s.titleKy || '');
+            var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : lang === 'en' ? (s.descriptionEn || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
             var thumb = s.thumbnail || '';
             var statusLabel = s.status === 'live' ? t('В эфире', 'Түз эфирде', 'Live')
                            : s.status === 'scheduled' ? t('Запланирован', 'Жоспарланган', 'Scheduled')
@@ -256,8 +256,8 @@
 
         function renderDetail(s) {
             var lang = getLang();
-            var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '');
-            var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
+            var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : lang === 'en' ? (s.titleEn || s.titleRu || '') : (s.titleRu || s.titleKy || '');
+            var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : lang === 'en' ? (s.descriptionEn || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
             var embed = buildEmbed(s.streamUrl, s.platform);
             var backLabel = t('← Назад к эфирам', '← Эфирлерге кайтуу', '← Back to streams');
             var statusLabel = s.status === 'live' ? t('● В ЭФИРЕ', '● ТҮЗ ЭФИРДЕ', '● LIVE')
@@ -301,8 +301,8 @@
             if (live.length) {
                 html += '<div class="ls-section-title" style="color:#dc2626">● ' + t('Прямой эфир сейчас', 'Азыр түз эфирде', 'Live now') + '</div>';
                 live.forEach(function(s) {
-                    var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : (s.titleRu || s.titleKy || '');
-                    var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
+                    var title = lang === 'ky' ? (s.titleKy || s.titleRu || '') : lang === 'en' ? (s.titleEn || s.titleRu || '') : (s.titleRu || s.titleKy || '');
+                    var desc = lang === 'ky' ? (s.descriptionKy || s.descriptionRu || '') : lang === 'en' ? (s.descriptionEn || s.descriptionRu || '') : (s.descriptionRu || s.descriptionKy || '');
                     var embed = buildEmbed(s.streamUrl, s.platform);
                     html += '<div class="ls-live-card">'
                         + '<div class="ls-live-card__video">' + (embed || '') + '</div>'

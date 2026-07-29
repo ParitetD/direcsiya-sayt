@@ -20,9 +20,9 @@ const crudRouter = createCRUD({
   searchFields: ['nameRu', 'nameKy'],
   filterFields: ['status'],
   bodyFields:   [
-    'nameRu', 'nameKy',
-    'descriptionRu', 'descriptionKy',
-    'fullDescRu', 'fullDescKy',
+    'nameRu', 'nameKy', 'nameEn',
+    'descriptionRu', 'descriptionKy', 'descriptionEn',
+    'fullDescRu', 'fullDescKy', 'fullDescEn',
     'athletesCount', 'order', 'status',
     'image', 'icon',
   ],

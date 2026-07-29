@@ -339,7 +339,7 @@
   function lbOpen(i){
     lbIdx=i; var it=cur[i]; var lang=localStorage.getItem('site-lang')||'ru';
     lbImg.src=it.image; lbImg.alt=it.titleRu||'';
-    lbCap.textContent=(lang==='ky'?it.titleKy:null)||it.titleRu||'';
+    lbCap.textContent=(lang==='ky'?it.titleKy:lang==='en'?it.titleEn:null)||it.titleRu||'';
     lbCnt.textContent=(i+1)+' / '+cur.length;
     lb.classList.add('lightbox--open'); document.body.style.overflow='hidden';
   }
@@ -371,7 +371,7 @@
     var lang = localStorage.getItem('site-lang') || 'ru';
     var slice = items.slice(0, galleryPage * galleryPageSize);
     grid.innerHTML = slice.map(function(n, i) {
-      var cap = (lang === 'ky' ? n.titleKy : null) || n.titleRu || '';
+      var cap = (lang === 'ky' ? n.titleKy : lang === 'en' ? n.titleEn : null) || n.titleRu || '';
       return '<div class="gallery-item" data-category="' + esc(n.category||'') + '" data-idx="' + i + '">'
         + '<img src="' + esc(n.image||'') + '" alt="' + esc(cap) + '" loading="lazy" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=60\'">'
         + '<div class="gallery-item__overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>'

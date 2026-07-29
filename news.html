@@ -431,12 +431,12 @@
     }
 
     list.innerHTML = slice.map(function (n, i) {
-      var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : (n.titleRu || n.titleKy || '');
+      var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : lang === 'en' ? (n.titleEn || n.titleRu || '') : (n.titleRu || n.titleKy || '');
       var bRu = (n.contentRu || '').replace(/<[^>]+>/g, '');
       var bKy = (n.contentKy || '').replace(/<[^>]+>/g, '');
-      var excerpt = lang === 'ky'
-        ? ((bKy || bRu).slice(0, 220) + ((bKy || bRu).length > 220 ? '…' : ''))
-        : (bRu.slice(0, 220) + (bRu.length > 220 ? '…' : ''));
+      var bEn = (n.contentEn || '').replace(/<[^>]+>/g, '');
+      var excerptSrc = lang === 'ky' ? (bKy || bRu) : lang === 'en' ? (bEn || bRu) : bRu;
+      var excerpt = excerptSrc.slice(0, 220) + (excerptSrc.length > 220 ? '…' : '');
       var imgH = n.image
         ? '<div class="news-full-card__image"><img src="' + esc(n.image) + '" alt="' + esc(title) + '" loading="lazy" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=60\'">'
           + '<span class="news-full-card__badge">' + esc(catLabel(n.category, lang)) + '</span></div>'
@@ -491,8 +491,8 @@
 
   function renderArticle(n) {
     var lang  = getLang();
-    var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : (n.titleRu || n.titleKy || '');
-    var body  = lang === 'ky' ? (n.contentKy || n.contentRu || '') : (n.contentRu || n.contentKy || '');
+    var title = lang === 'ky' ? (n.titleKy || n.titleRu || '') : lang === 'en' ? (n.titleEn || n.titleRu || '') : (n.titleRu || n.titleKy || '');
+    var body  = lang === 'ky' ? (n.contentKy || n.contentRu || '') : lang === 'en' ? (n.contentEn || n.contentRu || '') : (n.contentRu || n.contentKy || '');
     var safeBody = (typeof sanitizeHtml === 'function') ? sanitizeHtml(body) : '';
 
     document.title = (title ? title + ' — ' : '') + 'Новости — Дирекция национальных видов спорта КР';

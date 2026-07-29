@@ -40,7 +40,7 @@ router.put('/', verifyToken, (req, res) => {
   if (socialInstagram !== undefined) updated.socialInstagram = socialInstagram;
   if (socialYoutube !== undefined)   updated.socialYoutube = socialYoutube;
   if (req.body.siteTitleRu) updated.siteTitle = { ru: str(req.body.siteTitleRu, 200), ky: str(req.body.siteTitleKy, 200) || current.siteTitle?.ky };
-  if (req.body.addressRu)   updated.address   = { ru: str(req.body.addressRu, 300), ky: str(req.body.addressKy, 300) || current.address?.ky };
+  if (req.body.addressRu)   updated.address   = { ru: str(req.body.addressRu, 300), ky: str(req.body.addressKy, 300) || current.address?.ky, en: str(req.body.addressEn, 300) || current.address?.en };
 
   if (req.body.mapLat !== undefined) {
     const lat = parseFloat(req.body.mapLat);
@@ -52,10 +52,10 @@ router.put('/', verifyToken, (req, res) => {
   }
 
   const cd = [
-    ['countdownTitleRu', 300], ['countdownTitleKy', 300],
+    ['countdownTitleRu', 300], ['countdownTitleKy', 300], ['countdownTitleEn', 300],
     ['countdownDate', 30], ['countdownTime', 10],
-    ['countdownLocationRu', 300], ['countdownLocationKy', 300],
-    ['countdownDescRu', 1000], ['countdownDescKy', 1000],
+    ['countdownLocationRu', 300], ['countdownLocationKy', 300], ['countdownLocationEn', 300],
+    ['countdownDescRu', 1000], ['countdownDescKy', 1000], ['countdownDescEn', 1000],
     ['countdownEventId', 100],
   ];
   cd.forEach(([k, max]) => {
@@ -64,10 +64,10 @@ router.put('/', verifyToken, (req, res) => {
   });
 
   const stats = [
-    'stat1Value','stat1LabelRu','stat1LabelKy',
-    'stat2Value','stat2LabelRu','stat2LabelKy',
-    'stat3Value','stat3LabelRu','stat3LabelKy',
-    'stat4Value','stat4LabelRu','stat4LabelKy',
+    'stat1Value','stat1LabelRu','stat1LabelKy','stat1LabelEn',
+    'stat2Value','stat2LabelRu','stat2LabelKy','stat2LabelEn',
+    'stat3Value','stat3LabelRu','stat3LabelKy','stat3LabelEn',
+    'stat4Value','stat4LabelRu','stat4LabelKy','stat4LabelEn',
   ];
   stats.forEach(k => {
     const v = str(req.body[k], 200);
